@@ -36,7 +36,6 @@ public class ProjectController {
 		
 		try {
 			ProjectDTO projectDTO = projectService.projectSelectByNo(projectNo);
-			System.out.println(projectDTO.getReward());
 			model.addAttribute("projectDTO",projectDTO);
 		} catch (Exception e) {
 			e.printStackTrace();

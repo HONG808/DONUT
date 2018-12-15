@@ -20,6 +20,13 @@
                             <input id="goods_picker" type="radio" value="goods" name="kind">물품
                         </div>
                     </div>
+                    
+                     <div class="register-category-item" id="categoryItem" style="display:none;">
+                        <div class="field"><span>물품등록</span><span style="color:red;">*</span></div>
+                        <div><input type="button" class="btn_2" id="itemSearch"value="검색" style="width:80px;"></div>
+                        <div></div>
+                    </div>
+                    
                     <div class="register-goal">
                         <div class="field"><span>목표</span><span style="color:red;">*</span></div>
                         <div id="cash_goal_input" class="input">
@@ -90,7 +97,7 @@
 
 
 <script>
-    $.datepicker.setDefaults({
+  /*   $.datepicker.setDefaults({
         dateFormat: 'yy-mm-dd',
         prevText: '이전',
         nextText: '다음',
@@ -106,10 +113,24 @@
     $(function(){
         $("#projectend_date").datepicker();
     });
-    
+     */
     
     
     $(function(){
+    	
+    	//항목-물품 라디오 박스 동적처리
+        $("input:radio[name=kind]").on("click",function(){
+        	if($(this).val()=='goods'){
+        		$("#categoryItem").show();
+        	} else {
+        		$("#categoryItem").hide();
+        	}
+        });
+    	
+    	$("#itemSearch").on("click",function(){
+    		alert("itemSearch");
+    	});
+    	
         $("#cash_picker").click(function(){
             $("#goods_goal_input").addClass("hidden");
             $("#cash_goal_input").removeClass("hidden");
@@ -160,6 +181,7 @@
             result = value + result;
             return result;
         }
+        
     });  
 </script>
 

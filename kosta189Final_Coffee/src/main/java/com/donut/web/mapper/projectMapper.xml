@@ -19,6 +19,13 @@
 		<result property="percent" column="percent" />
 		<result property="givePerson" column="givePerson" />
 		<!-- 프로젝트 물품 -->
+		<collection property="item" ofType="itemDTO">
+			<id property="projectItemNo" column="projectItemNo" />
+			<result property="ItemName" column="ItemName" />
+			<result property="ItemPrice" column="ItemPrice" />
+			<result property="itemAmount" column="itemAmount" />
+			<result property="goalAmount" column="goalAmount" />
+		</collection>
 		<!-- 리워드 -->
 		<collection property="reward" ofType="rewardDTO">
 			<id property="rewardNo" column="rewardNo" />
@@ -68,14 +75,14 @@
 		ORDER BY projectNo DESC
 	</select>
 
-	<!-- <select id="projectSelectByNo" parameterType="int" resultMap="readMap"> 
-		SELECT * FROM tb_project WHERE projectNo = #{_parameter} </select> -->
 	<select id="projectSelectByNo" parameterType="int"
 		resultMap="readMap">
-		SELECT *
-		FROM tb_project p left join tb_reward r
-		on p.projectNo=r.projectNo
-		where p.projectNo =#{_parameter}
+        SELECT *
+		FROM tb_project p left join tb_item i
+        on p.projectNo=i.projectNo
+        left join tb_reward r
+        on p.projectNo=r.projectNo
+		where p.projectNo = ${_parameter}
 	</select>
 
 

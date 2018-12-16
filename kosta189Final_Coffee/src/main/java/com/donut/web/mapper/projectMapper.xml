@@ -21,8 +21,8 @@
 		<!-- 프로젝트 물품 -->
 		<collection property="item" ofType="itemDTO">
 			<id property="projectItemNo" column="projectItemNo" />
-			<result property="ItemName" column="ItemName" />
-			<result property="ItemPrice" column="ItemPrice" />
+			<result property="itemName" column="ItemName" />
+			<result property="itemPrice" column="ItemPrice" />
 			<result property="itemAmount" column="itemAmount" />
 			<result property="goalAmount" column="goalAmount" />
 		</collection>

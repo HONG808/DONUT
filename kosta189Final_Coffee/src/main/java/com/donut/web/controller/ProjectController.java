@@ -2,14 +2,13 @@ package com.donut.web.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.donut.web.dto.ItemDTO;
 import com.donut.web.dto.ProjectDTO;
 import com.donut.web.service.ProjectService;
 
@@ -70,19 +69,25 @@ public class ProjectController {
 	
 	@RequestMapping("/projectInsertForm")
 	public String projectInsert() {
-		System.out.println("projectInsert 출력");
 		return "project/projectInsertForm";
 	}
 	
 	@RequestMapping("/ItemInsert")
-	public String ItemInsert(HttpSession session) {
-		System.out.println("ItemInsert 출력");
-		return "project/ItemInsert";
+	public String ItemInsert(ProjectDTO projectDTO, String category) {
+		//category 분류
+		String [] categorys = category.split(">");
+		projectDTO.setCategory1(categorys[0]);
+		projectDTO.setCategory2(categorys[1]);
+		System.out.println(categorys[0]);
+		return "redirect:projectList";
 	}
 	
 	@RequestMapping("/MoneyInsert")
-	public String MoneyInsert(ProjectDTO projectDTO) {
-		System.out.println(projectDTO);
+	public String MoneyInsert(ProjectDTO projectDTO, String category) {
+		String [] categorys = category.split(">");
+		projectDTO.setCategory1(categorys[0]);
+		projectDTO.setCategory2(categorys[1]);
+		
 		projectDTO.setId("company1");
 		try { 
 		projectService.MoneyInsert(projectDTO);

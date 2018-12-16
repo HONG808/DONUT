@@ -3,19 +3,19 @@ package com.donut.web.dto;
 public class ItemDTO {
 
 	private int projectItemNo;
-	private int ProjectNo;
-	private String ItemName;
-	private int ItemPrice;
+	private int projectNo;
+	private String itemName;
+	private int itemPrice;
 	private int itemAmount;
 	private int goalAmount;
-
+	
 	public ItemDTO() {}
 
 	public ItemDTO(int projectItemNo, int projectNo, String itemName, int itemPrice, int itemAmount, int goalAmount) {
 		this.projectItemNo = projectItemNo;
-		this.ProjectNo = projectNo;
-		this.ItemName = itemName;
-		this.ItemPrice = itemPrice;
+		this.projectNo = projectNo;
+		this.itemName = itemName;
+		this.itemPrice = itemPrice;
 		this.itemAmount = itemAmount;
 		this.goalAmount = goalAmount;
 	}
@@ -29,27 +29,27 @@ public class ItemDTO {
 	}
 
 	public int getProjectNo() {
-		return ProjectNo;
+		return projectNo;
 	}
 
 	public void setProjectNo(int projectNo) {
-		ProjectNo = projectNo;
+		this.projectNo = projectNo;
 	}
 
 	public String getItemName() {
-		return ItemName;
+		return itemName;
 	}
 
 	public void setItemName(String itemName) {
-		ItemName = itemName;
+		this.itemName = itemName;
 	}
 
 	public int getItemPrice() {
-		return ItemPrice;
+		return itemPrice;
 	}
 
 	public void setItemPrice(int itemPrice) {
-		ItemPrice = itemPrice;
+		this.itemPrice = itemPrice;
 	}
 
 	public int getItemAmount() {
@@ -70,10 +70,13 @@ public class ItemDTO {
 
 	@Override
 	public String toString() {
-		return "ItemDTO [projectItemNo=" + projectItemNo + ", ProjectNo=" + ProjectNo + ", ItemName=" + ItemName
-				+ ", ItemPrice=" + ItemPrice + ", itemAmount=" + itemAmount + ", goalAmount=" + goalAmount + "]";
+		return "ItemDTO [projectItemNo=" + projectItemNo + ", projectNo=" + projectNo + ", itemName=" + itemName
+				+ ", itemPrice=" + itemPrice + ", itemAmount=" + itemAmount + ", goalAmount=" + goalAmount + "]";
 	}
 
+	
+	
+	
 
 	
 	

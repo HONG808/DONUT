@@ -22,9 +22,11 @@
                     </div>
                     
                      <div class="register-category-item" id="categoryItem" style="display:none;">
-                        <div class="field"><span>물품등록</span><span style="color:red;">*</span></div>
+                        <div class="field"><span>물품검색</span><span style="color:red;">*</span></div>
                         <div><input type="button" class="btn_2" id="itemSearch"value="검색" style="width:80px;"></div>
-                        <div></div>
+                        <div class="field"><span>물품목록</span><span style="color:red;">*</span></div>
+                        <div id="itemList"></div>
+                        
                     </div>
                     
                     <div class="register-goal">
@@ -68,7 +70,7 @@
                             </ol>
                         </div>
                         <div class="input">
-                            <input type="text" placeholder="카테고리를 선택하세요." readonly>
+                            	카테고리<input type="text" placeholder="카테고리를 선택하세요." name="category" id="category" readonly>
                         </div>
                     </div>
                     <div class="register-story">
@@ -121,15 +123,27 @@
     	//항목-물품 라디오 박스 동적처리
         $("input:radio[name=kind]").on("click",function(){
         	if($(this).val()=='goods'){
+        		$("form").attr("action","ItemInsert");
         		$("#categoryItem").show();
         	} else {
+        		$("form").attr("action","MoneyInsert");
         		$("#categoryItem").hide();
         	}
         });
     	
-    	$("#itemSearch").on("click",function(){
-    		alert("itemSearch");
-    	});
+    	//물품 검색 버튼 클릭시 팝업창 생성
+        $("#itemSearch").on("click",function(){
+        	window.open("${pageContext.request.contextPath}/data/dataSelectForm", "MsgWindow", "width=800,height=800");
+        });
+        
+    	//카테고리 삽입
+    	$(".register-category-detail li li").on("click",function(){
+    		var str ="";
+    		str += $(this).parent().parent().find("p").html()+">";
+    		str += $(this).html();
+    		$("#category").val(str);
+			    		
+    	})
     	
         $("#cash_picker").click(function(){
             $("#goods_goal_input").addClass("hidden");
@@ -182,6 +196,7 @@
             return result;
         }
         
+    
     });  
 </script>
 

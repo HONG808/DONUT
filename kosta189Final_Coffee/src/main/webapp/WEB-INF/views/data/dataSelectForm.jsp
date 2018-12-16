@@ -68,6 +68,7 @@
 <script>
 $(function(){
 	
+	// 물품데이터 카테고리 검색
 	$("input[value=검색]").on("click",function(){
 		var dataCategory = $("select[name=dataCategory]").val();
 		
@@ -83,8 +84,8 @@ $(function(){
             	var str = "";
             	$.each(result, function(index,data){
             		str += "<tr>";
-            		str += "<td>"+data.dataItemNo+"</td><td>"+data.dataItemName+"</td><td>"+data.dataItemCategory+"</td><td>"+data.dataItemPrice+"</td>";
-            		str += "</td>"
+            		str += "<td class='dataItemNo'>"+data.dataItemNo+"</td><td class='dataItemName'>"+data.dataItemName+"</td><td class='dataItemCategory'>"+data.dataItemCategory+"</td><td class='dataItemPrice'>"+data.dataItemPrice+"</td><td><input type='button' value='선택'/></td>";
+            		str += "</tr>"
             	});//for문
             	
         		$("table").html(str);	
@@ -93,12 +94,27 @@ $(function(){
                alert(error +"에러발생");               
             }
          });
-
-		
-		
 	}); //검색버튼
 	
+
+	
 }) //document.ready
+
+//list에 넣기 위한 인덱스
+var indexNo = 0;
+
+$(document).on("click","input[value=선택]",function(){
+	var str = "";
+	str += "<input type='text' name='item["+indexNo+"].itemName' value="+$(this).parent().parent().children(".dataItemName").html()+">";
+	str += "<input type='text' name='item["+indexNo+"].itemCategory' value="+$(this).parent().parent().children(".dataItemCategory").html()+">";
+	str += "<input type='text' name='item["+indexNo+"].itemgoalAmount' value='0'>";
+	str += "<input type='text' name='item["+indexNo+"].itemPrice' value="+$(this).parent().parent().children(".dataItemPrice").html()+"><br>";
+	$(opener.document).find("#itemList").append(str);
+	indexNo++;
+});
+
+
+
 </script>
     
 </body>

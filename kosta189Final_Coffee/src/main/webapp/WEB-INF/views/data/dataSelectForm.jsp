@@ -87,8 +87,8 @@ $(function(){
             		str += "<td class='dataItemNo'>"+data.dataItemNo+"</td><td class='dataItemName'>"+data.dataItemName+"</td><td class='dataItemCategory'>"+data.dataItemCategory+"</td><td class='dataItemPrice'>"+data.dataItemPrice+"</td><td><input type='button' value='선택'/></td>";
             		str += "</tr>"
             	});//for문
-            	
         		$("table").html(str);	
+            	
             },
             error : function(error){//실패했을 때
                alert(error +"에러발생");               
@@ -105,11 +105,12 @@ var indexNo = 0;
 
 $(document).on("click","input[value=선택]",function(){
 	var str = "";
-	str += "<input type='text' name='item["+indexNo+"].itemName' value="+$(this).parent().parent().children(".dataItemName").html()+">";
-	str += "<input type='text' name='item["+indexNo+"].itemCategory' value="+$(this).parent().parent().children(".dataItemCategory").html()+">";
-	str += "<input type='text' name='item["+indexNo+"].itemgoalAmount' value='0'>";
-	str += "<input type='text' name='item["+indexNo+"].itemPrice' value="+$(this).parent().parent().children(".dataItemPrice").html()+"><br>";
+	str += "<div><input type='text' name='item["+indexNo+"].itemName' value='"+$(this).parent().parent().children(".dataItemName").html()+"'>";
+	str += "<input type='text' name='item["+indexNo+"].itemCategory' value='"+$(this).parent().parent().children(".dataItemCategory").html()+"'>";
+	str += "<input type='text' name='item["+indexNo+"].itemgoalAmount' value='1'>";
+	str += "<input type='text' name='item["+indexNo+"].itemPrice' value='"+$(this).parent().parent().children(".dataItemPrice").html()+"'></div>";
 	$(opener.document).find("#itemList").append(str);
+	console.log(str);
 	indexNo++;
 });
 

@@ -30,13 +30,14 @@
                     </div>
                     
                     <div class="register-goal">
-                        <div class="field"><span>목표</span><span style="color:red;">*</span></div>
+                        <div class="field"><span>목표금액</span><span style="color:red;">*</span></div>
                         <div id="cash_goal_input" class="input">
                             <input type="text" placeholder="목표금액을 , 없이 숫자만 입력해주세요."><span id="cashOutput"></span>
                         </div>
                         <div id="goods_goal_input" class="input hidden">
-                            <input type="text" placeholder="목표수량을 , 없이 숫자만 입력해주세요."><span id="goodsOutput"></span>
-                        </div>
+                            <input type="text" id="goal" name="goal" placeholder="목록에서 수량 입력 후 확정 버튼을 눌러주세요" readonly="readonly"><span id="goodsOutput"></span>
+							<input type="button" class="btn_2" id="itemConfirm" value="확정" style="width:50px;">                        
+						</div> 
                     </div>
                     <div class="register-category-detail">
                         <div class="field"><span>상세카테고리</span><span style="color:red;">*</span></div>
@@ -136,14 +137,17 @@
         	window.open("${pageContext.request.contextPath}/data/dataSelectForm", "MsgWindow", "width=800,height=800");
         });
         
+    	
+    	
+    	
     	//카테고리 삽입
     	$(".register-category-detail li li").on("click",function(){
     		var str ="";
     		str += $(this).parent().parent().find("p").html()+">";
     		str += $(this).html();
     		$("#category").val(str);
-			    		
     	})
+    	
     	
         $("#cash_picker").click(function(){
             $("#goods_goal_input").addClass("hidden");
@@ -195,9 +199,18 @@
             result = value + result;
             return result;
         }
-        
-    
     });  
+    
+  	//물품 수량 입력 후 목표금액 설정
+	$(document).on("click","#itemConfirm", function(){
+		var length = $("#itemList > div").length;
+		var price = 0;
+		for(var i =0; i<length; i++){
+			price += $("[name='item["+i+"].itemPrice'").val() * $("[name='item["+i+"].itemgoalAmount'").val();
+		}
+		$("#goal").val(price);
+	});    
+    
 </script>
 
 <%@ include file="../common/footer.jsp" %>

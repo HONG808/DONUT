@@ -78,7 +78,9 @@ public class ProjectController {
 		String [] categorys = category.split(">");
 		projectDTO.setCategory1(categorys[0]);
 		projectDTO.setCategory2(categorys[1]);
-		System.out.println(categorys[0]);
+
+		
+		
 		return "redirect:projectList";
 	}
 	

@@ -1,16 +1,15 @@
-
 회원 관리 테이블 : 
-	회원 상태 플래그 : 기본 값 1로 세팅
-	탈퇴 플래그 : 기본 값 1로 세팅
+
+	회원 상태 플래그 : 관리자 0 / 기부자 1 (기본값) /기부단체 2
+	탈퇴 플래그 :  회원가입시 1(기본값) / 탈퇴시 0
+
 응원 댓글 테이블 :
-	응원 댓글 알림 플래그 : 0담당자 확인 후 0, 1 : 댓글 생성시 기본값..
+
+	응원 댓글 알림 플래그 : 확인 전 0 (기본값)  / 댓글 확인 후 1
 
 qna테이블 댓글 :
-	qna 알림 플래그 : 0담당자 확인, 1기본값 
+	qna 알림 플래그 : 확인 전 0 (기본값) / QnA 확인 후 1
 	
-* 시퀀스로 이루어진 NO(번호) 전부 인설트시 들어간 데이터의 번호에 따라 설정 해주어야함
-
-
 ----------------------------------------------------기부자 회원 가입
 
 insert into tb_member(id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag, dropFlag) values ('test1', '1234',
@@ -210,49 +209,49 @@ insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, ad
 
     -----------응원댓글
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 1, 'test1', '힘을 내세요 !!',sysdate, 1, 0); 
+    values (seq_cheer.nextval, 1, 'test1', '힘을 내세요 !!',sysdate, 0, null); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 2, 'test2', '응원 합니다.',sysdate, 1, 0); 
+    values (seq_cheer.nextval, 2, 'test2', '응원 합니다.',sysdate, 0, null); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 3, 'test3', '용기를 가지세요 !!',sysdate, 1, 0); 
+    values (seq_cheer.nextval, 3, 'test3', '용기를 가지세요 !!',sysdate, 0, null); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 4, 'test4', '화이팅 화이팅 !!',sysdate, 1, 0); 
+    values (seq_cheer.nextval, 4, 'test4', '화이팅 화이팅 !!',sysdate, 0, null); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 5, 'test5', '힘을 내용 !!',sysdate, 1, 0); 
+    values (seq_cheer.nextval, 5, 'test5', '힘을 내용 !!',sysdate, 0, null); 
     -------------대댓글
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 1, 'company1', '응원 감사합니다.',sysdate, 1, 1); 
+    values (seq_cheer.nextval, 1, 'company1', '응원 감사합니다.',sysdate, 0, 1); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 2, 'company2', '응원 해주셔서 감사합니다',sysdate, 1, 2); 
+    values (seq_cheer.nextval, 2, 'company2', '응원 해주셔서 감사합니다',sysdate, 0, 2); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 3, 'company3', '응원 감사합니다.',sysdate, 1, 3); 
+    values (seq_cheer.nextval, 3, 'company3', '응원 감사합니다.',sysdate, 0, 3); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 4, 'company4', '응원에 감사드립니다',sysdate, 1, 4); 
+    values (seq_cheer.nextval, 4, 'company4', '응원에 감사드립니다',sysdate, 0, 4); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 5, 'company5', '감사합니다',sysdate, 1, 5); 
+    values (seq_cheer.nextval, 5, 'company5', '감사합니다',sysdate, 0, 5); 
 
 -----------qna질문 글
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
-    values(seq_qna.nextval, 1, 'test1', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 1, 0);
+    values(seq_qna.nextval, 1, 'test1', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 0, null);
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
-    values(seq_qna.nextval, 2, 'test2', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 1, 0);
+    values(seq_qna.nextval, 2, 'test2', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 0, null);
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
-    values(seq_qna.nextval, 3, 'test3', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 1, 0);
+    values(seq_qna.nextval, 3, 'test3', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 0, null);
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
-    values(seq_qna.nextval, 4, 'test4', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 1, 0);
+    values(seq_qna.nextval, 4, 'test4', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 0, null);
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
-    values(seq_qna.nextval, 5, 'test5', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 1, 0);
+    values(seq_qna.nextval, 5, 'test5', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 0, null);
 ---------qna대댓글
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
-    values(seq_qna.nextval, 1, 'company1', '네 정상적으로 진행 되고 있습니다. 곧 종료됩니다', sysdate, 1, 1);
+    values(seq_qna.nextval, 1, 'company1', '네 정상적으로 진행 되고 있습니다. 곧 종료됩니다', sysdate, 0, 1);
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
-    values(seq_qna.nextval, 2, 'company2', '종료된 프로젝트 입니다. 후기에서 기부금 사용내역을 확인 할수 있습니다.', sysdate, 1, 2);
+    values(seq_qna.nextval, 2, 'company2', '종료된 프로젝트 입니다. 후기에서 기부금 사용내역을 확인 할수 있습니다.', sysdate, 0, 2);
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
-    values(seq_qna.nextval, 3, 'company3', '곧 후기에서 사용 내역을 확인 하실수 있습니다.', sysdate, 1, 3);
+    values(seq_qna.nextval, 3, 'company3', '곧 후기에서 사용 내역을 확인 하실수 있습니다.', sysdate, 0, 3);
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
-    values(seq_qna.nextval, 4, 'company4', '네 곧 마감 됩니다!', sysdate, 1, 4);
+    values(seq_qna.nextval, 4, 'company4', '네 곧 마감 됩니다!', sysdate, 0, 4);
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
-    values(seq_qna.nextval, 5, 'company5', '네', sysdate, 1, 5);
+    values(seq_qna.nextval, 5, 'company5', '네', sysdate, 0, 5);
 
 
 

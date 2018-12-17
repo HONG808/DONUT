@@ -3,6 +3,7 @@ package com.donut.web.dao;
 import java.util.List;
 
 import com.donut.web.dto.FavoriteDTO;
+import com.donut.web.dto.ItemDTO;
 import com.donut.web.dto.ProjectDTO;
 
 public interface ProjectDAO {
@@ -26,10 +27,12 @@ public interface ProjectDAO {
 	public boolean projectFavoriteSelectByNo(FavoriteDTO favoriteDTO) throws Exception;
 
 	//물품 프로젝트 등록
-	public int ItemInsert(ProjectDTO projectDTO) throws Exception;
+	public int itemInsert(ProjectDTO projectDTO) throws Exception;
 
+	//물품 프로젝트 등록 후 아이템 등록
+	public int itemListInsert(ItemDTO itemDTO) throws Exception;
 	//금전 프로젝트 등록
-	public int MoneyInsert(ProjectDTO projectDTO) throws Exception;
+	public int moneyInsert(ProjectDTO projectDTO) throws Exception;
 
 	//업데이트 실행
 	public int projectUpdate(ProjectDTO projectDTO) throws Exception;

@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import com.donut.web.dao.ProjectDAO;
 import com.donut.web.dto.FavoriteDTO;
+import com.donut.web.dto.ItemDTO;
 import com.donut.web.dto.ProjectDTO;
 
 @Repository
-public class ProjectDAOImpl	implements ProjectDAO{
+public class ProjectDAOImpl implements ProjectDAO{
 	
 	@Autowired
 	SqlSession session;
@@ -52,18 +53,29 @@ public class ProjectDAOImpl	implements ProjectDAO{
 	}
 
 	@Override
-	public int ItemInsert(ProjectDTO projectDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int itemInsert(ProjectDTO projectDTO) throws Exception {
+		int result= session.insert("projectMapper.itemInsert", projectDTO);
+		return result;
 	}
+	
+	@Override
+	public int itemListInsert(ItemDTO itemDTO) throws Exception {
+		int result= session.insert("projectMapper.itemListInsert", itemDTO);
+		return result;
+	}
+	
 
 	@Override
-	public int MoneyInsert(ProjectDTO projectDTO) throws Exception {
+	public int moneyInsert(ProjectDTO projectDTO) throws Exception {
 		int result= session.insert("projectMapper.moneyInsert", projectDTO);
-		System.out.println(result);
+		if(result == 0) {
+			throw new Exception("금액 기부 프로젝트 등록실패 ");
+		}
 		return result;
 	}
 
+	
+	
 	@Override
 	public int projectUpdate(ProjectDTO projectDTO) throws Exception {
 		// TODO Auto-generated method stub

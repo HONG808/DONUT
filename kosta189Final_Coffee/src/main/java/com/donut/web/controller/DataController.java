@@ -36,7 +36,6 @@ public class DataController {
 		List<DataDTO> result =null;
 		try {
 		result = dataService.dataSelectAll(dataCategory);
-		System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

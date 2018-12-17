@@ -33,6 +33,12 @@
             background-color : lightblue;
         }
         
+        .item-List-Cofirm{
+        	width:100%;
+        	height:100%;
+        }
+        
+        
     </style>
     <!-- script -->
 	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
@@ -62,6 +68,12 @@
         <div class="item-search-list">
 				<table>리스트출력</table>            
         </div>
+        <div class="item-List-Cofirm" id="itemListCofirm">
+        	
+        </div>
+        <input type="button" class="btn_2" id="itemConfirm" value="확정" style="width:50px;">
+        <input type="button" class="btn_2" id="itemCancel" value="취소" style="width:50px;">
+        
     </div>
 </div>
 
@@ -101,19 +113,31 @@ $(function(){
 }) //document.ready
 
 //list에 넣기 위한 인덱스
-var indexNo = 0;
-
-$(document).on("click","input[value=선택]",function(){
-	var str = "";
-	str += "<div><input type='text' name='item["+indexNo+"].itemName' value='"+$(this).parent().parent().children(".dataItemName").html()+"'>";
-	str += "<input type='text' name='item["+indexNo+"].itemCategory' value='"+$(this).parent().parent().children(".dataItemCategory").html()+"'>";
-	str += "<input type='text' name='item["+indexNo+"].itemgoalAmount' value='1'>";
-	str += "<input type='text' name='item["+indexNo+"].itemPrice' value='"+$(this).parent().parent().children(".dataItemPrice").html()+"'></div>";
-	$(opener.document).find("#itemList").append(str);
-	console.log(str);
-	indexNo++;
-});
-
+	var indexNo = 0;
+	
+	$(document).on("click","input[value=선택]",function(){
+		var str = "";
+		str += "<div><input type='text' name='item["+indexNo+"].itemName' value='"+$(this).parent().parent().children(".dataItemName").html()+"'>";
+		str += "<input type='text' name='item["+indexNo+"].itemCategory' value='"+$(this).parent().parent().children(".dataItemCategory").html()+"'>";
+		str += "<input type='text' name='item["+indexNo+"].itemgoalAmount' value='1'>";
+		str += "<input type='text' name='item["+indexNo+"].itemPrice' value='"+$(this).parent().parent().children(".dataItemPrice").html()+"'></div>";
+	//	$(opener.document).find("#itemList").append(str);
+		$("#itemListCofirm").append(str);
+		console.log(indexNo);
+		indexNo++;
+	});
+	
+	
+	//물품 수량 입력 후 목표금액 설정
+	$(document).on("click","#itemConfirm", function(){
+		var length = $("#itemListCofirm > div").length;
+		var price = 0;
+		for(var i =0; i<length; i++){
+			price += $("[name='item["+i+"].itemPrice'").val() * $("[name='item["+i+"].itemgoalAmount'").val();
+		}
+		$(opener.document).find("#goal").val(price);
+		$(opener.document).find("#itemList").html($("#itemListCofirm").html()); 
+	});    
 
 
 </script>

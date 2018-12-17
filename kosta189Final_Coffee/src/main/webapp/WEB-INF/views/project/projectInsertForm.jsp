@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ include file="../common/header.jsp" %>
 
-<form action="MoneyInsert" method="post">
+<form action="moneyInsert" method="post">
 	<div class="project-register-wrap">
     	<div class="project-register-container">
         <p>프로젝트 등록</p>
@@ -32,11 +32,10 @@
                     <div class="register-goal">
                         <div class="field"><span>목표금액</span><span style="color:red;">*</span></div>
                         <div id="cash_goal_input" class="input">
-                            <input type="text" placeholder="목표금액을 , 없이 숫자만 입력해주세요."><span id="cashOutput"></span>
+                            <input type="text" name="goal" placeholder="목표금액을 , 없이 숫자만 입력해주세요."></span>
                         </div>
                         <div id="goods_goal_input" class="input hidden">
-                            <input type="text" id="goal" name="goal" placeholder="목록에서 수량 입력 후 확정 버튼을 눌러주세요" readonly="readonly"></span>
-							<input type="button" class="btn_2" id="itemConfirm" value="확정" style="width:50px;">                        
+                            <input type="text" id="goal" name="" placeholder="목록에서 수량 입력 후 확정 버튼을 눌러주세요" readonly="readonly"></span>
 						</div> 
                     </div>
                     <div class="register-category-detail">
@@ -91,7 +90,6 @@
                     <div class="signup-save" style="margin-top:20px;display:flex;justify-content: center;">
                         <input type="submit" class="btn_2" value="등록" style="width:100px;">
                     </div>
-                
             </div>
         
     </div>
@@ -124,10 +122,10 @@
     	//항목-물품 라디오 박스 동적처리
         $("input:radio[name=kind]").on("click",function(){
         	if($(this).val()=='goods'){
-        		$("form").attr("action","ItemInsert");
+        		$("form").attr("action","itemInsert");
         		$("#categoryItem").show();
         	} else {
-        		$("form").attr("action","MoneyInsert");
+        		$("form").attr("action","moneyInsert");
         		$("#categoryItem").hide();
         	}
         });
@@ -153,12 +151,16 @@
             $("#goods_goal_input").addClass("hidden");
             $("#cash_goal_input").removeClass("hidden");
             $("#goods_goal_input>input").val('');
+            $("#goods_goal_input>input").attr("name","");
+            $("#cash_goal_input>input").attr("name","goal");
             $("#goodsOutput").text('');
         });
         $("#goods_picker").click(function(){
             $("#cash_goal_input").addClass("hidden");
             $("#goods_goal_input").removeClass("hidden");
             $("#cash_goal_input>input").val('');
+            $("#cash_goal_input>input").attr("name","");
+            $("#goods_goal_input>input").attr("name","goal");
             $("#cashOutput").text('');
         })
     });
@@ -201,15 +203,7 @@
         }
     });  
     
-  	//물품 수량 입력 후 목표금액 설정
-	$(document).on("click","#itemConfirm", function(){
-		var length = $("#itemList > div").length;
-		var price = 0;
-		for(var i =0; i<length; i++){
-			price += $("[name='item["+i+"].itemPrice'").val() * $("[name='item["+i+"].itemgoalAmount'").val();
-		}
-		$("#goal").val(price);
-	});    
+  
     
 </script>
 

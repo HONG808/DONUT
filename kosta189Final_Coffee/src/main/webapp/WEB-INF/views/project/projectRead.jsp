@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../common/header.jsp" %>
 
 <div class="project-detail-wrap">
@@ -210,11 +211,48 @@
                     </ul>
                 </div>
                 <div class="donate">
-                    
-                    
-                    
-                    
                 </div>
+                
+                <!--  리워드-->
+                <div class="review">
+                    <table>
+                        <tr>
+                            <th>리워드번호</th>
+                            <th>리워드품목</th>
+                            <th>금액조건</th>
+                        </tr>
+                        <c:forEach var="rewardList" items="${projectDTO.reward}">
+                        <tr>
+                            <td>${rewardList.rewardNo}</td>
+                            <td>${rewardList.rewardItem}</td>
+                            <td>${rewardList.condition}</td>
+                        </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+                <!-- 프로젝트 물품 -->
+                <div class="projectItem">
+                    <table>
+                        <tr>
+                            <th>품목명/총물품갯수</th>
+                            <th>개당가격</th>
+                            <th>기부수량/목표수량</th>
+                            <th>총가격</th>
+                        </tr>
+                        
+                        project Item 갯수 : ${fn:length(projectDTO.item)}
+                        <c:forEach var="projectItem" items="${projectDTO.item}">
+                        <tr>
+                            <td>${projectItem.itemName}</td>
+                            <td>${projectItem.itemPrice}</td>
+                            <td>${projectItem.itemAmount}/${projectItem.goalAmount}</td>
+                            <td>${projectItem.itemPrice * projectItem.itemAmount}</td>
+                        
+                        </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+                
         </div>
      </div>  
 </div>

@@ -1,5 +1,6 @@
 package com.donut.web.service.impl;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.donut.web.dao.ProjectDAO;
 import com.donut.web.dto.FavoriteDTO;
+import com.donut.web.dto.ItemDTO;
 import com.donut.web.dto.ProjectDTO;
 import com.donut.web.service.ProjectService;
 
@@ -61,12 +63,23 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public int ItemInsert(ProjectDTO projectDTO) throws Exception {
-		return projectDAO.ItemInsert(projectDTO);
+		
+		if(projectDAO.itemInsert(projectDTO) == 0 ) {
+			throw new Exception("item insert 에러발생");
+		}
+		
+		Iterator<ItemDTO> iter = projectDTO.getItem().iterator();
+		while(iter.hasNext()) {
+			if(projectDAO.itemListInsert(iter.next()) == 0) {
+				throw new Exception("item 물품 등록시 에러 발생");
+			}
+		}
+		return 1;
 	}
 
 	@Override
 	public int MoneyInsert(ProjectDTO projectDTO) throws Exception {
-		return projectDAO.MoneyInsert(projectDTO);
+		return projectDAO.moneyInsert(projectDTO);
 	}
 
 	@Override

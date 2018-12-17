@@ -59,25 +59,21 @@ public class ProjectController {
 	
 	@RequestMapping("/categoryList")
 	public String categoryList() {
-		System.out.println("categoryList 출력");
 		return "project/categoryList";
 	}
 	
 	@RequestMapping("/categoryList2")
 	public String categoryList2() {
-		System.out.println("categoryList2 출력");
 		return "project/categoryList2";
 	}
 	
 	@RequestMapping("/catagoryList3")
 	public String catagoryList3() {
-		System.out.println("catagoryList3 출력");
 		return "project/catagoryList3";
 	}
 	
 	@RequestMapping("/projectFavorite")
 	public String projectFavorite() {
-		System.out.println("projectFavorite 출력");
 		return "project/projectFavorite";
 	}
 	
@@ -86,20 +82,24 @@ public class ProjectController {
 		return "project/projectInsertForm";
 	}
 	
-	@RequestMapping("/ItemInsert")
-	public String ItemInsert(ProjectDTO projectDTO, String category) {
+	@RequestMapping("/itemInsert")
+	public String itemInsert(ProjectDTO projectDTO, String category) {
 		//category 분류
 		String [] categorys = category.split(">");
 		projectDTO.setCategory1(categorys[0]);
 		projectDTO.setCategory2(categorys[1]);
-
 		
+		try{
+			projectService.ItemInsert(projectDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return "redirect:projectList";
 	}
 	
-	@RequestMapping("/MoneyInsert")
-	public String MoneyInsert(ProjectDTO projectDTO, String category) {
+	@RequestMapping("/moneyInsert")
+	public String moneyInsert(ProjectDTO projectDTO, String category) {
 		String [] categorys = category.split(">");
 		projectDTO.setCategory1(categorys[0]);
 		projectDTO.setCategory2(categorys[1]);
@@ -115,19 +115,16 @@ public class ProjectController {
 	
 	@RequestMapping("/projectUpdateForm")
 	public String projectUpdateForm() {
-		System.out.println("projectUpdateForm 출력");
 		return "project/projectUpdateForm";
 	}
 	
 	@RequestMapping("/projectUpdate")
 	public String projectUpdate() {
-		System.out.println("projectUpdate 출력");
 		return "project/projectUpdate";
 	}
 	
 	@RequestMapping("/projectCheck")
 	public String projectCheck() {
-		System.out.println("projectCheck 출력");
 		return "project/projectCheck";
 	}
 	

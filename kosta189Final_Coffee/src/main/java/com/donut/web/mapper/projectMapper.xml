@@ -9,7 +9,7 @@
 		<result property="category1" column="category1" />
 		<result property="category2" column="category2" />
 		<result property="category3" column="category3" />
-		<result property="stroy" column="stroy" />
+		<result property="story" column="story" />
 		<result property="projectImg" column="projectImg" />
 		<result property="projectEnd" column="projectEnd" />
 		<result property="projectRegdate" column="projectRegdate" />
@@ -62,12 +62,53 @@
 		#{projectImg},
 		#{projectEnd},
 		sysdate,
-		#{moneyOrItem},
-		#{totalMoney},
+		1,
+		0,
 		#{goal},
-		#{percent},
-		#{givePerson})
+		0,
+		0)
 	</insert>
+	
+	<insert id="itemInsert" parameterType="projectDTO">
+		INSERT INTO TB_PROJECT
+		(projectNo,
+		id,
+		projectSubject,
+		category1,
+		category2,
+		category3,
+		story,
+		projectImg,
+		projectEnd,
+		projectRegdate,
+		moneyOrItem,
+		totalMoney,
+		goal,
+		percent,
+		givePerson)
+		VALUES (seq_project.nextval,
+		#{id},
+		#{projectSubject},
+		#{category1},
+		#{category2},
+		#{category3},
+		#{story},
+		#{projectImg},
+		#{projectEnd},
+		sysdate,
+		2,
+		0,
+		#{goal},
+		0,
+		0)
+	</insert>
+	
+	<insert id="itemListInsert" parameterType="itemDTO">
+		INSERT INTO TB_ITEM
+		(projectItemNo,projectNo,itemName,itemPrice,itemAmount,goalAmount)
+		VALUES(seq_item.nextval,seq_project.currval,#{itemName},#{itemPrice},#{itemAmount},#{goalAmount})
+	</insert>
+	
 
 	<select id="projectSelectAll" resultType="projectDTO">
 		SELECT *

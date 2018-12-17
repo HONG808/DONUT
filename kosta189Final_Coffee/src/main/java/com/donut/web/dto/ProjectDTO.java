@@ -1,6 +1,5 @@
 package com.donut.web.dto;
 
-import java.io.File;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;

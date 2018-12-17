@@ -5,11 +5,20 @@
 
 응원 댓글 테이블 :
 
-	응원 댓글 알림 플래그 : 확인 전 0 (기본값)  / 댓글 확인 후 1
+	응원댓글 알림 플래그 : 처음 생성시 0 (기본값) / 응원댓글 달린 후 1 / 응원 답글 확인 후 2
 
-qna테이블 댓글 :
-	qna 알림 플래그 : 확인 전 0 (기본값) / QnA 확인 후 1
+QnA테이블 댓글 :
+
+	QnA 알림 플래그 : 처음 생성시 0 (기본값) / QnA 답글 달린 후 1 / QnA 답글 확인 후 2
 	
+
+금액/물품 플래그:
+
+	물품/아이템: 금액 플래그 1 / 물품 플래그 2
+
+
+* 시퀀스로 이루어진 NO(번호) 전부 인설트시 들어간 데이터의 번호에 따라 설정 해주어야함
+
 ----------------------------------------------------기부자 회원 가입
 
 insert into tb_member(id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag, dropFlag) values ('test1', '1234',
@@ -31,19 +40,19 @@ insert into tb_member(id, pwd, name, phone, email, picture, accMoney, regDate, s
 
 ------------------------------------------------------------------------기부단체 회원 가입
 insert into tb_member(id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag, dropFlag) values ('company1', '1234',
-'testcompany1', '01010000000', 'company1@company.com', 'imgtest',5000000,sysdate,1,1);
+'testcompany1', '01010000000', 'company1@company.com', 'imgtest',5000000,sysdate,2,1);
 
 insert into tb_member(id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag, dropFlag) values ('company2', '1234',
-'testcompany2', '01010000000', 'company2@company.com', 'imgtest',6000000,sysdate,1,1);
+'testcompany2', '01010000000', 'company2@company.com', 'imgtest',6000000,sysdate,2,1);
 
 insert into tb_member(id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag, dropFlag) values ('company3', '1234',
-'testcompany3', '01010000000', 'company3@company.com', 'imgtest',7000000,sysdate,1,1);
+'testcompany3', '01010000000', 'company3@company.com', 'imgtest',7000000,sysdate,2,1);
 
 insert into tb_member(id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag, dropFlag) values ('company4', '1234',
-'testcompany4', '01010000000', 'company4@company.com', 'imgtest',8000000,sysdate,1,1);
+'testcompany4', '01010000000', 'company4@company.com', 'imgtest',8000000,sysdate,2,1);
 
 insert into tb_member(id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag, dropFlag) values ('company5', '1234',
-'testcompany5', '01010000000', 'company5@company.com', 'imgtest',9000000,sysdate,1,1);
+'testcompany5', '01010000000', 'company5@company.com', 'imgtest',9000000,sysdate,2,1);
 
 ---------------------------------------------------------------기부단체 정보 삽입
 
@@ -142,15 +151,15 @@ insert into tb_project (projectNo, id, projectSubject, category1, category2, cat
 
 -------------------------------------------------------프로젝트 물품등록
 
-insert into tb_item(projectItemNo, projectNo, iitemName, iitemPrice, itemAmount, goalAmount)
+insert into tb_item(projectItemNo, projectNo, itemName, itemPrice, itemAmount, goalAmount)
     values(seq_item.nextval, 1, '도시락', 5000, 300, 1000);
-insert into tb_item(projectItemNo, projectNo, iitemName, iitemPrice, itemAmount, goalAmount)
+insert into tb_item(projectItemNo, projectNo, itemName, itemPrice, itemAmount, goalAmount)
     values(seq_item.nextval, 2, '딸기파이', 5000, 400, 1000);
-insert into tb_item(projectItemNo, projectNo, iitemName, iitemPrice, itemAmount, goalAmount)
+insert into tb_item(projectItemNo, projectNo, itemName, itemPrice, itemAmount, goalAmount)
     values(seq_item.nextval, 3, '초코파이', 5000, 500, 1000);
-insert into tb_item(projectItemNo, projectNo, iitemName, iitemPrice, itemAmount, goalAmount)
+insert into tb_item(projectItemNo, projectNo, itemName, itemPrice, itemAmount, goalAmount)
     values(seq_item.nextval, 4, '연탄', 5000, 600, 1000);
-insert into tb_item(projectItemNo, projectNo, iitemName, iitemPrice, itemAmount, goalAmount)
+insert into tb_item(projectItemNo, projectNo, itemName, itemPrice, itemAmount, goalAmount)
     values(seq_item.nextval, 5, '담요', 5000, 700, 1000);
 
 ---------------------------------------------------------리워드
@@ -193,18 +202,19 @@ insert into tb_giveItem(giveItemNo, giveNo, giveItemName, giveItemPrice, giveIte
     values(seq_giveItem.nextval, 5, '돕바', 70000, 700);
 
 
-------------------------------------------------------------------------------결제정보
+------------------------------------------------------------------------------결제정보 (수정예정)
+set define off
+insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate, receiptURL)
+    values (1, '카드', 270000, sysdate, '박성호', '경기도 성남시 분당구', '01099848993','memo', sysdate, 'https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp');
+insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate, receiptURL)
+    values (2, '카드', 230000, sysdate, '김지성', '서울특별시 분당구', '00000000000','memo', sysdate, 'https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=INIjspVBNKINIpayTest20020130114048862234&noMethod=1 ');
+insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate, receiptURL)
+    values (3, '계좌이체', 230000, sysdate, '김지혜', '경기도 성남시 수정구', '00000000001','memo', sysdate, 'https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=INIjspVBNKINIpayTest20080130114048862234&noMethod=1 ');
+insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate, receiptURL)
+    values (4, '카드', 30000, sysdate, '박병현', '경기도 성남시 서울구', '00000000002','memo', sysdate, 'https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=INIjspVBNKINIpayTest20180130114048862234&noMethod=1 ');
+insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate, receiptURL)
+    values (5, '계좌이체', 900000, sysdate, '권도훈', '경기도 수원시 팔달구', '00000000003','memo', sysdate,'https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=INIjspVBNKINIpayTest20170730114048862234&noMethod=1 ');
 
-insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate)
-    values (1, '카드', 270000, sysdate, '박성호', '경기도 성남시 분당구', '01099848993','memo', sysdate);
-insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate)
-    values (2, '카드', 230000, sysdate, '김지성', '서울특별시 분당구', '00000000000','memo', sysdate);
-insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate)
-    values (3, '계좌이체', 230000, sysdate, '김지혜', '경기도 성남시 수정구', '00000000001','memo', sysdate);
-insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate)
-    values (4, '카드', 30000, sysdate, '박병현', '경기도 성남시 서울구', '00000000002','memo', sysdate);
-insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate)
-    values (5, '계좌이체', 900000, sysdate, '권도훈', '경기도 수원시 팔달구', '00000000003','memo', sysdate);
     
 
     -----------응원댓글
@@ -325,25 +335,26 @@ insert into tb_notice (noticeNo, id, noticeTitle, noticeContent, noticeRegdate)
     values(seq_notice.nextval, 'company3', 'test4', 'test4', sysdate);
 insert into tb_notice (noticeNo, id, noticeTitle, noticeContent, noticeRegdate) 
     values(seq_notice.nextval, 'company4', 'test5', 'test5', sysdate);
+
 insert into tb_notice (noticeNo, id, noticeTitle, noticeContent, noticeRegdate) 
     values(seq_notice.nextval, 'company5', 'test1', 'test1', sysdate);
 
----------------------------------------------테이블 조회
-select * from tb_member; 
-select * from tb_company;
 
+
+---------------------------------------------테이블 조회
+select * from tb_member;
+select * from tb_company;
+select * from tb_data;
 select * from tb_project;
 select * from tb_item;
 select * from tb_reward;
-
 select * from tb_give;
 select * from tb_giveItem;
 select * from tb_payment;
-
 select * from tb_cheer;
 select * from tb_qna;
-
-select * from tb_data;
-select * from tb_favorite;
 select * from tb_review;
+select * from tb_favorite;
+select * from tb_notice;
 
+commit

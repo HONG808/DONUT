@@ -337,7 +337,7 @@ CREATE TABLE tb_company (
 	id VARCHAR2(20) NOT NULL, /* 아이디 */
 	companyName VARCHAR2(20), /* 단체명 */
 	companyCall VARCHAR2(30), /* 문의전화번호 */
-	companyAddr VARCHAR2(50), /* 주소 */
+	companyAddr VARCHAR2(255), /* 주소 */
 	bank VARCHAR2(20), /* 계좌은행 */
 	account VARCHAR2(20) /* 계좌번호 */
 );
@@ -487,10 +487,11 @@ CREATE TABLE tb_payment (
 	payMoney NUMBER(20), /* 결제금액 */
 	permissionDate DATE, /* 결제 승인 일자 */
 	receiver VARCHAR2(20), /* 받는사람 */
-	addr VARCHAR2(50), /* 주소 */
+	addr VARCHAR2(255), /* 주소 */
 	call VARCHAR2(30), /* 전화번호 */
 	memo VARCHAR2(100), /* 배송메모 */
-	payDate DATE /* 결제일자 */
+	payDate DATE, /* 결제일자 */
+	receiptURL VARCHAR2(1000) /* 영수증URL */
 );
 
 CREATE UNIQUE INDEX PK_tb_payment
@@ -509,8 +510,8 @@ ALTER TABLE tb_payment
 CREATE TABLE tb_item (
 	projectItemNo NUMBER(5) NOT NULL, /* 프로젝트 물품번호 */
 	projectNo NUMBER(5), /* 프로젝트 번호 */
-	iitemName VARCHAR2(20), /* 물품명 */
-	iitemPrice NUMBER(10), /* 개당가격 */
+	itemName VARCHAR2(20), /* 물품명 */
+	itemPrice NUMBER(10), /* 개당가격 */
 	itemAmount NUMBER(5), /* 기부수량 */
 	goalAmount NUMBER(5) /* 목표수량 */
 );
@@ -737,7 +738,6 @@ ALTER TABLE tb_giveItem
 		REFERENCES tb_give (
 			giveNo
 		);
-
 ---------------------------------------------시퀀스 생성
 
 DROP SEQUENCE seq_project;
@@ -822,4 +822,6 @@ NOCACHE;
 CREATE SEQUENCE seq_notice
 START WITH 1
 INCREMENT BY 1
-NOCACHE;
+NOCACHE;		
+		
+

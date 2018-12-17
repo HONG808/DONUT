@@ -35,7 +35,7 @@
                             <input type="text" placeholder="목표금액을 , 없이 숫자만 입력해주세요."><span id="cashOutput"></span>
                         </div>
                         <div id="goods_goal_input" class="input hidden">
-                            <input type="text" id="goal" name="goal" placeholder="목록에서 수량 입력 후 확정 버튼을 눌러주세요" readonly="readonly"><span id="goodsOutput"></span>
+                            <input type="text" id="goal" name="goal" placeholder="목록에서 수량 입력 후 확정 버튼을 눌러주세요" readonly="readonly"></span>
 							<input type="button" class="btn_2" id="itemConfirm" value="확정" style="width:50px;">                        
 						</div> 
                     </div>

@@ -10,11 +10,12 @@ public class PaymentDTO {
 	private String call;
 	private String memo;
 	private String payDate;
+	private String receiptURL;
 	
 	public PaymentDTO() {}
 
 	public PaymentDTO(int giveNo, String payMethod, int payMoney, String permissionDate, String receiver, String addr,
-			String call, String memo, String payDate) {
+			String call, String memo, String payDate, String receiptURL) {
 		this.giveNo = giveNo;
 		this.payMethod = payMethod;
 		this.payMoney = payMoney;
@@ -24,6 +25,7 @@ public class PaymentDTO {
 		this.call = call;
 		this.memo = memo;
 		this.payDate = payDate;
+		this.receiptURL = receiptURL;
 	}
 
 	public int getGiveNo() {
@@ -98,11 +100,21 @@ public class PaymentDTO {
 		this.payDate = payDate;
 	}
 
+	public String getReceiptURL() {
+		return receiptURL;
+	}
+
+	public void setReceiptURL(String receiptURL) {
+		this.receiptURL = receiptURL;
+	}
+
 	@Override
 	public String toString() {
 		return "PaymentDTO [giveNo=" + giveNo + ", payMethod=" + payMethod + ", payMoney=" + payMoney
 				+ ", permissionDate=" + permissionDate + ", receiver=" + receiver + ", addr=" + addr + ", call=" + call
-				+ ", memo=" + memo + ", payDate=" + payDate + "]";
+				+ ", memo=" + memo + ", payDate=" + payDate + ", receiptURL=" + receiptURL + "]";
 	}
 	
 }
+
+

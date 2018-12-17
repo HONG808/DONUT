@@ -10,6 +10,7 @@ public class HonorController {
 	@RequestMapping("/honorList")
 	public String honorList() {
 		System.out.println("honorList Ãâ·Â");
+		
 		return "honor/honorList";
 	}
 	

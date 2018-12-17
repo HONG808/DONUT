@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="projectMapper">
+
+	<resultMap type="projectDTO" id="readMap">
+		<id property="projectNo" column="projectNo" />
+		<result property="id" column="id" />
+		<result property="projectSubject" column="projectSubject" />
+		<result property="category1" column="category1" />
+		<result property="category2" column="category2" />
+		<result property="category3" column="category3" />
+		<result property="stroy" column="stroy" />
+		<result property="projectImg" column="projectImg" />
+		<result property="projectEnd" column="projectEnd" />
+		<result property="projectRegdate" column="projectRegdate" />
+		<result property="moneyOrItem" column="moneyOrItem" />
+		<result property="totalMoney" column="totalMoney" />
+		<result property="goal" column="goal" />
+		<result property="percent" column="percent" />
+		<result property="givePerson" column="givePerson" />
+		<!-- 프로젝트 물품 -->
+		<collection property="item" ofType="itemDTO">
+			<id property="projectItemNo" column="projectItemNo" />
+			<result property="itemName" column="ItemName" />
+			<result property="itemPrice" column="ItemPrice" />
+			<result property="itemAmount" column="itemAmount" />
+			<result property="goalAmount" column="goalAmount" />
+		</collection>
+		<!-- 리워드 -->
+		<collection property="reward" ofType="rewardDTO">
+			<id property="rewardNo" column="rewardNo" />
+			<result property="rewardItem" column="rewardItem" />
+			<result property="condition" column="condition" />
+		</collection>
+	</resultMap>
+
+
+	<insert id="moneyInsert" parameterType="projectDTO">
+		INSERT INTO TB_PROJECT
+		(projectNo,
+		id,
+		projectSubject,
+		category1,
+		category2,
+		category3,
+		story,
+		projectImg,
+		projectEnd,
+		projectRegdate,
+		moneyOrItem,
+		totalMoney,
+		goal,
+		percent,
+		givePerson)
+		VALUES (seq_project.nextval,
+		#{id},
+		#{projectSubject},
+		#{category1},
+		#{category2},
+		#{category3},
+		#{story},
+		#{projectImg},
+		#{projectEnd},
+		sysdate,
+		#{moneyOrItem},
+		#{totalMoney},
+		#{goal},
+		#{percent},
+		#{givePerson})
+	</insert>
+
+	<select id="projectSelectAll" resultType="projectDTO">
+		SELECT *
+		FROM tb_project
+		ORDER BY projectNo DESC
+	</select>
+
+	<select id="projectSelectByNo" parameterType="int"
+		resultMap="readMap">
+        SELECT *
+		FROM tb_project p left join tb_item i
+        on p.projectNo=i.projectNo
+        left join tb_reward r
+        on p.projectNo=r.projectNo
+		where p.projectNo = ${_parameter}
+	</select>
+
+
+</mapper>

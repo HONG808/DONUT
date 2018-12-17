@@ -49,4 +49,5 @@ public class CheerController {
 		System.out.println("cheerCheck »£√‚");
 		return "cheer/cheerCheck";
 	}
+	
 }

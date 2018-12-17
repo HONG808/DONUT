@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member")
 public class MemberController {
 
+	//¶ö¶ó¶ó¶ö¶ö¶ó¶ó
+	
+	
 	//È¸¿ø°¡ÀÔ
 	@RequestMapping("/signUp")
 	public String signUp() {

@@ -46,8 +46,9 @@ public class ProjectDAOImpl	implements ProjectDAO{
 	
 	@Override
 	public boolean projectFavoriteSelectByNo(FavoriteDTO favoriteDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		  FavoriteDTO favoritedbDTO = session.selectOne("projectMapper.selectFavoriteByNo",favoriteDTO);
+	    	if(favoritedbDTO==null)return false;
+	    	else return true;
 	}
 
 	@Override
@@ -71,14 +72,12 @@ public class ProjectDAOImpl	implements ProjectDAO{
 
 	@Override
 	public int projectFavoriteInsert(FavoriteDTO favoriteDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.insert("projectMapper.insertFavorite", favoriteDTO);
 	}
 
 	@Override
 	public int projectFavoriteDelete(FavoriteDTO favoriteDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.delete("projectMapper.deleteFavorite", favoriteDTO);
 	}
 
 	@Override

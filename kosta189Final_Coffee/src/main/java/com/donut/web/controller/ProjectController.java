@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.donut.web.dto.ItemDTO;
+import com.donut.web.dto.FavoriteDTO;
 import com.donut.web.dto.ProjectDTO;
 import com.donut.web.service.ProjectService;
 
@@ -35,7 +37,19 @@ public class ProjectController {
 		
 		try {
 			ProjectDTO projectDTO = projectService.projectSelectByNo(projectNo);
+			
+			//즐겨찾기 값 세팅
+			FavoriteDTO favoriteDTO = new FavoriteDTO();
+			favoriteDTO.setProjectNo(projectNo);
+			favoriteDTO.setId("test2");
+			//즐겨찾기 상태 체크
+			boolean flag = projectService.projectFavoriteSelectByNo(favoriteDTO);
+			
+			
 			model.addAttribute("projectDTO",projectDTO);
+			model.addAttribute("favoriteDTO", favoriteDTO);
+			model.addAttribute("flag", flag);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -115,6 +129,33 @@ public class ProjectController {
 	public String projectCheck() {
 		System.out.println("projectCheck 출력");
 		return "project/projectCheck";
+	}
+	
+	//즐겨찾기 추가,삭제
+	@RequestMapping(value = "/insertFavorite", method = RequestMethod.POST)
+	@ResponseBody
+	public int insertFavorite(FavoriteDTO favoriteDTO) {
+		int result = 0;
+		try {
+			result = projectService.projectFavoriteInsert(favoriteDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/deleteFavorite", method = RequestMethod.POST)
+	@ResponseBody
+	public int deleteFavorite(FavoriteDTO favoriteDTO) {
+		int result = 0;
+
+		try {
+
+			result = projectService.projectFavoriteDelete(favoriteDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 }

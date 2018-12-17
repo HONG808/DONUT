@@ -56,8 +56,7 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public boolean projectFavoriteSelectByNo(FavoriteDTO favoriteDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		return projectDAO.projectFavoriteSelectByNo(favoriteDTO);
 	}
 
 	@Override
@@ -78,14 +77,16 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public int projectFavoriteInsert(FavoriteDTO favoriteDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		  int result =projectDAO.projectFavoriteInsert(favoriteDTO);
+          if(result==0) throw new Exception("등록되지 않았습니다.");
+          return result; 
 	}
 
 	@Override
 	public int projectFavoriteDelete(FavoriteDTO favoriteDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		int result=projectDAO.projectFavoriteDelete(favoriteDTO);
+        if(result==0) throw new Exception("삭제되지 않았습니다.");
+        return result;
 	}
 
 	@Override

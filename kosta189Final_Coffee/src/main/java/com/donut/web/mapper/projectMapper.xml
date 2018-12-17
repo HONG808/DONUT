@@ -77,13 +77,27 @@
 
 	<select id="projectSelectByNo" parameterType="int"
 		resultMap="readMap">
-        SELECT *
+		SELECT *
 		FROM tb_project p left join tb_item i
-        on p.projectNo=i.projectNo
-        left join tb_reward r
-        on p.projectNo=r.projectNo
+		on p.projectNo=i.projectNo
+		left join tb_reward r
+		on p.projectNo=r.projectNo
 		where p.projectNo = ${_parameter}
 	</select>
 
+	<!-- 병현 즐겨찾기 -->
+	<select id="selectFavoriteByNo" resultType="favoriteDTO" parameterType="favoriteDTO">
+		select * from tb_favorite
+		where id=#{id} and projectNo=#{projectNo}
+	</select>
+
+	<insert id="insertFavorite" parameterType="favoriteDTO">
+		insert into tb_favorite(favoriteNo,id,projectNo) values
+		(seq_favorite.nextval,#{id},#{projectNo})
+	</insert>
+
+	<delete id="deleteFavorite" parameterType="favoriteDTO">
+		delete from tb_favorite where id=#{id} and projectNo=#{projectNo}
+	</delete>
 
 </mapper>

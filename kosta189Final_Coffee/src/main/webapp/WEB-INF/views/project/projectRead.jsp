@@ -12,7 +12,22 @@
             <div class="cover-subtitle">
                 <span>${projectDTO.id}</span>
             </div>
-            <div class="add-favorite" style="display:inline-block;cursor: pointer"><span style="color:white;background-color: black;border-radius: 5px;padding: 5px;opacity:0.6;font-size:16px;"><i class="far fa-star" style="color:#F9FC0B;font-size:14px;"></i>즐겨찾기</span></div>
+            <!--  <div class="add-favorite" style="display:inline-block;cursor: pointer"><span style="color:white;background-color: black;border-radius: 5px;padding: 5px;opacity:0.6;font-size:16px;"><i class="far fa-star" style="color:#F9FC0B;font-size:14px;"></i>즐겨찾기</span></div>-->
+            
+                <div class="add-favorite" id="bookmark" style="display:inline-block;cursor: pointer">
+            
+            <span style="color:white;background-color: black;border-radius: 5px;padding: 5px;opacity:0.6;font-size:16px;">
+		       <c:choose>
+			       	<c:when test="${requestScope.flag==false}">
+			            <i class="far fa-star" id="fa-star" style="color:#F9FC0B;font-size:14px;"></i>
+			    	</c:when> 
+			    	<c:otherwise> 
+			            <i class="fas fa-star" id="fa-star" style="color:#F9FC0B;font-size:14px;"></i>
+			        </c:otherwise> 
+		      </c:choose>     
+		          <span>즐겨찾기</span>
+            </div>
+            
         </div>
         
     </div>
@@ -281,7 +296,50 @@ $(function(){
       });
     } // End if
   });
+  
+	//병현 즐겨찾기 추가 및 삭제
+  $("#bookmark").on("click" , function(){       
+	  var starImg =$("#fa-star").attr("class");
+	  var id = "${favoriteDTO.id}";
+	  var projectNo = ${favoriteDTO.projectNo};
+	  if( starImg == 'far fa-star'){
+		    $.ajax({
+	               url :"${pageContext.request.contextPath}/project/insertFavorite", 
+	               type :"post", 
+	               dataType :"json", 
+	               data : {"id" : id, "projectNo" : projectNo},
+	               success : function(result){
+	                  if(result==1){
+	                	  $("#fa-star").attr("class","fas fa-star");
+	                  }
+	               },
+	               error : function(err){
+	                  alert(err + "=> 예외발생!!");
+	               }       
+	          });
+	  } else if( starImg == 'fas fa-star'){
+		  $.ajax({
+             url :"${pageContext.request.contextPath}/project/deleteFavorite",
+             type :"post",
+             dataType :"json", 
+             data : {"id" : id, "projectNo" : projectNo},
+             success : function(result){
+                if(result==1){
+               	 $("#fa-star").attr("class","far fa-star");
+                }
+             },
+             error : function(err){
+                alert(err + "=> 예외발생!!");
+             }       
+        }); 
+	  }
+  });// 즐겨찾기 클릭시
+  
+  
 });
+   
+   
+   
 </script>
 
 <%@ include file="../common/footer.jsp" %>

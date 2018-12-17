@@ -13,6 +13,7 @@ public interface ProjectDAO {
 	//프로젝트 상세보기 ,업데이트 정보 가져오기
 	public ProjectDTO projectSelectByNo(int projectNo) throws Exception;
 
+	
 	//프로젝트 카테고리로 보기
 	public List<ProjectDTO> projectSelectByCategory1() throws Exception;
 

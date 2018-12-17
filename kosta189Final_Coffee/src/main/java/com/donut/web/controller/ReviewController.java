@@ -45,8 +45,9 @@ public class ReviewController {
 	
 	@RequestMapping("/reviewCheck")
 	public String reviewCheck() {
-		System.out.println("reviewCheck 출력");
+		System.out.println("reviewCheck 출력 안녕");
 		return "review/reviewCheck";
+		
 	}
 	
 }

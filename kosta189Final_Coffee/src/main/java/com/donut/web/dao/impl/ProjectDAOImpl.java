@@ -1,6 +1,8 @@
 package com.donut.web.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,9 +95,15 @@ public class ProjectDAOImpl implements ProjectDAO{
 	}
 
 	@Override
-	public boolean projectDuplicatedById(int ProjectNo) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean projectDuplicatedById(int projectNo, String id) throws Exception {
+		Map<String,Object> map = new HashMap<>();
+		map.put("projectNo", projectNo);
+		map.put("id", id);
+		ProjectDTO projectDTO = session.selectOne("projectMapper.projectSelectByNoAndId",map);
+		if(projectDTO == null) {
+			throw new Exception("글쓴이 확인 에러");
+		}
+		return true;
 	}
 
 	

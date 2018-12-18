@@ -103,9 +103,8 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public boolean projectDuplicatedById(int ProjectNo) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean projectDuplicatedById(int ProjectNo,String id) throws Exception {
+		return projectDAO.projectDuplicatedById(ProjectNo,id);
 	}
 
 	

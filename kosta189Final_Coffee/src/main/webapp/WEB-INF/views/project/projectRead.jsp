@@ -13,6 +13,8 @@
             <div class="cover-subtitle">
                 <span>${projectDTO.id}</span>
             </div>
+            <div class="update_btn" id="update_btn">
+            </div>
             <!--  <div class="add-favorite" style="display:inline-block;cursor: pointer"><span style="color:white;background-color: black;border-radius: 5px;padding: 5px;opacity:0.6;font-size:16px;"><i class="far fa-star" style="color:#F9FC0B;font-size:14px;"></i>즐겨찾기</span></div>-->
             
                 <div class="add-favorite" id="bookmark" style="display:inline-block;cursor: pointer">
@@ -373,6 +375,16 @@ $(function(){
 	  }
   });// 즐겨찾기 클릭시
   
+  //글쓴이 확인이 되면 삭제버튼과 수정버튼을 추가한다.
+  if("${updateFlag}" == "true"){
+	  str="";
+	  str +="<input type='button' class='btn_2' value='수정' style='width:100px;'>"
+	  $("#update_btn").html(str);
+  }
+
+  $("input[value=수정]").on("click",function(){
+	  location.href="projectUpdateForm"
+  });
   
 });
    

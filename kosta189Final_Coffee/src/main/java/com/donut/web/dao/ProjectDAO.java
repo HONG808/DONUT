@@ -44,6 +44,6 @@ public interface ProjectDAO {
 	public int projectFavoriteDelete(FavoriteDTO favoriteDTO) throws Exception;
 	
 	//프로젝트 수정 삭제 전 글쓴이 확인
-	public boolean projectDuplicatedById(int ProjectNo) throws Exception;
+	public boolean projectDuplicatedById(int projectNo,String id) throws Exception;
 
 }

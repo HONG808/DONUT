@@ -25,25 +25,27 @@
            </p>
             <div class="project-list-wrap">
             <div class="project-list">
+            	<c:forEach var="project" items="${projectList}">
                 <div class="project-list-items">
+                	<div hidden="hidden">${project.projectNo}</div>
                     <div class="project-img"><img src="${pageContext.request.contextPath}/resources/images/thumbs/test1.jpg"></div>
-                    <div class="project-name"><span>원빈 도와주세요!</span></div>
-                    <div class="progress-wrap"><progress id="progressbar" value="35" max="100"></progress></div>
-                    <div class="progress-value-wrap"><span class="progress-value">35%</span></div>
-                    <div class="project-collection"><span>1,300,000원</span></div>
+                    <div class="project-name"><span>${project.projectSubject}</span></div>
+                    <div class="progress-wrap"><progress id="progressbar" value="${project.percent}" max="100"></progress></div>
+                    <div class="progress-value-wrap"><span class="progress-value">${project.percent}%</span></div>
+                    <div class="project-collection"><span>${project.totalMoney}/${project.goal}</span></div>
                 </div>
-                
-                <div class="project-list-items">
-                    <div class="project-img"><img src="${pageContext.request.contextPath}/resources/images/thumbs/test2.jpg"></div>
-                    <div class="project-name"><span>이해인 함께해요♡</span></div>
-                    <div class="progress-wrap"><progress id="progressbar" value="35" max="100"></progress></div>
-                    <div class="progress-value-wrap"><span class="progress-value">35%</span></div>
-                    <div class="project-collection"><span>1,300,000원</span></div>
-                </div>
+                </c:forEach>
             </div>       
         </div>
         </div>
    </div>
 </div>
+
+<script>
+	$(".project-list-items").click(function(){
+		var projectNo = $(this).children().html();
+		$(location).attr('href', '${pageContext.request.contextPath}/project/projectRead?projectNo='+projectNo);
+	}); 
+</script>
 
 <%@ include file="../common/footer.jsp" %>

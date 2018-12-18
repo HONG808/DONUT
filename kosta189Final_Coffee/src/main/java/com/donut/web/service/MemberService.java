@@ -54,5 +54,5 @@ public interface MemberService {
 	public List<GiveDTO> memberReceiptList() throws Exception;
 
 	//기부자 프로젝트 기부 현황
-	public List<ProjectDTO> memberGiveList() throws Exception;
+	public List<ProjectDTO> memberGiveList(String id) throws Exception;
 }

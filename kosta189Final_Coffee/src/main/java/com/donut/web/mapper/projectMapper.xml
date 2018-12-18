@@ -140,5 +140,13 @@
 	<delete id="deleteFavorite" parameterType="favoriteDTO">
 		delete from tb_favorite where id=#{id} and projectNo=#{projectNo}
 	</delete>
-
+	
+	<select id="projectSelectByNoAndId" parameterType="map" resultType="projectDTO">
+		select * from
+		tb_project
+		where
+		projectNO = #{projectNo} 
+		and 
+		id = #{id}
+	</select>
 </mapper>

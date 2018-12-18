@@ -2,6 +2,8 @@ package com.donut.web.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +35,7 @@ public class ProjectController {
 	}
 	
 	@RequestMapping("/projectRead")
-	public String projectRead(Model model,@RequestParam("projectNo") int projectNo) {
+	public String projectRead(HttpSession session, Model model,@RequestParam("projectNo") int projectNo) {
 		
 		try {
 			ProjectDTO projectDTO = projectService.projectSelectByNo(projectNo);
@@ -44,11 +46,13 @@ public class ProjectController {
 			favoriteDTO.setId("test2");
 			//즐겨찾기 상태 체크
 			boolean flag = projectService.projectFavoriteSelectByNo(favoriteDTO);
-			
+			boolean updateFlag = projectService.projectDuplicatedById(projectNo,(String)session.getAttribute("id"));
 			
 			model.addAttribute("projectDTO",projectDTO);
 			model.addAttribute("favoriteDTO", favoriteDTO);
 			model.addAttribute("flag", flag);
+			model.addAttribute("updateFlag", updateFlag);
+			//조건문으로 itemOrMoney 체크할 것
 
 		} catch (Exception e) {
 			e.printStackTrace();

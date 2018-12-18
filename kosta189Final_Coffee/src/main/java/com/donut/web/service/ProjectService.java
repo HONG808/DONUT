@@ -41,6 +41,6 @@ public interface ProjectService {
 	public int projectFavoriteDelete(FavoriteDTO favoriteDTO) throws Exception;
 
 	//스토리 수정 전 글쓴이 확인
-	public boolean projectDuplicatedById(int ProjectNo) throws Exception;
+	public boolean projectDuplicatedById(int projectNo,String id) throws Exception;
 	
 }

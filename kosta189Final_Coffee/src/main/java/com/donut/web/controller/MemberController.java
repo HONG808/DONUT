@@ -1,12 +1,25 @@
 package com.donut.web.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.donut.web.dto.MemberDTO;
+import com.donut.web.dto.ProjectDTO;
+import com.donut.web.service.MemberService;
 
 @Controller
 @RequestMapping("/member")
 public class MemberController {
 
+	@Autowired
+	MemberService memberService;
+	
 	//회원가입
 	@RequestMapping("/signUp")
 	public String signUp() {
@@ -30,9 +43,9 @@ public class MemberController {
 
 	//로그인
 	@RequestMapping("/login")
-	public String login() {
-		System.out.println("login 실행");
-		return "member/login";
+	public String login(HttpSession session) {
+		session.setAttribute("id", "company1");
+		return "redirect:memberUpdateForm";
 	}
 
 	//API로 로그인
@@ -86,16 +99,28 @@ public class MemberController {
 
 	//기부자 마이페이지 회원정보 수정폼
 	@RequestMapping("/memberUpdateForm")
-	public String memberUpdateForm() {
-		System.out.println("memberQnA 실행");
+	public String memberUpdateForm(HttpSession session,String pwd, Model model) {
+		try {
+			MemberDTO memberDTO= memberService.memberSelectByIdPwd((String)session.getAttribute("id"), "1234");
+			model.addAttribute("member", memberDTO);
+			System.out.println(memberDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "member/memberUpdateForm";
 	}
 	
 	//기부자 마이페이지 회원정보 수정진행
 	@RequestMapping("/memberUpdate")
-	public String memberUpdate() {
-		System.out.println("memberUpdate 실행");
-		return "member/memberUpdate";
+	public String memberUpdate(HttpSession session, MemberDTO memberDTO) {
+
+		try {
+			memberService.memberUpdate(memberDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "member/memberUpdateForm";
 	}
 
 	//기부자 마이페이지 즐겨찾기
@@ -121,8 +146,14 @@ public class MemberController {
 
 	//기부자 마이페이지 기부현황
 	@RequestMapping("/memberGive")
-	public String memberGive() {
-		System.out.println("memberGive 실행");
+	public String memberGive(Model model,HttpSession session) {
+		try {
+			List<ProjectDTO>projectList = memberService.memberGiveList((String)session.getAttribute("id"));
+			model.addAttribute("projectList", projectList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return "member/memberGive";
 	}
 

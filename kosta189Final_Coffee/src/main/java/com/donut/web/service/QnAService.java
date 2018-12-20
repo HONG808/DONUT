@@ -17,7 +17,7 @@ public interface QnAService {
 
 	public int qnaUpdate(QnADTO qnaDTO) throws Exception;
 
-	public int qnaDelete(int qnaNo) throws Exception;
+	public int qnaDelete(String id, int qnaNo, int qnaParentNo) throws Exception;
 
 	public boolean qnaDuplicatedById(int qnaNo) throws Exception;
 }

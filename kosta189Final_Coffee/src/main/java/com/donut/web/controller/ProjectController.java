@@ -12,16 +12,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.donut.web.dto.CheerDTO;
 import com.donut.web.dto.FavoriteDTO;
 import com.donut.web.dto.ProjectDTO;
+import com.donut.web.dto.QnADTO;
+import com.donut.web.service.CheerService;
 import com.donut.web.service.ProjectService;
+import com.donut.web.service.QnAService;
 
 @Controller
 @RequestMapping("/project")
 public class ProjectController {
 	
 	@Autowired
-	ProjectService projectService;
+	private ProjectService projectService;
+	@Autowired
+	private CheerService cheerService;
+	@Autowired
+	private QnAService qnaService;
+	
 	
 	@RequestMapping("/projectList")
 	public String projectList(Model model) {
@@ -37,6 +46,11 @@ public class ProjectController {
 	@RequestMapping("/projectRead")
 	public String projectRead(HttpSession session, Model model,@RequestParam("projectNo") int projectNo) {
 		
+		// 한나
+		List<CheerDTO> list;
+		List<QnADTO> qnaList;
+		//한나 끝
+		
 		try {
 			ProjectDTO projectDTO = projectService.projectSelectByNo(projectNo);
 			
@@ -46,14 +60,23 @@ public class ProjectController {
 			favoriteDTO.setId("test2");
 			//즐겨찾기 상태 체크
 			boolean flag = projectService.projectFavoriteSelectByNo(favoriteDTO);
-			boolean updateFlag = projectService.projectDuplicatedById(projectNo,(String)session.getAttribute("id"));
+//			boolean updateFlag = projectService.projectDuplicatedById(projectNo,(String)session.getAttribute("id"));
+			
+			//한나
+			int cheerprojectNo = projectDTO.getProjectNo();
+			list = cheerService.selectByAll(cheerprojectNo);
+			qnaList = qnaService.qnaSelectAll(cheerprojectNo);
+			//한나끝
 			
 			model.addAttribute("projectDTO",projectDTO);
 			model.addAttribute("favoriteDTO", favoriteDTO);
 			model.addAttribute("flag", flag);
-			model.addAttribute("updateFlag", updateFlag);
-			//조건문으로 itemOrMoney 체크할 것
-
+//			model.addAttribute("updateFlag", updateFlag);
+			
+			//한나
+			model.addAttribute("list", list);
+			model.addAttribute("qnaList", qnaList);
+			//한나끝
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -23,50 +23,25 @@
            <p align="center" class="mypage-title">
                <span style="font-size:30px;color:black;">영수증관리</span>
            </p>
-            <div class="mypage-1-content">
-                <div class="inform-container">
-                    <div class="inform-items">
-                        <div class="inform-label"><span>아이디</span></div>
-                        <div class="inform-input">kdh8909</div>
-                    </div>
-                    <div class="inform-items">
-                        <div class="inform-label"><span>비밀번호</span></div>
-                        <div class="inform-input">
-                            <input type="password" placeholder="현재 비밀번호">
-                            <input type="button" class="btn_2" value="변경하기" style="width:70px;">
-                        </div>
-                    </div>
-                    <div class="inform-items">
-                        <div class="inform-label"><span>이름</span></div>
-                        <div class="inform-input">권도훈</div>
-                    </div>
-                    <div class="inform-items">
-                        <div class="inform-label"><span>휴대폰</span></div>
-                        <div class="inform-input">010-1234-1234</div>
-                    </div>
-                    <div class="inform-items">
-                        <div class="inform-label"><span>성별</span></div>
-                        <div class="inform-input">남</div>
-                    </div>
-                    <div class="inform-items">
-                        <div class="inform-label"><span>이메일</span></div>
-                        <div class="inform-input">huniya89090@naver.com
-                        <input type="button" class="btn_2" value="변경하기" style="width:70px;">
-                        </div>
-                    </div>
-                    <div class="inform-items">
-                        <div class="inform-label"><span>사진</span></div>
-                        <div class="inform-input"><input type="button" class="btn_2" value="변경하기" style="width:70px;"></div>
-                    </div>
-                    
-                    <!-- 저장 버튼 -->
-                    <div class="inform-save" style="margin-top:20px;display:flex;justify-content: center;">
-                        <input type="button" class="btn_2" value="저장" style="width:100px;">
-                    </div>
-                    <!-------------->
-                </div>
-                
-            </div>
+           
+            		<table>
+                        <tr>
+                            <th>기부단체</th>
+                            <th>프로젝트</th>
+                            <th>기부금액</th>
+                            <th>날짜</th>
+                        </tr>
+                        
+                        <c:forEach var="memberReceipt" items="${giveDTO}">
+                        <tr>
+                            <td>${memberReceipt.itemName}</td>
+                            <td>${projectItem.itemPrice}</td>
+                            <td>${projectItem.itemAmount}/${projectItem.goalAmount}</td>
+                            <td>${projectItem.itemPrice * projectItem.itemAmount}</td>
+                        
+                        </tr>
+                        </c:forEach>
+                    </table>
         </div>
    </div>
 </div>

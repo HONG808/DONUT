@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../common/header.jsp" %>
 
 <div class="project-detail-wrap">
@@ -13,11 +13,10 @@
             <div class="cover-subtitle">
                 <span>${projectDTO.id}</span>
             </div>
-            <div class="update_btn" id="update_btn">
+             <div class="update_btn" id="update_btn">
             </div>
-            <!--  <div class="add-favorite" style="display:inline-block;cursor: pointer"><span style="color:white;background-color: black;border-radius: 5px;padding: 5px;opacity:0.6;font-size:16px;"><i class="far fa-star" style="color:#F9FC0B;font-size:14px;"></i>즐겨찾기</span></div>-->
             
-                <div class="add-favorite" id="bookmark" style="display:inline-block;cursor: pointer">
+        <div class="add-favorite" id="bookmark" style="display:inline-block;cursor: pointer">
             
             <span style="color:white;background-color: black;border-radius: 5px;padding: 5px;opacity:0.6;font-size:16px;">
 		       <c:choose>
@@ -31,7 +30,7 @@
 		          <span>즐겨찾기</span>
             </div>
             
-        </div>
+        </div>  
         
     </div>
     <div class="project-detail-container">
@@ -74,7 +73,7 @@
                 </div>    
          </div>
         
-        <div class="project-detail-main clearfix">
+        <div class="project-detail-main">
             
                 <div class="project-detail-tabs">   
                     <ul>
@@ -85,9 +84,9 @@
                         <li><a href="#donate">기부하기</a></li>
                     </ul>
                 </div>
-                <div class="story" style="margin:50px auto;width:70%;line-height: 30px;">
-                   	${projectDTO.story}   
-                   	${projectDTO.projectImg}
+                <div class="story">
+                    ${projectDTO.story}   
+                   	${projectDTO.projectImg}  
                 </div>
                 
                 
@@ -102,43 +101,88 @@
                 </div>
                 
                 <div class="cheer">
+                
                     <table>
+                     <c:choose>
+                    <c:when test="${fn:length(list) == 0}">
+                            <tr>
+                                <td colspan="3" align="center">
+                                    조회결과가 없습니다.
+                                </td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                           <c:forEach var="boardList" items="${list}" varStatus="status">
+                            <c:choose><c:when test="${boardList.cheerParentNo==0}">
                         <tr>
-                            <td style="width:5%;">
-                                <div class="thumb"><img src="${pageContext.request.contextPath}/resources/images/thumbs/test1.jpg"></div>
+                           <td><div class="thumb"><img src="${pageContext.request.contextPath}/resources/images/thumbs/test1.jpg"></div></td>
+                            <td>${boardList.id}
+                            <input type=hidden name="cheerNo" class="cheerNo" value="${boardList.cheerNo}">
+                            <input type=hidden name="cheerParentNo" class="cheerParentNo" value="${boardList.cheerParentNo}">
                             </td>
-                            <td style="width:10%;">kdh8909</td>
-                            <td style="width:75%">가즈아~~~!ㅁㄴㄻㄴㄻㄴㄻㄴㄻㄴ <span> <i class="fas fa-angle-down"></i> <a href="#">답글보기</a></span></td>
-                            <th style="width:20%;font-weight:300;">2018-12-10 19:23</th>
-                        </tr>
-                        <tr>
-                            <td style="width:5%;">
-                                <div class="thumb"><img src="${pageContext.request.contextPath}/resources/images/thumbs/test2.jpg"></div>
+                            <td><span>${boardList.cheerContent}</span> 
+                                <div class="replyRead">열기<i class="fas fa-angle-down"></i></div>
+                                    <i class="fas fa-pencil-alt user_modify"></i>
+                                    <i class="fas fa-times user_delete" class=""></i>
+                                <div class="replyContent"></div>
                             </td>
-                            <td style="width:10%;">abc1235</td>
-                            <td style="width:75%">응원합니다~~~!<span> <i class="fas fa-angle-down"></i> <a href="#">답글보기</a></span></td>
-                            <th style="width:20%;font-weight:300;">2018-12-10 19:23</th>
+                            <td>${boardList.cheerRegdate}</td>
                         </tr>
-                        <tr>
-                            <td style="width:5%;">
-                                <div class="thumb"><img src="${pageContext.request.contextPath}/resources/images/thumbs/test3.jpg"></div>
+                         <c:choose><c:when test="${boardList.cheerNotify==0}">
+                        <tr class="cheerTr">
+                            <td colspan="4">
+                             	<form name="writeForm" method="post" action="${pageContext.request.contextPath}/cheer/cheerReplyInsert"> 
+          						    <input type=hidden name="id" value="test2">
+          						    <input type=hidden name="cheerNo" value="${boardList.cheerNo}">
+          						    <input type=hidden name="projectNo" value="${projectDTO.projectNo}">
+	                                <div class="reply-submit" align="center">
+	                                    <input type="text"  name="cheerContent" placeholder="답변을 등록해주세요.">
+	                                    <input type="submit" value="전송">
+	                                </div>
+                               </form> 
+                                
                             </td>
-                            <td style="width:10%;">jang</td>
-                            <td style="width:75%">ㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱ~~~!<span> <i class="fas fa-angle-down"></i> <a href="#">답글보기</a></span></td>
-                            <th style="width:20%;font-weight:300;">2018-12-10 19:23</th>
                         </tr>
+                        </c:when>
+                        </c:choose>
+                            </c:when>
+                         <c:when test="${boardList.cheerParentNo!=0}">
+                        <tr class="cheerTr" id="a">
+                            <td colspan="4">
+                                <div class="cheerReply"> ${boardList.cheerContent}</div>
+                                <div class="reply-modify-delete">
+                                	<input type=hidden name="cheerNo" value="${boardList.cheerNo}">
+                                    <i class="fas fa-pencil-alt writer_modify"></i>
+                                	<input type=hidden name="cheerParentNo" value="${boardList.cheerParentNo}">
+                                    <i class="fas fa-times writer_delete"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        </c:when>
+                        </c:choose> 
+                      </c:forEach>
+                    </c:otherwise>
+                </c:choose>
                     </table>
-                    <div align="center" style="margin-top:20px;">
-                        <textarea style="width:70%;height:35px;resize:none;padding:10px;overflow:hidden;position: relative;" maxlength="50" placeholder="50자 이내로 응원을 남겨주세요."></textarea> 
+                   
+                   
+                 <!-- 댓글 다는 곳 -->
+				<form name="writeForm" method="post" action="${pageContext.request.contextPath}/cheer/cheerInsert"> 
+                    <div class="cheerupReply">
+                    <!-- 여기에 projectNo랑 id다시받아야함 -->
+                    	 <input type=hidden name="id" value="test2">
+                    <%-- <input type=hidden name="projectNo" value="${projectDTO.projectNo}"> --%>
+                    <input type=hidden name="projectNo" value="${projectDTO.projectNo}">
+                    <!-- 이게 왜 되는거지,,,,,,,,,,????????????????????????projectNo -->
+                        <input type="text" name="cheerContent" placeholder="50자 이내로 응원을 남겨주세요.">
+                        <input type="submit" value="응원하기">
                     </div>
-                    <div>
-                        <input type="button" style="width:70px;height:40px;font-size:15px;background-color:black;color:white;border-radius: 10px;border:0;outline-width: 0;cursor: pointer; position: absolute;right:22%" value="응원하기">
-                    </div>
+                  </form>
+                    
+                    
                 </div>
                 
-            
-            
-                <div class="project-detail-tabs">   
+              <div class="project-detail-tabs">   
                     <ul>
                         <li><a href="#story">스토리</a></li>
                         <li><a href="#cheer">응원</a></li>
@@ -149,27 +193,112 @@
                 </div>
                 
                 <div class="qna">
-                    <table>
-                        <tr>
-                            <th style="width:10%">상태</th>
-                            <th style="width:75%">문의/답변</th>
-                            <th style="width:5%">작성자</th>
-                            <th style="width:10%">작성일</th>
+                    <table id="questionTable">
+
+                        <tr style="background-color:#EDEDED">
+                            <th>상태</th>
+                            <th>문의/답변</th>
+                            <th>작성자</th>
+                            <th>작성일</th>
                         </tr>
+                        
+
+              <c:choose>
+                    <c:when test="${fn:length(qnaList) == 0}">
+                            <tr>
+                                <td colspan="3" align="center">
+                                    조회결과가 없습니다.
+                                </td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                           <c:forEach var="qnaList" items="${qnaList}" varStatus="status">
+                           
+                         <c:choose>
+                         <c:when test="${qnaList.qnaParentNo==0}"><!-- 부모 글이면 -->
                         <tr>
-                            <th style="width:10%;font-weight: 300;">미답변</th>
-                            <td style="width:75%"><a href="#">질문있습니다.</a></td>
-                            <td style="width:5%">jang8253</td>
-                            <th style="width:10%;font-weight: 300;">2018.12.11 09:41</th>
+                            <th>
+                                  	<c:choose>
+                         			<c:when test="${qnaList.qnaNotify==0}">미답변</c:when>
+                         			<c:when test="${qnaList.qnaNotify!=0}">답변</c:when>
+                         			</c:choose>
+                            <input type="hidden" id="qnaNo" value="${qnaList.qnaNo}">
+                            </th>
+                            <td>
+                                <div class="questionContent" >
+                                <span>${qnaList.qnaContent}</span>
+                                </div> 
+                                <div class="user_qna">
+                                       <i class="fas fa-pencil-alt user_qna_modify"></i>
+                                       <input type="hidden" id="qnaNo" value="${qnaList.qnaNo}">
+                                       <i class="fas fa-times user_qna_delete"></i>
+                                </div> 
+                            </td>
+                            <td> ${qnaList.id} </td>
+                            <td> ${qnaList.qnaRegdate} </td>
                         </tr>
-                        <tr>
-                            <th style="width:10%;font-weight: 300;">답변</th>
-                            <td style="width:75%"><a href="#">영수증 처리에 대해서</a></td>
-                            <td style="width:5%">kdh8909</td>
-                            <th style="width:10%;font-weight: 300;">2018.12.11 08:32</th> 
+                    
+                        <c:choose>
+                         <c:when test="${qnaList.qnaNotify==0}"><!-- 부모글인데 대댓글이 없으면 -->
+                        <tr class="questionTr">
+                           <td colspan="4">
+                                <div class="questionReply">
+                                    <div class="questionContentDetail">
+                                    <span class="question">Q.</span>
+                                          <span>${qnaList.qnaContent} 
+                                    </div>
+                                    <div class="questionContentReply" >
+ 										 <span style="color:red">답변을 등록해주세요.</span>
+
+									</div>
+                                    
+                                </div>
+                            </td>
                         </tr>
+                        </c:when>
+                        </c:choose>
+                        </c:when>
+                       </c:choose>
+                                       <c:choose>
+                                     <c:when test="${qnaList.qnaParentNo!=0}"> <!-- 대댓글이면 -->
+                                    <tr class="questionTr">
+                                       <td colspan="4">
+                                            <div class="questionReply">
+                                                <div class="questionContentDetail">
+                                                <span class="question">Q.</span>
+                                                       <span style="font-size:7px">${qnaList.qnaContent} 
+                                                </div>
+                                    <div class="questionContentReply" id="${qnaList.qnaParentNo}">
+                                    ${qnaList.qnaContent}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </c:when>
+                        </c:choose>
+                     
+                             </c:forEach>
+                          </c:otherwise>
+                       </c:choose>
                     </table>
+                    
+
+                  	<form name="writeForm" method="post" action="${pageContext.request.contextPath}/qna/qnaInsert"> 
+                    <div class="qna_input_form">
+                    <!-- 여기에 projectNo랑 id다시받아야함 -->
+                    	 <input type=hidden name="id" value="test2">
+                    <input type=hidden name="projectNo" value="${projectDTO.projectNo}">
+                    <textarea name="qnaContent" placeholder="50자 이내로 질문 남겨주세요."></textarea>
+                        <!-- <input type="text" name="qnaContent" placeholder="50자 이내로 질문 남겨주세요."> -->
+                        <input type="submit" value="질문하기">
+                    </div>
+                  </form>
+                    
+                    
                 </div>
+                
+                
+
                 
                 
                <div class="project-detail-tabs">   
@@ -184,20 +313,20 @@
                 
                 <div class="review">
                     <table>
-                        <tr>
+                        <tr style="background-color:#EDEDED">
                             <th>번호</th>
                             <th>제목</th>
                             <th>작성일</th>
                         </tr>
                         <tr>
-                            <th>1</th>
+                            <td>1</td>
                             <td>원빈 1차 모금 후기</td>
-                            <th>2018.12.10 17:34</th>
+                            <td>2018.12.10 17:34</td>
                         </tr>
                         <tr>
-                            <th>2</th>
+                            <td>2</td>
                             <td>원빈 2차 모금 후기</td>
-                            <th>2018.12.11 12:53</th>
+                            <td>2018.12.11 12:53</td>
                         </tr>
                     </table>
                 </div>
@@ -212,8 +341,10 @@
                         <li class="select" id="donate"><a href="#donate">기부하기</a></li>
                     </ul>
                 </div>
+                <!-- 기부페이지 -->
                 <div class="donate">
                 </div>
+                
                 
                 <!--  리워드-->
                 <div class="review">
@@ -254,7 +385,6 @@
                         </c:forEach>
                     </table>
                 </div>
-                
         </div>
      </div>  
 </div>
@@ -262,7 +392,285 @@
 
 
 <script>
-   $(function(){
+   // 연필 누르는 곳 - cheer 수정
+$(".user_modify").on('click', function(){
+    var user_reply = $(this).parent().find('span').text();
+    var cheerNo = $(this).parent().parent().find('input.cheerNo').val();
+    var cheerParentNo = $(this).parent().parent().find('input.cheerParentNo').val();
+    /* var projectNo = ${projectDTO.projectNo}; */
+    $(this).parent().find('span').html('<input class="user_modify_value" size="50" type="text"><input type="button" class="update_cheer" value="수정"><input type="button" value="취소">');
+    $(this).parent().parent().find('span>input[type=text]').val(user_reply);
+    
+    $.ajax({
+		   url:"${pageContext.request.contextPath}/cheer/cheerUpdateForm" , //서버요청주소 현재링크기준으로
+		   type:"post" , //전송방식(get or post)
+		   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+		   data:{
+			   "cheerNo":cheerNo,
+			   "cheerParentNo":cheerParentNo
+			   }, //서버에게 보낼 parameter정보
+		   //cheerNo=${boardList.cheerNo} 
+		   success:function(result){
+		
+		   } , //성공했을때
+		   error:function(err){
+			   alert(err+" => 오류 발생")
+		   }  //실패했을때
+	   })//ajax끝  
+});
+
+   //cheer 삭제
+$(".user_delete").on('click', function(){
+	    var cheerNo = $(this).parent().parent().find('input.cheerNo').val();
+		var projectNo=1; //이거 반장님꺼 받아와야함
+		var cheerParentNo = 3; // 아무 숫자나 넣어도 됨. 0만 아니면 되니까. 어차피 값 안써요 
+	//	alert(cheerNo);
+	    $.ajax({
+			   url:"${pageContext.request.contextPath}/cheer/cheerDelete" , //서버요청주소 현재링크기준으로
+			   type:"post" , //전송방식(get or post)
+			   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+			   data:{
+				   "cheerNo":cheerNo,
+				   "projectNo":projectNo,
+				   "cheerParentNo":cheerParentNo
+				   },
+				   success:function(deleteResult){
+						alert(deleteResult.message);
+						history.go(0);
+				} , //성공했을때
+					   error:function(err){
+						   alert(err+" => 오류 발생")
+					   }  //실패했을때 */
+			   
+		   })//ajax끝  
+});
+
+   
+   
+//cheer 대댓글 수정
+$(".writer_modify").on('click', function(){
+    var writer_reply = $(this).parent().prev().text();
+    var cheerNo = $(this).prev().val();
+    
+    
+    $(this).parent().prev().html('<input class="writer_modify_value" size="50" type="text"><input type="button" class="update_reply_cheer" value="수정"><input type="button" value="취소">');
+    $(this).parent().prev().find('input[type=text]').val(writer_reply);
+    
+   $.ajax({
+		   url:"${pageContext.request.contextPath}/cheer/cheerUpdateForm" , //서버요청주소 현재링크기준으로
+		   type:"post" , //전송방식(get or post)
+		   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+		   data:{
+			   "cheerNo":cheerNo
+			   }, //서버에게 보낼 parameter정보
+		   //cheerNo=${boardList.cheerNo} 
+		   success:function(result){
+		   } , //성공했을때
+		   error:function(err){
+			   alert(err+" => 오류 발생")
+		   }  //실패했을때
+	   })//ajax끝 
+    
+})
+
+// cheer 대댓글 삭제
+$(".writer_delete").on('click', function(){
+	    var cheerNo = $(this).prev().prev().prev().val();
+	    var cheerParentNo = $(this).prev().val();
+		var projectNo=1; //이거 반장님꺼 받아와야함
+	    $.ajax({
+			   url:"${pageContext.request.contextPath}/cheer/cheerDelete" , //서버요청주소 현재링크기준으로
+			   type:"post" , //전송방식(get or post)
+			   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+			   data:{
+				   "cheerNo":cheerNo,
+				   "projectNo":projectNo,
+				   "cheerParentNo":cheerParentNo
+				   },
+				   success:function(deleteResult){
+						alert(deleteResult.message);
+						history.go(0);
+				} , //성공했을때
+					   error:function(err){
+						   alert(err+" => 오류 발생")
+					   }  //실패했을때 */
+			   
+		   })//ajax끝  
+});
+
+
+//qna 열닫
+$(".questionContent").on('click',function(){
+    if($(this).parent().parent().next().css('display') == 'none'){
+        $(this).parent().parent().next().css('display', 'table-row');
+    }else if($(this).parent().parent().next().css('display') == 'table-row'){
+        $(this).parent().parent().next().css('display', 'none');
+    }
+})
+
+$(".replyRead").on('click', function(){
+    if($(this).parent().parent().next().css('display') == 'none'){
+        $(this).html('닫기<i class="fas fa-angle-up">');
+        $(this).parent().parent().next().css('display', 'table-row');
+    }else if($(this).parent().parent().next().css('display') == 'table-row'){
+        $(this).html('열기<i class="fas fa-angle-down">');
+        $(this).parent().parent().next().css('display', 'none');
+    }
+})
+
+//  qna 수정
+    $(".user_qna_modify").on('click',function(){
+        var user_qna_value = $(this).parent().prev().find('span').text();
+        
+        $(this).parent().prev().find('span').html('<input type="text" size="50"> <input type="button" class="update_qna" value="수정"><input type="button" value="취소">');
+        $(this).parent().prev().find('input[type=text]').val(user_qna_value);
+        
+        $($(this).parent().prev().find('input[value=취소]')).on('click',function(){
+            $(this).empty();
+            $(this).text(user_qna_value);  
+        })
+        var qnaNo = $(this).next().val();
+           $.ajax({
+		   url:"${pageContext.request.contextPath}/qna/qnaUpdateForm" , //서버요청주소 현재링크기준으로
+		   type:"post" , //전송방식(get or post)
+		   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+		   data:{
+			   "qnaNo":qnaNo
+			   }, //서버에게 보낼 parameter정보
+		   //cheerNo=${boardList.cheerNo} 
+		   success:function(result){
+		
+		   } , //성공했을때
+		   error:function(err){
+			   alert(err+" => 오류 발생")
+		   }  //실패했을때
+	   })//ajax끝   
+    })
+    
+    //qna 삭제
+    $(".user_qna_delete").on('click',function(){
+    	    var qnaNo = $(this).prev().val();
+    		var projectNo=1; //이거 반장님꺼 받아와야함
+    		var qnaParentNo = 3; // 아무 숫자나 넣어도 됨. 0만 아니면 되니까. 어차피 값 안써요 
+    		alert(qnaNo);
+    	     $.ajax({
+    			   url:"${pageContext.request.contextPath}/qna/qnaDelete" , //서버요청주소 현재링크기준으로
+    			   type:"post" , //전송방식(get or post)
+    			   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+    			   data:{
+    				   "qnaNo":qnaNo,
+    				   "projectNo":projectNo,
+    				   "qnaParentNo":qnaParentNo
+    				   },
+    				   success:function(deleteResult){
+    						alert(deleteResult.message);
+    						history.go(0);
+    				} , //성공했을때
+    					   error:function(err){
+    						   alert(err+" => 오류 발생")
+    					   }  //실패했을때 
+    			   
+    		   })//ajax끝   
+    });
+
+       
+    // qna 대댓글 수정
+    $(".writer_qna_modify").on('click',function(){
+        var writer_qna_value = $(this).parent().parent().find('span').text();
+        
+        $(this).parent().parent().find('span').html('<input type="text" size="50"> <input type="button" value="수정"><input type="button" value="취소">');
+        $(this).parent().parent().find('input[type=text]').val(writer_qna_value);
+    });
+    
+    $(".writer_qna_delete").on('click',function(){
+        //단체가 삭제버튼 누를때
+    });
+
+    //cheer 대댓글 수정1
+$(document).on("click","input[value=수정]",function(){
+	
+	if($(this).attr("class") == 'update_reply_cheer'){ 
+		/* alert("대댓글 수정"); */
+		var projectNo = 1;
+		var user_reply_point = $(this).parent().parent().find('input[type=text]');
+		var user_reply = user_reply_point.val();
+		 if(user_reply == ""){
+             alert("수정할 내용을 입력하세요.");
+             user_reply_point.focus();
+             return false;
+         }
+		 $.ajax({
+			  url:"${pageContext.request.contextPath}/cheer/cheerUpdate" , //서버요청주소 현재링크기준으로
+			   type:"post" , //전송방식(get or post)
+			   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+			   data:{
+				   "cheerContent":user_reply,
+				   "projectNo":projectNo
+				   },
+				   success:function(updateResult){
+					   alert("수정에 성공했습니다.");
+						history.go(0);
+					   } ,
+					   error:function(err){
+						   alert("에러발생");
+					   } 
+				   })//ajax끝   
+  
+	}else if($(this).attr("class") == 'update_cheer'){ // 그냥 댓글 수정
+		/* alert($(this).parent().parent().find('input[type=text]').val()); */
+		var projectNo = 1; //수정해라
+		var user_reply_point = $(this).parent().parent().find('input[type=text]');
+		var user_reply = user_reply_point.val();
+		 if(user_reply == ""){
+             alert("수정할 내용을 입력하세요.");
+             user_reply_point.focus();
+             return false;
+         }
+		console.log(user_reply);
+	 	$.ajax({
+			  url:"${pageContext.request.contextPath}/cheer/cheerUpdate" , //서버요청주소 현재링크기준으로
+			   type:"post" , //전송방식(get or post)
+			   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+			   data:{
+				   "cheerContent":user_reply,
+				   "projectNo":projectNo
+				   },
+				   success:function(updateResult){
+					   alert("수정에 성공했습니다.");
+						history.go(0);
+					   } ,
+					   error:function(err){
+						   alert("에러발생");
+					   } 
+				   })//ajax끝   
+   
+	}else if($(this).attr("class") == 'update_qna'){ // QnA 수정
+		/* alert("대댓글 수정"); */
+		var projectNo = 1;
+		var user_qna_value = $(this).prev().val();
+		   $.ajax({
+			  url:"${pageContext.request.contextPath}/qna/qnaUpdate" , //서버요청주소 현재링크기준으로
+			   type:"post" , //전송방식(get or post)
+			   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+			   data:{
+				   "qnaContent":user_qna_value
+				   },
+				   success:function(updateResult){
+					   alert("수정에 성공했습니다.");
+						history.go(0);
+					   } ,
+					   error:function(err){
+						   alert("에러발생");
+					   } 
+				   })//ajax끝   
+    
+	}
+});
+
+    
+//지성, 병현 기능 추가
+
+$(function(){
        var progressbar = $(".progressbar"),
 				max = progressbar.attr('max'),
 //				time = (10/max)*5,
@@ -314,7 +722,6 @@
     
    
 $(function(){
-  // Add smooth scrolling to all links
   $("a").on('click', function(event) {
 
     // Make sure this.hash has a value before overriding default behavior
@@ -387,9 +794,8 @@ $(function(){
   });
   
 });
-   
-   
-   
+    
+
 </script>
 
 <%@ include file="../common/footer.jsp" %>

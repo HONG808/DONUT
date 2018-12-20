@@ -206,6 +206,53 @@ html, body{
 }
 
 
+/*---------------답글 --------------------*/
+
+.replyValue{
+    margin-left:10px;
+    display: inline-block;
+}
+.replyRead{
+    display: inline-block;
+    cursor: pointer;
+    width:40px;
+    color:#CE5970;
+    margin-left:20px;
+}
+.reply-modify-delete{
+    width:100%;
+    display: inline-block;
+    text-align:center; 
+}
+.reply-modify-delete span{
+    cursor: pointer;
+}
+.cheerReply{
+    color:red;
+    font-weight: bold;
+}
+.cheerReply i{
+    color:black;
+}
+
+#writer_modify{
+    cursor: pointer;
+}
+#writer_delete{
+    cursor: pointer;
+}
+#user_modify{
+    cursor: pointer;
+}
+#user_delete{
+    cursor: pointer;
+}
+.questionContent{
+    cursor:pointer;
+    display: inline-block;
+}
+
+
 /*---------------플로팅 메뉴------------*/
 #floatMenu {
 	position: absolute;
@@ -539,12 +586,6 @@ html, body{
 .login-container{
     width:20%;
     height:100%;
-/*
-    display: grid;
-    grid-template-columns: 400px 700px;
-    grid-template-rows: 500px;
-    justify-items: stretch;
-    align-items: center;background-color: white;*/ 
 }
 .login-tabs{
     width:100%;
@@ -566,7 +607,7 @@ html, body{
 }
 
 .login-select input[type=radio]{
-    
+    display: none;
 }
 .login-select label{
     cursor: pointer;
@@ -709,7 +750,7 @@ html, body{
 }
 .project-container{
     width:1020px; 
-    height:100%;
+/*    height:100%;*/
     margin-top: 30px;
 }
 .project-divider{
@@ -824,12 +865,22 @@ html, body{
     grid-template-columns: 230px 230px 230px 230px;
     grid-template-rows: 300px;
     grid-column-gap: 20px;
+    justify-items: stretch;
+    align-items: center;
+    margin: 30px 0;
+    font-size:15px;
+/*
+    display: grid;
+    grid-template-columns: 230px 230px 230px 230px;
+    grid-template-rows: 300px;
+    grid-column-gap: 20px;
     grid-row-gap:20px;
     justify-items: stretch;
     justify-content: center;
     align-items: center;
     margin:20px 0;
     font-size:15px;
+*/
 }
 .project-list-items{
     width:230px;
@@ -894,7 +945,7 @@ html, body{
     background-position: center;
 }
 .mypage-container{
-    width:1020px;
+    width:1320px;
 }
 /*
 .mypage-sidebar-title span{
@@ -903,7 +954,7 @@ html, body{
 }
 */
 .mypage-sidebar{
-    width:20%;
+    width:15%;
     height:100%;
     float:left;
 }
@@ -947,7 +998,7 @@ html, body{
     margin-bottom:0;
 }
 .mypage-contents{
-    width:80%;
+    width:85%;
     height:100%;
     float:right;
     padding:70px 30px 30px 30px;
@@ -965,7 +1016,7 @@ html, body{
 .inform-container{
     display:flex;
     flex-direction: column;
-    width:100%;
+    width:70%;
 }
 .inform-container .inform-items{
     display: flex;
@@ -997,10 +1048,64 @@ html, body{
 }
 
 
-/*---------------마이페이지 q&a 응원 ------------------*/
+/*---------------마이페이지 응원 ------------------*/
 .mypage-contents .cheer{
     margin:50px auto;width:90%;font-size:13px;
 }
+
+.mypage-contents .cheer table tr td:first-child{
+    width:5%;
+}
+.mypage-contents .cheer table tr td:nth-child(2){
+    width:10%;
+}
+.mypage-contents .cheer table tr td:nth-child(3){
+    width:70%;
+}
+.mypage-contents .cheer table tr td:nth-child(4){
+    width:5%;font-weight:300;
+    text-align: center;
+}
+.mypage-contents .cheer table tr td:nth-child(3) div:first-child{
+    display: inline-block;cursor: pointer;margin-left:30px;
+}
+
+.mypage-contents .cheer .cheerTr{
+    display: none;
+    height:30px;
+    border: 1px solid #EDEDED;
+}
+.mypage-contents .cheer .cheerTr .cheerReply{
+    border: 1px solid #EDEDED;
+    width:70%;
+    height:30px;
+    padding:10px;
+    margin:0 auto;
+}
+.mypage-contents .cheerupReply{  
+    width:80%;
+    margin:0 auto;
+    margin-top:30px;
+}
+.mypage-contents .cheerupReply input{
+    display: inline-block;
+}
+.mypage-contents .cheerupReply input[type=text]{
+    width:90%;
+    height:40px;
+    padding-left:10px;
+}
+.mypage-contents .cheer .cheerupBtn{
+    width:60px;height:40px;font-size:15px;background-color:black;color:white;border-radius: 10px;border:0;outline-width: 0;cursor: pointer;display: inline-block;
+}
+
+.mypage-contents .cheer .replyContent input:first-child{
+    width:70%;height:35px;padding:10px;margin-top:5px;display: inline-block;
+}
+.mypage-contents .cheer .replyContent input:nth-child(2){
+    display: inline-block;width:40px;height:30px;font-size:15px;background-color:black;color:white;border-radius: 5px;border:0;outline-width: 0;cursor: pointer;margin-left:5px;
+}
+
 .mypage-contents .cheer table tr td .thumb{
     object-fit: cover;
     background-position: center center;
@@ -1022,17 +1127,45 @@ html, body{
     height:80px;
 }
 
+/*---------------마이페이지 q&a ------------------*/
 .mypage-contents .qna table tr{
     height:40px;
 }
 .mypage-contents .qna{
     margin:50px auto;width:90%;font-size:13px;
 }
+.mypage-contents .qna table tr th:first-child{
+    width:10%;
+}
+.mypage-contents .qna table tr td:nth-child(2){
+    width:75%;
+}
+.mypage-contents .qna table tr td:nth-child(3){
+    width:5%;
+}
+.mypage-contents .qna table tr td:nth-child(4){
+    width:10%;
+    text-align:center;
+}
+.mypage-contents .qna .questionTr{
+    display: none;
+}
+.mypage-contents .qna .questionTr .questionReply{
+    width:100%;height:100%;border:1px solid #EDEDED;padding:10px;
+}
+.mypage-contents .qna .questionTr .questionReply span{
+    font-size:30px;font-weight: bold;
+}
+.mypage-contents .qna .questionTr .questionReply .questionContentReply{
+    line-height:30px;padding:10px;
+}
+.mypage-contents .qna .questionTr .questionReply .questionContentDetail{
+    line-height: 30px;background-color:aliceblue;letter-spacing: 2px;
+}
 
 /*-----------------프로젝트 상세-----------------*/
 .project-detail-wrap{
     width:100%;
-    height:100%;
 /*    background-image:url(../images/project-detail-background.jpg);*/
     background-color: white;
     background-size: cover;
@@ -1061,6 +1194,7 @@ html, body{
 .project-detail-container{
     margin:0 auto;
     width:1020px;
+    height:100%;
     margin-bottom:30px;
 }
 
@@ -1101,8 +1235,8 @@ html, body{
 }
 .project-detail-main{
     height:100%;
-    margin:50px 0 50px 0;
-    position: relative;
+    margin:50px 0 0 0;
+    
 }
 .project-detail-main .project-detail-tabs{
     width:100%;
@@ -1133,18 +1267,92 @@ html, body{
     color: white;
 }
 
-/*
-.cheer table tr td img{
-    width:50px;
-    border-radius: 50%;
-    border-top-left-radius: 50% 50%;
-    border-top-right-radius: 50% 50%;
-    border-bottom-right-radius: 50% 50%;
-    border-bottom-left-radius: 50% 50%;
-}*/
-.project-detail-main .cheer{
-    margin:50px auto;width:90%;font-size:13px;
+.project-detail-main .story{
+    margin:50px auto;width:70%;line-height: 30px;
 }
+
+.project-detail-main .cheer{
+    margin:30px auto;width:90%;font-size:13px;
+}
+.project-detail-main .cheer .user_modify_value{
+    height:20px;
+}
+.project-detail-main .cheer span input[type=button]{
+    display: inline-block;width:40px;height:20px;font-size:15px;background-color:black;color:white;border-radius: 5px;border:0;outline-width: 0;cursor: pointer;margin-left:5px;
+}
+.project-detail-main .cheer table tr{
+    border-bottom:1px solid #EDEDED;margin-bottom: 100px;height:100px;
+}
+
+.project-detail-main .cheer table tr td:first-child{
+    width:5%;
+}
+.project-detail-main .cheer table tr td:nth-child(2){
+    width:10%;
+}
+.project-detail-main .cheer table tr td:nth-child(3){
+    width:75%;
+}
+.project-detail-main .cheer table tr td:nth-child(4){
+    width:10%;
+    text-align:center;
+}
+
+.project-detail-main .cheer table tr td:nth-child(5){
+    width:20%;font-weight:300;
+    text-align: center;
+}
+.project-detail-main .cheer .cheerTr{
+    display: none;
+    height:30px;
+    border: 1px solid #EDEDED;
+}
+.project-detail-main .cheer .cheerTr .cheerReply .writer_modify_value{
+    height:20px;
+    margin-top:-50px;
+}
+.project-detail-main .cheer .cheerTr .cheerReply input[type=button]{
+        display: inline-block;width:40px;height:20px;font-size:15px;background-color:black;color:white;border-radius: 5px;border:0;outline-width: 0;cursor: pointer;margin-left:5px;
+}
+.project-detail-main .cheer .cheerTr .cheerReply{
+    
+    width:90%;
+    height:50px;
+    padding:20px;
+    margin:0 auto;
+    display: inline-block;
+}
+.project-detail-main .cheer .cheerTr .reply-modify-delete{
+    width:50px;
+    display: inline-block;
+}
+.project-detail-main .cheer .cheerTr .reply-submit{
+     margin:20px 0 0 20px 0;border-bottom:1px solid gray;padding:15px 0 15px 0;
+}
+.project-detail-main .cheer .cheerTr .reply-submit input[type=button]{
+    display: inline-block;width:40px;height:30px;font-size:15px;background-color:black;color:white;border-radius: 5px;border:0;outline-width: 0;cursor: pointer;margin-left:5px;
+}
+.project-detail-main .cheerupReply{  
+    width:80%;
+    margin:0 auto;
+    margin-top:30px;
+}
+.project-detail-main .cheerupReply input{
+    display: inline-block;
+}
+.project-detail-main .cheerupReply input[type=text]{
+    width:90%;
+    height:40px;
+    padding-left:10px;
+}
+.project-detail-main .cheer .cheerupBtn{
+    width:60px;height:40px;font-size:15px;background-color:black;color:white;border-radius: 10px;border:0;outline-width: 0;cursor: pointer;display: inline-block;
+}
+.project-detail-main .cheer .cheerTr td input:first-child{
+    width:80%;height:35px;padding:10px;margin-top:5px;display: inline-block;
+}
+
+
 .project-detail-main .cheer table tr td .thumb{
     object-fit: cover;
     background-position: center center;
@@ -1172,21 +1380,77 @@ html, body{
 .project-detail-main .qna{
     margin:50px auto;width:90%;font-size:13px;
 }
+.project-detail-main .qna .user_qna{
+    display:inline-block;
+}
+.project-detail-main .qna table{
+    width:100%;
+}
+.project-detail-main .qna table tr th:first-child{
+    width:10%;
+}
+.project-detail-main .qna table tr td:nth-child(2){
+    width:75%;
+}
+.project-detail-main .qna table tr td:nth-child(3){
+    width:5%;
+}
+.project-detail-main .qna table tr td:nth-child(4){
+    width:10%;
+    text-align:center;
+}
+.project-detail-main .qna .questionTr{
+    display: none;
+}
+.project-detail-main .qna .questionTr .questionReply{
+    width:100%;height:100%;border:1px solid #EDEDED;padding:10px;
+}
+.project-detail-main .qna .questionTr .questionReply span{
+    font-size:16px;
+}
+.project-detail-main .qna .questionTr .questionReply .questionContentReply{
+    line-height:30px;padding:10px;
+}
+.project-detail-main .qna .questionTr .questionReply .questionContentDetail{
+    line-height: 30px;background-color:aliceblue;letter-spacing: 2px;
+}
+.project-detail-main .qna .qna_input_form{
+    margin:30px 0 20px 0;
+    text-align: center;
+    width:100%;
+}
+.project-detail-main .qna .questionContentReply textarea{
+    width:60%;
+    height:50px;
+    resize: none;
+}
+.project-detail-main .qna .qna_input_form textarea{
+    display: inline-block;
+    width:60%;
+    height:50px;
+    resize: none;
+}
+.project-detail-main .qna .qna_input_form input[type=button]{
+    display: inline-block;
+    width:50px;
+    height:20px;
+}
 
-.project-detail-main .review table tr{
-    height:40px;
+.project-detail-main .donate{
+    width:50%;margin:30px auto;border:1px solid #CE5970;border-radius:5px;background-color:#f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
 }
-.project-detail-main .review{
-    margin:50px auto;width:90%;font-size:13px;
+.project-detail-main .donate tr{
+    height:70px;
 }
-.project-detail-main .review table tr th:first-child{
-    width: 10%;
+.project-detail-main .donate th{
+    width:20%;
 }
-.project-detail-main .review table tr th:nth-child(2){
-    width: 80%;
-}
-.project-detail-main .review table tr th:nth-child(3){
-    width: 10%;
+.project-detail-main .donate td{
+    width:40%;
 }
 
 /*---------------------------회원가입-----------------------*/
@@ -1340,6 +1604,9 @@ html, body{
     font-size:20px;
     text-align: center;
 }
+.project-register-container .register-category-detail .register-category-list{
+    width:100%;height:170px;
+}
 /*
 .register-items{
     border-top:1px dotted #CE5970;
@@ -1441,4 +1708,83 @@ html, body{
     background-color:#FFEDED;
     border:1px solid #DC287C;
 
+}
+
+/*----------------------- honorList --------------------*/
+.honor-wrap{
+    display: flex;
+    justify-content: center;
+    width:100%;
+    height:100%;
+    background-color: #F5F5F5;
+}
+.honor-container{
+    width:1020px;
+    height:100%;
+    margin :30px auto;
+}
+.honor-wrap .honor-container .honor-title{
+    display: block;
+    text-align: center;
+    font-size: 30px;
+    margin:30px;
+}
+
+/*-----------------------project review---------------------*/
+.project-review-wrap{
+    display: flex;
+    justify-content: center;
+    background-color: #f5f5f5;
+}
+.project-review-container{
+    width:820px;
+    margin:30px auto;
+    line-height: 30px;
+}
+.project-review-container .review-title{
+    font-size:30px;
+    padding-left:20px;
+    border-left: 3px solid #CE5970;
+    margin:30px auto;
+}
+.project-review-container p{
+    font-size:22px;
+    padding-left:20px;
+    margin:20px 0 20px 0;
+}
+.project-review-container .review-regdate{
+    font-size:16px;
+    text-align: right;
+}
+.project-review-container .review-receipt-title{
+    padding-left:20px;
+    border-left: 3px solid #CE5970;
+    margin:30px auto;
+}
+.project-review-container .review-receipt-title span{
+    font-size:30px;
+}
+.project-review{
+    display:flex;
+    justify-content: center;
+    height:50px;
+    margin:30px auto;
+}
+.project-review input{
+/*
+    
+    height:50px;
+    margin:0 auto;
+    color:white;
+    background-color:black;
+    border-radius: 10px;
+    border:none;
+    cursor:pointer;
+*/
+}
+.project-review-wrap .project-review-container .review-submit{
+    border-top:1px solid gray;margin-top:50px;padding-top:20px;text-align:center;
+}
+.project-review-wrap .project-review-container .review-submit input[type=button]{
+    background-color: black;color:white;border:none;width:40px;height:30px;
 }

@@ -6,7 +6,7 @@ import com.donut.web.dto.CheerDTO;
 
 public interface CheerService {
 
-	public List<CheerDTO> selectByAll() throws Exception;
+	public List<CheerDTO> selectByAll(int cheerProjectNo) throws Exception;
 	
 	public int cheerInsert(CheerDTO cheerDTO) throws Exception;
 	
@@ -17,7 +17,7 @@ public interface CheerService {
 	
 	public int cheerUpdate(CheerDTO cheerDTO) throws Exception;
 	
-	public int cheerDelete(int cheerNo) throws Exception;
+	public int cheerDelete(String id, int cheerNo, int cheerParentNo) throws Exception;
 	
-	public boolean cheerDuplicatedById(int cheerNo) throws Exception;
+	public boolean cheerDuplicatedById(String id, int projectNo) throws Exception;
 }

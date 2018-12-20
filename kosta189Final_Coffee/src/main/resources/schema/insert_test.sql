@@ -219,30 +219,30 @@ insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, ad
 
     -----------응원댓글
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 1, 'test1', '힘을 내세요 !!',sysdate, 0, null); 
+    values (seq_cheer.nextval, 1, 'test1', '힘을 내세요 !!',sysdate, 1, null); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 2, 'test2', '응원 합니다.',sysdate, 0, null); 
+    values (seq_cheer.nextval, 1, 'test2', '응원 합니다.',sysdate, 1, null); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 3, 'test3', '용기를 가지세요 !!',sysdate, 0, null); 
+    values (seq_cheer.nextval, 1, 'test2', '용기를 가지세요 !!',sysdate, 1, null); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 4, 'test4', '화이팅 화이팅 !!',sysdate, 0, null); 
+    values (seq_cheer.nextval, 4, 'test2', '화이팅 화이팅 !!',sysdate, 1, null); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 5, 'test5', '힘을 내용 !!',sysdate, 0, null); 
+    values (seq_cheer.nextval, 5, 'test5', '힘을 내용 !!',sysdate, 1, null); 
     -------------대댓글
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 1, 'company1', '응원 감사합니다.',sysdate, 0, 1); 
+    values (seq_cheer.nextval, 1, 'company1', '응원 갓효신합니다.',sysdate, 0, 1); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 2, 'company2', '응원 해주셔서 감사합니다',sysdate, 0, 2); 
+    values (seq_cheer.nextval, 1, 'company2', '갓효신',sysdate, 0, 2); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
-    values (seq_cheer.nextval, 3, 'company3', '응원 감사합니다.',sysdate, 0, 3); 
+    values (seq_cheer.nextval, 1, 'test2', '박효신~.',sysdate, 0, 3); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
     values (seq_cheer.nextval, 4, 'company4', '응원에 감사드립니다',sysdate, 0, 4); 
 insert into tb_cheer(cheerNo, projectNo, id, cheerContent, cheerRegdate, cheerNotify, cheerParentNo) 
     values (seq_cheer.nextval, 5, 'company5', '감사합니다',sysdate, 0, 5); 
-
+select * from tb_cheer;
 -----------qna질문 글
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
-    values(seq_qna.nextval, 1, 'test1', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 0, null);
+    values(seq_qna.nextval, 1, 'test2', '얼음꽃하나가', sysdate, 0, null);
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
     values(seq_qna.nextval, 2, 'test2', '이 기부 제대로 진행 되고 있나요 ?', sysdate, 0, null);
 insert into tb_QnA(qnaNo, projectNo, id, qnacontent, qnaRegdate, qnaNotify, qnaParentNo)
@@ -352,9 +352,14 @@ select * from tb_give;
 select * from tb_giveItem;
 select * from tb_payment;
 select * from tb_cheer;
+		update tb_cheer
+		set cheerNotify=1
+		where cheerNo = 37;
 select * from tb_qna;
 select * from tb_review;
 select * from tb_favorite;
 select * from tb_notice;
+
+delete from tb_cheer where cheerno=14;
 
 commit

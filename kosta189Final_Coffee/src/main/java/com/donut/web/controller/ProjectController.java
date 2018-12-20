@@ -8,9 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.donut.web.dto.CheerDTO;
 import com.donut.web.dto.ItemDTO;
 import com.donut.web.dto.ProjectDTO;
+import com.donut.web.dto.QnADTO;
+import com.donut.web.service.CheerService;
 import com.donut.web.service.ProjectService;
+import com.donut.web.service.QnAService;
 
 @Controller
 @RequestMapping("/project")
@@ -18,6 +22,10 @@ public class ProjectController {
 	
 	@Autowired
 	ProjectService projectService;
+	@Autowired
+	private CheerService cheerService;
+	@Autowired
+	private QnAService qnaService;
 	
 	@RequestMapping("/projectList")
 	public String projectList(Model model) {
@@ -33,9 +41,19 @@ public class ProjectController {
 	@RequestMapping("/projectRead")
 	public String projectRead(Model model,@RequestParam("projectNo") int projectNo) {
 		
+		List<CheerDTO> list;
+		List<QnADTO> qnaList;
 		try {
 			ProjectDTO projectDTO = projectService.projectSelectByNo(projectNo);
 			model.addAttribute("projectDTO",projectDTO);
+
+			int cheerprojectNo = projectDTO.getProjectNo();
+			list = cheerService.selectByAll(cheerprojectNo);
+			model.addAttribute("list", list);
+			
+			qnaList = qnaService.qnaSelectAll(cheerprojectNo);
+			model.addAttribute("qnaList", qnaList);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

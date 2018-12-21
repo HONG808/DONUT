@@ -1,14 +1,10 @@
 package com.donut.web.service;
 
-import java.util.List;
-
+import com.donut.web.dto.GiveDTO;
 import com.donut.web.dto.PaymentDTO;
+import com.donut.web.dto.ProjectDTO;
 
-public interface PaymentService {
-
-	public int paymentInsert(PaymentDTO paymentDTO) throws Exception;
-	
-	public List<PaymentDTO> paymentSelectAll() throws Exception;
-	
-	public PaymentDTO paymentSelectByGiveNo(int giveNo) throws Exception;
+public interface PaymentService
+{
+	public int insertPayment(GiveDTO giveDTO);
 }

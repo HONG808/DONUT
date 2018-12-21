@@ -16,9 +16,11 @@ import com.donut.web.dto.CheerDTO;
 import com.donut.web.dto.FavoriteDTO;
 import com.donut.web.dto.ProjectDTO;
 import com.donut.web.dto.QnADTO;
+import com.donut.web.dto.ReviewDTO;
 import com.donut.web.service.CheerService;
 import com.donut.web.service.ProjectService;
 import com.donut.web.service.QnAService;
+import com.donut.web.service.ReviewService;
 
 @Controller
 @RequestMapping("/project")
@@ -30,6 +32,8 @@ public class ProjectController {
 	private CheerService cheerService;
 	@Autowired
 	private QnAService qnaService;
+	@Autowired 
+	private ReviewService reviewService;
 	
 	
 	@RequestMapping("/projectList")
@@ -72,6 +76,10 @@ public class ProjectController {
 			model.addAttribute("favoriteDTO", favoriteDTO);
 			model.addAttribute("flag", flag);
 //			model.addAttribute("updateFlag", updateFlag);
+			
+			//리뷰
+			ReviewDTO reviewDTO  = reviewService.reviewRead(projectNo);
+			model.addAttribute("review",reviewDTO);
 			
 			//한나
 			model.addAttribute("list", list);
@@ -180,6 +188,13 @@ public class ProjectController {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	@RequestMapping("projectRead2")
+	public String projectRead2()
+	{
+		System.out.println("projectRead2 출력");
+		return "project/projectRead2";
 	}
 	
 }

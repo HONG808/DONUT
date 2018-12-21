@@ -330,24 +330,32 @@
                     </ul>
                 </div>
                 
-                <div class="review">
-                    <table>
-                        <tr style="background-color:#EDEDED">
-                            <th>번호</th>
-                            <th>제목</th>
-                            <th>작성일</th>
+                <!-- 리뷰 -->
+                 <div class="project-review">
+					<div class="review-add">
+					<c:choose>
+					<c:when test="${empty review}">
+                       <tr>
+                        <td><span>작성된 리뷰가 없습니다.</span></td>
                         </tr>
                         <tr>
-                            <td>1</td>
-                            <td>원빈 1차 모금 후기</td>
-                            <td>2018.12.10 17:34</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>원빈 2차 모금 후기</td>
-                            <td>2018.12.11 12:53</td>
-                        </tr>
-                    </table>
+                     <c:if test="${projectDTO.id==userDTO.id}">
+					 <form name="requestForm" method="post" action="${pageContext.request.contextPath}/review/reviewInsertForm">
+					<input type=hidden name="projectNo" value="${requestScope.projectDTO.projectNo}"> 
+					<input type=hidden name="id" value="${requestScope.projectDTO.id}">
+					 <input type=submit value="등록하기" >
+					</form>
+					</c:if>
+					 </tr>
+					 </c:when> 
+                       <c:otherwise>
+                      	<form name="reviewForm" method="post" action="${pageContext.request.contextPath}/review/reviewRead/${requestScope.projectDTO.projectNo}">
+                    	<input type=hidden name="projectNo" value="${requestScope.projectDTO.projectNo}">
+                    	<td><input type="submit" value="후기보기" id="review_popup"></td>
+                   		</form>
+                       </c:otherwise> 
+                        </c:choose>
+                    </div>
                 </div>
                 
                 

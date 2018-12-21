@@ -2,6 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+
+<%
+	session.setAttribute("id", "company1");
+%>
+
 <%@ include file="../common/header.jsp" %>
 
 <div class="notice-wrap">
@@ -15,36 +21,29 @@
                 <td>등록일</td>
                 <td>조회</td>
             </tr>
+            
+            <c:choose>
+			    <c:when test="${empty requestScope.list}">
+				<tr>
+			        <td colspan="5">
+			            <p align="center"><b><span style="font-size:9pt;">등록된 공지사항이 없습니다.</span></b></p>
+			        </td>
+			    </tr>
+    		</c:when>
+    		<c:otherwise>
+			<c:forEach items="${requestScope.list}" var="noticeDTO">
+            
             <tr>
-                <td>1</td>
-                <td>제목111111</td>
-                <td>2018.08.27</td>
-                <td>1</td>
+                <td>${noticeDTO.noticeNo}</td>
+                <td>	<a href="${pageContext.request.contextPath}/notice/noticeRead?noticeNo=${noticeDTO.noticeNo}">
+					  ${noticeDTO.noticeTitle}</a></td>
+                <td>${noticeDTO.noticeRegdate}</td>
+                <td>${noticeDTO.id}</td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>제목22222</td>
-                <td>2018.09.30</td>
-                <td>1</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>제목333</td>
-                <td>2018.10.30</td>
-                <td>1</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>제목44</td>
-                <td>2018.11.04</td>
-                <td>1</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>제목55222</td>
-                <td>2018.12.25</td>
-                <td>1</td>
-            </tr>
+              </c:forEach>
+			</c:otherwise>
+		    </c:choose>
+		    
         </table>
         <div align="center" class="page">
             <table style="display: inline-block;">
@@ -65,7 +64,9 @@
             <option>내용</option>
             </select>
             <input type="search" class="notice_search" placeholder="검색" style="height:24px;outline">
+		<a href="${pageContext.request.contextPath}/notice/noticeInsertForm">글쓰기</a>            
         </div>
+        
     </div>
 </div>
 

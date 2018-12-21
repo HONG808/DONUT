@@ -10,7 +10,7 @@ public interface NoticeService {
 	//업데이트폼에 정보를 가져오기 위한 메서드
 	public NoticeDTO noticeSelectByNo(int noticeNo) throws Exception;
 	
-	public int noticeUpdate(NoticeDTO noticeDTO) throws Exception;
+	public NoticeDTO noticeUpdate(NoticeDTO noticeDTO) throws Exception;
 	
 	public List<NoticeDTO> noticeSelectAll() throws Exception;
 	
@@ -18,5 +18,5 @@ public interface NoticeService {
 	
 	public int noticeDelete(int noticeNo) throws Exception;
 	
-	public boolean noticeDuplicatedById(int noticeNo) throws Exception;
+	//public boolean noticeDuplicatedById(int noticeNo, String id) throws Exception;
 }

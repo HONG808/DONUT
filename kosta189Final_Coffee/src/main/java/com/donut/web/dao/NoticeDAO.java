@@ -18,5 +18,5 @@ public interface NoticeDAO {
 	
 	public int noticeDelete(int noticeNo) throws Exception;
 	
-	public boolean noticeDuplicatedById(int noticeNo) throws Exception;
+	//public boolean noticeDuplicatedById(int noticeNo, String id) throws Exception;
 }

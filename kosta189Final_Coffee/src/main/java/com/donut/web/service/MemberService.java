@@ -14,7 +14,7 @@ public interface MemberService {
 	//회원가입 
 	public int MemberInsert(MemberDTO memberDTO) throws Exception;
 
-	//id 중복체크
+	//id 중복체크-memberInsert에서 사용할것
 	public boolean memberDuplicatedById(String id) throws Exception;
 
 	//id 로그인 - id,비번
@@ -23,10 +23,11 @@ public interface MemberService {
 	//API로 로그인[미정]
 	public void loginAPI() throws Exception;
 
-	//회원탈퇴
+	//회원탈퇴-update로 sql짜야함!!(세션값으로 ID,PWD받기-DAO로 전달)
 	public int memberDelete() throws Exception;
 
-	//회원탈퇴 및 수정 전 비밀번호 확인
+	//회원탈퇴 및 수정 전 비밀번호 확인(세션값으로 ID,PWD받기-ORACLE,)
+	//+session pwd로 회원확인,해당 id,pwd과 db의 id,pwd값이 동일할때 삭제
 	public boolean memberDuplicatedByPwd(String pwd) throws Exception;
 
 	//기부자 마이페이지 - service에서 세션 보내주기
@@ -39,9 +40,9 @@ public interface MemberService {
 	public List<QnADTO> memberSelectByQnA() throws Exception;
 
 	//회원정보 수정 폼 - service 세션보내주기
-	public MemberDTO memberSelectById() throws Exception;
+	public MemberDTO memberSelectById(String id) throws Exception;
 
-	//기부자 마이페이지 회원정보 수정진행 - view에서 수정 정보가져오기
+	//기부자 마이페이지 회원정보 수정진행 - view에서 수정 정보가져오기(session or memberSelectByIdPwd로 (updateForm)정보가져옴)
 	public int memberUpdate(MemberDTO memberDTO) throws Exception;
 
 	//기부자 마이페이지 즐겨찾기 리스트 - service 세션보내주기

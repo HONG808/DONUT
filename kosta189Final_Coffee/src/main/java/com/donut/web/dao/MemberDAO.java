@@ -14,7 +14,7 @@ public interface MemberDAO {
 	//회원가입 - view 삽입정보 가져오기
 	public int memberInsert(MemberDTO memberDTO) throws Exception;
 
-	//id 중복체크 - 중복체크할 id
+	//id 중복체크 - 중복체크할 id (true:이미 회원가입된 id, false: 가입가능)
 	public boolean memberDuplicatedById(String id) throws Exception;
 
 	//id 로그인 - id,비번

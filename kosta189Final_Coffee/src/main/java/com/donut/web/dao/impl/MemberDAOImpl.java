@@ -24,15 +24,19 @@ public class MemberDAOImpl implements MemberDAO{
 	
 	@Override
 	public int memberInsert(MemberDTO memberDTO) throws Exception {
-		return 0;
+		return session.insert("memberMapper.memberInsert", memberDTO);
 	}
 
 	@Override
 	public boolean memberDuplicatedById(String id) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		if(session.selectOne("memberMapper.memberIdcheck", id)==null) {	//사용가능
+			return true;	
+		}
+		else {
+			return false;
+		}
 	}
-
+	/* 지성 아이디비번 체크
 	@Override
 	public MemberDTO memberSelectByIdPwd(String id, String pwd) throws Exception {
 		Map<String,Object> map = new HashMap<>();
@@ -40,7 +44,17 @@ public class MemberDAOImpl implements MemberDAO{
 		map.put("pwd", pwd);
 		return session.selectOne("memberMapper.memberSelectByIdAndPwd",map);
 	}
+	*/
 
+	@Override
+	public MemberDTO memberSelectByIdPwd(String id, String pwd) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("id", id);
+		map.put("pwd", pwd);
+		
+		return session.selectOne("memberMapper.memberIdPwdCheck", map);
+	}
+	
 	@Override
 	public void loginAPI() throws Exception {
 		// TODO Auto-generated method stub
@@ -79,8 +93,7 @@ public class MemberDAOImpl implements MemberDAO{
 
 	@Override
 	public MemberDTO memberSelectById(String id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return session.selectOne("memberMapper.memberIdCheck",id);
 	}
 
 	@Override

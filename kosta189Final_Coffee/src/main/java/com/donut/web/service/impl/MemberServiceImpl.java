@@ -22,14 +22,12 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int MemberInsert(MemberDTO memberDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberDAO.memberInsert(memberDTO);
 	}
 
 	@Override
 	public boolean memberDuplicatedById(String id) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		return memberDAO.memberDuplicatedById(id);
 	}
 
 	@Override
@@ -74,9 +72,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberDTO memberSelectById() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public MemberDTO memberSelectById(String id) throws Exception {
+		return memberDAO.memberSelectById(id);
 	}
 
 	@Override

@@ -2,4 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="companyMapper">
     
+    	<sql id="colmnName">
+		id, companyName, companyCall, companyAddr, bank, account
+		</sql>
+
+	<!-- 기부단체 회원등록(companyInsert) -->
+    <insert id="companyInsert" parameterType="memberDTO">
+    	insert into tb_company(<include refid="colmnName"></include>)
+    		values (#{id}, #{company.companyName}, #{company.companyCall}, #{company.companyAddr}, #{company.bank}, #{company.account})
+    </insert>
+    
+    
 </mapper>

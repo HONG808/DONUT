@@ -19,15 +19,13 @@
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/animate.css"/>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/slick.css"/>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/slick-theme.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/odometer-theme-default.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/progress.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/SpoqaHanSans-kr.css"/>
     <!-- fontawesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
     <!-- font -->
-    <link href="${pageContext.request.contextPath}/resources/fonts/slick.ttf" rel="stylesheet">
+           
 </head>
 <body>
 	<!-- 상단 공통 -->
@@ -46,19 +44,36 @@
         <div class="nav-wrap">
             <div class="nav"> 
                 <ul>
-                	<li><a class="mypage_nav" href="${pageContext.request.contextPath}/company/companyMypage">기업마이페이지</a></li>
-                    <li><a class="mypage_nav" href="${pageContext.request.contextPath}/member/memberMypage">마이페이지</a></li> 
-                    <li><a class="signup_nav" href="${pageContext.request.contextPath}/member/signUp">회원가입</a></li>
-                    <li><a class="login_nav" href="${pageContext.request.contextPath}/member/login">로그인</a></li>
+                	<c:choose>
+                    	<c:when test="${not empty userDTO}">
+                    		${userDTO.id}님 환영합니다.	
+                    		<li><a class="mypage_nav" id="memberM" href="${pageContext.request.contextPath}/member/memberMypage">마이페이지</a></li> 
+							<li><a class="mypage_nav" id="companyM" href="${pageContext.request.contextPath}/company/companyMypage">기업마이페이지</a></li>             	 	                    	
+                    		<li><a class="login_nav" id="loginC" href="${pageContext.request.contextPath}/member/logOut">로그아웃</a></li>
+						</c:when>        	
+                    	<c:otherwise>
+                    		<li><a class="signup_nav" id="joinC" href="${pageContext.request.contextPath}/member/signUp">회원가입</a></li>
+                   			<li><a class="login_nav" id="loginC" href="${pageContext.request.contextPath}/member/login">로그인</a></li>
+                    	</c:otherwise>
+                    </c:choose>
                 </ul>
             </div>
             <!-- 플로팅 메뉴 -->
             <div id="floatMenu">
                 <ul>
                     <li><a href="${pageContext.request.contextPath}/">홈</a></li>
-                    <li><a class="login_nav" href="${pageContext.request.contextPath}/member/login">로그인</a></li>
-                    <li><a class="signup_nav" href="${pageContext.request.contextPath}/member/signUp">회원가입</a></li>
-                    <li><a class="mypage_nav" href="${pageContext.request.contextPath}/member/memberMypage">마이페이지</a></li>
+                	<c:choose>
+                    	<c:when test="${not empty userDTO}">
+                    	    <li><a class="login_nav" id="loginC" href="${pageContext.request.contextPath}/member/logOut">로그아웃</a></li>
+                    		<li><a class="mypage_nav" id="memberM" href="${pageContext.request.contextPath}/member/memberMypage">마이페이지</a></li> 
+							<li><a class="mypage_nav" id="companyM" href="${pageContext.request.contextPath}/company/companyMypage">기업마이페이지</a></li>             	 	                    	
+						</c:when>        	
+                    	<c:otherwise>
+		                    <li><a class="login_nav" href="${pageContext.request.contextPath}/member/login">로그인</a></li>
+		                    <li><a class="signup_nav" href="${pageContext.request.contextPath}/member/signUp">회원가입</a></li>
+		                    <li><a class="mypage_nav" href="${pageContext.request.contextPath}/member/memberMypage">마이페이지</a></li>
+                    	</c:otherwise>
+                    </c:choose>
                     <li><a href="#">맨위로</a></li>
                 </ul>
             </div>           

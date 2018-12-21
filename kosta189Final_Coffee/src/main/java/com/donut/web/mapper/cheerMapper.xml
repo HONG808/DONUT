@@ -11,11 +11,16 @@
   <result column="cheerRegdate" property="cheerRegdate"/>
   <result column="cheerNotify" property="cheerNotify"/>
   <result column="cheerParentNo" property="cheerParentNo"/>
+  <association property="memberDTO" javaType="memberDTO">
+	<id column="id" property="id"/>
+	<result column="picture" property="picture"/>
+  </association>
   </resultMap>
 
 	<select id="allSelect" parameterType="int" resultMap="userMap">
-	   select *
-	   from tb_cheer
+	   select c.cheerNo, c.projectNo, c.id, c.cheerContent, c.cheerRegdate, c.cheerNotify, c.cheerParentNo, m.picture
+	   from tb_cheer c join tb_member m
+	   on c.id = m.id
 	   where projectNo = #{_parameter}
  	   start with cheerParentNo is null
 	   connect by prior cheerNo = cheerParentNo 

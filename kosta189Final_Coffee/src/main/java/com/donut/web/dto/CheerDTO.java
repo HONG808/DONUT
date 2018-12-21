@@ -9,6 +9,9 @@ public class CheerDTO {
 	private String cheerRegdate;
 	private int cheerNotify;
 	private int cheerParentNo;
+	
+	private MemberDTO memberDTO;
+	private ProjectDTO projectDTO;
 
 	public CheerDTO() {}
 
@@ -23,6 +26,7 @@ public class CheerDTO {
 		this.cheerParentNo = cheerParentNo;
 	}
 
+	
 	public int getCheerNo() {
 		return cheerNo;
 	}
@@ -77,6 +81,22 @@ public class CheerDTO {
 
 	public void setCheerParentNo(int cheerParentNo) {
 		this.cheerParentNo = cheerParentNo;
+	}
+
+	public MemberDTO getMemberDTO() {
+		return memberDTO;
+	}
+
+	public void setMemberDTO(MemberDTO memberDTO) {
+		this.memberDTO = memberDTO;
+	}
+	
+	public ProjectDTO getProjectDTO() {
+		return projectDTO;
+	}
+
+	public void setProjectDTO(ProjectDTO projectDTO) {
+		this.projectDTO = projectDTO;
 	}
 
 	@Override

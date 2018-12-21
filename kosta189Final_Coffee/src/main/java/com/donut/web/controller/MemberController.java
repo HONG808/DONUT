@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.donut.web.dto.CheerDTO;
 import com.donut.web.dto.MemberDTO;
 import com.donut.web.dto.ProjectDTO;
+import com.donut.web.dto.QnADTO;
+import com.donut.web.service.CheerService;
 import com.donut.web.service.FacebookService;
 import com.donut.web.service.MemberService;
 
@@ -27,6 +30,8 @@ public class MemberController {
 	MemberService memberService;
 	@Autowired
 	private FacebookService facebookService;
+	@Autowired
+	private CheerService cheerService;
 	
 	private String path = "C:\\Edu\\finalPhoto\\member";
 
@@ -200,18 +205,34 @@ public class MemberController {
 	}
 
 	//기부자 마이페이지 응원댓글
-	@RequestMapping("/memberCheer")
-	public String memberCheer() {
-		System.out.println("memberCheer 실행");
-		return "member/memberCheer";
-	}
+		@RequestMapping("/memberCheer")
+		public String memberCheer(Model model) {
+			List<CheerDTO> list;
+			
+			try {
+				list = memberService.memberSelectByCheer();
+				model.addAttribute("cheerList", list);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-	//기부자 마이페이지 QnA
-	@RequestMapping("/memberQnA")
-	public String memberQnA() {
-		System.out.println("memberQnA 실행");
-		return "member/memberQnA";
-	}
+			return "member/memberCheer";
+		}
+
+		//기부자 마이페이지 QnA
+		@RequestMapping("/memberQnA")
+		public String memberQnA(Model model) {
+			List<QnADTO> qnaList;
+			
+			try {
+				qnaList = memberService.memberSelectByQnA();
+				model.addAttribute("qnaList", qnaList);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return "member/memberQnA";
+		}
+
 
 	//기부자 마이페이지 회원정보 수정폼
 	@RequestMapping("/memberUpdateForm")

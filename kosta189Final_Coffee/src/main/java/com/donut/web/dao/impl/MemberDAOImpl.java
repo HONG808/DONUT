@@ -81,15 +81,14 @@ public class MemberDAOImpl implements MemberDAO{
 
 	@Override
 	public List<CheerDTO> memberSelectByCheer(String id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return session.selectList("memberMapper.memberSelectByCheer", id);
 	}
 
 	@Override
 	public List<QnADTO> memberSelectByQnA(String id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return session.selectList("memberMapper.memberSelectByQnA", id);
 	}
+
 
 	@Override
 	public MemberDTO memberSelectById(String id) throws Exception {

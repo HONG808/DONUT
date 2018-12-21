@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="memberMapper">
-    
-    <!-- 마이페이지 기부 현황 확인 -->
-    <resultMap type="projectDTO" id="giveListMap">
-    	<id property="projectNo" column="projectNo" />
+
+	<!-- 마이페이지 기부 현황 확인 -->
+	<resultMap type="projectDTO" id="giveListMap">
+		<id property="projectNo" column="projectNo" />
 		<result property="id" column="id" />
 		<result property="projectSubject" column="projectSubject" />
 		<result property="category1" column="category1" />
@@ -19,63 +19,108 @@
 		<result property="goal" column="goal" />
 		<result property="percent" column="percent" />
 		<result property="givePerson" column="givePerson" />
-    </resultMap>
-    
-    <sql id="columnName">
-   	 id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag, dropFlag
-   </sql>
-    
-    <!-- 멤버의 기부프로젝트 현황(지성) -->
-    <select id="memberGiveList" resultMap="giveListMap" parameterType="string">
-    	select * from 
+	</resultMap>
+	<!-- 마이페이지 Cheer/QnA -->
+	<resultMap type="cheerDTO" id="cheerMap">
+		<id column="cheerNo" property="cheerNo" />
+		<result column="projectNo" property="projectNo" />
+		<result column="id" property="id" />
+		<result column="cheerContent" property="cheerContent" />
+		<result column="cheerRegdate" property="cheerRegdate" />
+		<result column="cheerNotify" property="cheerNotify" />
+		<result column="cheerParentNo" property="cheerParentNo" />
+		<association property="projectDTO" javaType="projectDTO">
+			<id column="projectNo" property="projectNo" />
+			<result column="id" property="id" />
+		</association>
+	</resultMap>
+
+	<resultMap type="qnADTO" id="qnaMap">
+		<id column="qnaNo" property="qnaNo" />
+		<result column="projectNo" property="projectNo" />
+		<result column="id" property="id" />
+		<result column="qnaContent" property="qnaContent" />
+		<result column="qnaRegdate" property="qnaRegdate" />
+		<result column="qnaNotify" property="qnaNotify" />
+		<result column="qnaParentNo" property="qnaParentNo" />
+	</resultMap>
+
+
+	<sql id="columnName">
+		id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag,
+		dropFlag
+	</sql>
+
+	<!-- 멤버의 기부프로젝트 현황(지성) -->
+	<select id="memberGiveList" resultMap="giveListMap"
+		parameterType="string">
+		select * from
 		tb_project p left join tb_give g
 		on p.projectNo = g.projectNo
-		where g.id= #{_parameter};
-    </select>
-    
-     <!-- 회원 등록(memberInsert) -->
-   <insert id="memberInsert" parameterType="memberDTO">
-   	insert into tb_member (<include refid="columnName"/>) 
-   	values (#{id},#{pwd},#{name},#{phone},#{email},#{picture},0,sysdate,#{statusFlag},1)
-   </insert>
-   
-   <!-- id체크 (memberDuplicatedById)-->
-   <select id="memberIdcheck" parameterType="String" resultType="String">
-   		select id from tb_member
-   		where id=#{_parameter}
-   </select>
-   
-   <!-- 로그인(memberSelectByIdPwd) -->
-   <select id="memberIdPwdCheck" parameterType="map" resultType="memberDTO">
-   		select <include refid="columnName"/> from tb_member
-   		where id=#{id} and pwd=#{pwd}
-   </select>
-    
-    <!-- 회원정보 수정(지성) -->
-    <update id="memberUpdate" parameterType="memberDTO">
-    	update tb_member
-    	set 
-    	pwd = #{pwd},
-    	name=#{name},
-    	phone =#{phone},
-    	email = #{email}
-    	where  
-    	id = #{id}
-    </update>
-    
-        <!-- 
-    <select id="memberSelectByIdAndPwd" resultType="memberDTO" parameterType="map">
-    	select * from
-    	tb_member 
-    	where id=#{id}
-    </select>
-    지성 -->
-    
-    <!-- 카카오 및 페이스북 API를 위한 용도 -->
-      <select id="memberIdCheck" parameterType="string" resultType="memberDTO"> 
-		select * from 
-		tb_member 
+		where g.id=
+		#{_parameter};
+	</select>
+
+	<!-- 회원 등록(memberInsert) -->
+	<insert id="memberInsert" parameterType="memberDTO">
+		insert into tb_member (
+		<include refid="columnName" />
+		)
+		values
+		(#{id},#{pwd},#{name},#{phone},#{email},#{picture},0,sysdate,#{statusFlag},1)
+	</insert>
+
+	<!-- id체크 (memberDuplicatedById) -->
+	<select id="memberIdcheck" parameterType="String"
+		resultType="String">
+		select id from tb_member
+		where id=#{_parameter}
+	</select>
+
+	<!-- 로그인(memberSelectByIdPwd) -->
+	<select id="memberIdPwdCheck" parameterType="map"
+		resultType="memberDTO">
+		select
+		<include refid="columnName" />
+		from tb_member
+		where id=#{id} and pwd=#{pwd}
+	</select>
+
+	<!-- 회원정보 수정(지성) -->
+	<update id="memberUpdate" parameterType="memberDTO">
+		update tb_member
+		set
+		pwd = #{pwd},
+		name=#{name},
+		phone =#{phone},
+		email = #{email}
+		where
+		id = #{id}
+	</update>
+
+	<!-- <select id="memberSelectByIdAndPwd" resultType="memberDTO" parameterType="map"> 
+		select * from tb_member where id=#{id} </select> 지성 -->
+
+	<!-- 카카오 및 페이스북 API를 위한 용도 -->
+	<select id="memberIdCheck" parameterType="string"
+		resultType="memberDTO">
+		select * from
+		tb_member
 		where id = #{_parameter}
-   </select>
+	</select>
+
+	<!-- 마이페이지 QnA/Cheer -->
+    <select id="memberSelectByCheer" parameterType="String" resultMap="cheerMap">
+	   select * from tb_cheer 
+ 	   start with id = #{_parameter} and cheerParentNo is null
+	   connect by prior cheerNo = cheerParentNo 
+	</select>
     
+     <select id="memberSelectByQnA" parameterType="String" resultMap="qnaMap">
+	   select * from tb_qna 
+ 	   start with id = #{_parameter} and qnaParentNo is null
+	   connect by prior qnaNo = qnaParentNo 
+	</select>
+	
+	
 </mapper>

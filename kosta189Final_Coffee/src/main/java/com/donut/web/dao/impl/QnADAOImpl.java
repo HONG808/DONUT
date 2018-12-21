@@ -36,8 +36,9 @@ public class QnADAOImpl implements QnADAO {
 
 	@Override
 	public int qnaReplyInsert(QnADTO qnaDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+
+		session.update("qnaMapper.qnaReplyInsertUpdate", qnaDTO);
+		return session.insert("qnaMapper.qnaReplyInsert", qnaDTO);
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.donut.web.dto.CheerDTO;
 import com.donut.web.dto.QnADTO;
 import com.donut.web.service.QnAService;
 
@@ -38,8 +37,15 @@ public class QnAController {
 
 	//기부단체 QnA 답글 등록 
 	@RequestMapping("qnaReplyInsert")
-	public String qnaReplyInsert() {
-		System.out.println("qnaReplyInsert 호출");
+	public String qnaReplyInsert(QnADTO qnaDTO) {
+		qnaDTO.setQnaParentNo(qnaDTO.getQnaNo());
+		
+		try {
+			if(qnaService.qnaReplyInsert(qnaDTO)==1)
+				return "redirect:/project/projectRead?projectNo="+qnaDTO.getProjectNo()+"#qna";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "qna/qnaReplyInsert";
 	}
 
@@ -47,9 +53,6 @@ public class QnAController {
 	@RequestMapping("/qnaUpdateForm")
 	@ResponseBody
 	public QnADTO qnaUpdateForm(@RequestParam("qnaNo") int qnaNo) {
-		
-		System.out.println(qnaNo);
-		
 		try {
 			qnaUpdateResult = qnaService.qnaSelectByNo(qnaNo);
 		} catch (Exception e) {
@@ -69,25 +72,23 @@ public class QnAController {
 		
 		System.out.println(qnaContent);
 		qnaDTO.setQnaContent(qnaContent);
-		
-		if(qnaDTO.getQnaParentNo()==0) {
-			System.out.println("얘는 부모글이다.");
-		}else {
-			System.out.println("얘는 자식글이다.");
-		}
-		
+
+		Map<String,Object> qnaUpdateResult = new HashMap<>();
 		try {
+			/*
+			 *  if(session아이디 .equals(cheerDTO.getId())){
+			 *  	qnaService.qnaUpdate(qnaDTO);
+			 *  	qnaUpdateResult.put("message", "수정되었습니다.");
+			 *  }
+			 *  else{
+			 *  	qnaUpdateResult.put("message", "본인 댓글만 수정할 수 있습니다.");
+			 *  }
+			 *  
+			 * */
 			qnaService.qnaUpdate(qnaDTO);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		System.out.println("수정 후");
-		System.out.println(qnaDTO.getQnaNo());
-		System.out.println(qnaDTO.getId());
-		System.out.println(qnaDTO.getQnaContent());
-
-		Map<String,Object> qnaUpdateResult = new HashMap<>();
 		qnaUpdateResult.put("message", "수정되었습니다.");
 		return qnaUpdateResult;
 	}
@@ -104,26 +105,16 @@ public class QnAController {
 			delete_success = qnaService.qnaDelete(id, qnaNo, qnaParentNo);
 			
 			System.out.println(delete_success);
-			if(delete_success != 0) {
-				deleteResult.put("message", "삭제되었습니다.");
-			} else {
-				deleteResult.put("message", "본인 댓글만 삭제할 수 있습니다.");
-			}
-			
+				if(delete_success != 0) {
+					deleteResult.put("message", "삭제되었습니다.");
+				} else {
+					deleteResult.put("message", "본인 댓글만 삭제할 수 있습니다.");
+				}
 			} catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.out.println(deleteResult);
 		return deleteResult; 
 				
-}
-
-
-	//수정 삭제 전 체크
-	@RequestMapping("qnaCheck")
-	public String qnaCheck() {
-		System.out.println("qnaCheck 호출");
-		return "qna/qnaCheck";
-	}
-
+	}	
 }

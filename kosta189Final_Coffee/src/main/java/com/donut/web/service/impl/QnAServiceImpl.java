@@ -29,8 +29,8 @@ public class QnAServiceImpl implements QnAService {
 
 	@Override
 	public int qnaReplyInsert(QnADTO qnaDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return qnaDAO.qnaReplyInsert(qnaDTO);
 	}
 
 	@Override

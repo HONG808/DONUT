@@ -61,14 +61,14 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public List<CheerDTO> memberSelectByCheer() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		String SessionId = "test2"; // 세션아이디 받아오는 거 해야함. 지금은 임의로 test2로 하겠음.
+		return memberDAO.memberSelectByCheer(SessionId);
 	}
 
 	@Override
 	public List<QnADTO> memberSelectByQnA() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		String SessionId = "test2"; // 세션아이디 받아오는 거 해야함. 지금은 임의로 test2로 하겠음.
+		return memberDAO.memberSelectByQnA(SessionId);
 	}
 
 	@Override

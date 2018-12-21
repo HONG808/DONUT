@@ -24,6 +24,16 @@
 		insert into tb_qna values(seq_qna.nextval,#{projectNo},#{id},#{qnaContent},sysdate,0,null)
 	</insert>
 	
+		<insert id="qnaReplyInsert" parameterType="qnADTO">
+		insert into tb_qna values(seq_qna.nextval,#{projectNo},#{id},#{qnaContent},sysdate,0,#{qnaParentNo})
+	</insert>
+ 		<update id="qnaReplyInsertUpdate" parameterType="qnADTO">
+		update tb_qna
+		set qnaNotify=1
+		where qnaNo = #{qnaParentNo}
+	</update> 
+	
+	
     <update id="update" parameterType="qnADTO">
 		update tb_qna
 		set qnaContent=#{qnaContent}, qnaRegdate=sysdate

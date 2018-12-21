@@ -99,7 +99,6 @@
                         <li><a href="#donate">기부하기</a></li>
                     </ul>
                 </div>
-                
                 <div class="cheer">
                 
                     <table>
@@ -115,7 +114,7 @@
                            <c:forEach var="boardList" items="${list}" varStatus="status">
                             <c:choose><c:when test="${boardList.cheerParentNo==0}">
                         <tr>
-                           <td><div class="thumb"><img src="${pageContext.request.contextPath}/resources/images/thumbs/test1.jpg"></div></td>
+                           <td><div class="thumb"><img src="${pageContext.request.contextPath}/resources/images/thumbs/${boardList.memberDTO.picture}"></div></td>
                             <td>${boardList.id}
                             <input type=hidden name="cheerNo" class="cheerNo" value="${boardList.cheerNo}">
                             <input type=hidden name="cheerParentNo" class="cheerParentNo" value="${boardList.cheerParentNo}">
@@ -242,17 +241,31 @@
                          <c:when test="${qnaList.qnaNotify==0}"><!-- 부모글인데 대댓글이 없으면 -->
                         <tr class="questionTr">
                            <td colspan="4">
+                           
+                           <form name="qnaReplyForm" method="post" action="${pageContext.request.contextPath}/qna/qnaReplyInsert"> 
+          						
                                 <div class="questionReply">
                                     <div class="questionContentDetail">
                                     <span class="question">Q.</span>
                                           <span>${qnaList.qnaContent} 
                                     </div>
-                                    <div class="questionContentReply" >
- 										 <span style="color:red">답변을 등록해주세요.</span>
-
-									</div>
-                                    
+                                     <div class="questionContentReply" >
+		                                <span style="color:red">답변을 등록해주세요.</span>
+		                                <input type=hidden name="id" value="test2">
+          						   		 <input type=hidden name="qnaNo" value="${qnaList.qnaNo}">
+          						    	<input type=hidden name="projectNo" value="${projectDTO.projectNo}">
+	                              
+		                                 <div class="questionContentReply_input">
+		                                                <input type="text"  name="qnaContent" placeholder="답변을 등록해주세요.">
+		                                                <input type="submit" value="등록">
+		                                            </div>
+		                                            <div class="writer_qna_reply">
+		                                            </div>
+		                        	   </div>
                                 </div>
+                                
+                           </form>
+                                
                             </td>
                         </tr>
                         </c:when>
@@ -266,10 +279,16 @@
                                             <div class="questionReply">
                                                 <div class="questionContentDetail">
                                                 <span class="question">Q.</span>
-                                                       <span style="font-size:7px">${qnaList.qnaContent} 
+                                                       <span class="myquestion">${qnaList.qnaContent} 
                                                 </div>
                                     <div class="questionContentReply" id="${qnaList.qnaParentNo}">
-                                    ${qnaList.qnaContent}
+                                    <span>${qnaList.qnaContent}</span>
+                                       <div class="writer_qna_reply">
+                                       <input type=hidden name="qnaParentNo" value="${qnaList.qnaParentNo}">
+                                        <input type=hidden name="qnaNo" value="${qnaList.qnaNo}">
+                                            <i class="fas fa-pencil-alt writer_qna_modify"></i>
+                                            <i class="fas fa-times writer_qna_delete"></i>
+                                       </div>
                                     </div>
                                 </div>
                             </td>
@@ -392,8 +411,8 @@
 
 
 <script>
-   // 연필 누르는 곳 - cheer 수정
 $(".user_modify").on('click', function(){
+	console.log("hey");
     var user_reply = $(this).parent().find('span').text();
     var cheerNo = $(this).parent().parent().find('input.cheerNo').val();
     var cheerParentNo = $(this).parent().parent().find('input.cheerParentNo').val();
@@ -417,6 +436,33 @@ $(".user_modify").on('click', function(){
 			   alert(err+" => 오류 발생")
 		   }  //실패했을때
 	   })//ajax끝  
+});
+// 연필 누르는 곳 - qna 수정
+$(".writer_qna_modify").on('click', function(){
+	 var writer_qna_value = $(this).parent().parent().find('span').text();
+	    
+    var qnaNo = $(this).prev().val();
+    var cheerParentNo = $(this).prev().prev().val();
+    /* var projectNo = ${projectDTO.projectNo}; */
+    $(this).parent().parent().find('span').html('<input type="text" size="50"> <input type="button" class="update_reply_qna" value="수정"><input type="button" value="취소">');
+    $(this).parent().parent().find('input[type=text]').val(writer_qna_value);
+    
+    $.ajax({
+		   url:"${pageContext.request.contextPath}/qna/qnaUpdateForm" , //서버요청주소 현재링크기준으로
+		   type:"post" , //전송방식(get or post)
+		   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+		   data:{
+			   "qnaNo":qnaNo,
+			   "cheerParentNo":cheerParentNo
+			   }, //서버에게 보낼 parameter정보
+		   //cheerNo=${boardList.cheerNo} 
+		   success:function(result){
+		
+		   } , //성공했을때
+		   error:function(err){
+			   alert(err+" => 오류 발생")
+		   }  //실패했을때
+	   })//ajax끝   
 });
 
    //cheer 삭제
@@ -503,6 +549,9 @@ $(".writer_delete").on('click', function(){
 $(".questionContent").on('click',function(){
     if($(this).parent().parent().next().css('display') == 'none'){
         $(this).parent().parent().next().css('display', 'table-row');
+        var myquestion = $(this).children().text();
+    	$(this).parent().parent().next().find('span.myquestion').text(myquestion);
+   
     }else if($(this).parent().parent().next().css('display') == 'table-row'){
         $(this).parent().parent().next().css('display', 'none');
     }
@@ -573,17 +622,29 @@ $(".replyRead").on('click', function(){
     		   })//ajax끝   
     });
 
-       
-    // qna 대댓글 수정
-    $(".writer_qna_modify").on('click',function(){
-        var writer_qna_value = $(this).parent().parent().find('span').text();
-        
-        $(this).parent().parent().find('span').html('<input type="text" size="50"> <input type="button" value="수정"><input type="button" value="취소">');
-        $(this).parent().parent().find('input[type=text]').val(writer_qna_value);
-    });
-    
+
     $(".writer_qna_delete").on('click',function(){
-        //단체가 삭제버튼 누를때
+    	 var qnaNo = $(this).prev().prev().val();
+ 	    var qnaParentNo = $(this).prev().prev().prev().val();
+ 		var projectNo=1; //이거 반장님꺼 받아와야함
+ 	    $.ajax({
+ 			   url:"${pageContext.request.contextPath}/qna/qnaDelete" , //서버요청주소 현재링크기준으로
+ 			   type:"post" , //전송방식(get or post)
+ 			   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+ 			   data:{
+ 				   "qnaNo":qnaNo,
+ 				   "projectNo":projectNo,
+ 				   "qnaParentNo":qnaParentNo
+ 				   },
+ 				   success:function(deleteResult){
+ 						alert(deleteResult.message);
+ 						history.go(0);
+ 				} , //성공했을때
+ 					   error:function(err){
+ 						   alert(err+" => 오류 발생")
+ 					   }  //실패했을때
+ 			   
+ 		   })//ajax끝  
     });
 
     //cheer 대댓글 수정1
@@ -616,7 +677,36 @@ $(document).on("click","input[value=수정]",function(){
 					   } 
 				   })//ajax끝   
   
-	}else if($(this).attr("class") == 'update_cheer'){ // 그냥 댓글 수정
+	} else if($(this).attr("class") == 'update_reply_qna'){ 
+		/* alert("대댓글 수정"); */
+		var projectNo = 1;
+		var qna_reply_point = $(this).parent().parent().find('input[type=text]');
+		var qna_reply = qna_reply_point.val();
+		
+	    alert(qna_reply);
+		 if(qna_reply == ""){
+             alert("수정할 내용을 입력하세요.");
+             qna_reply_point.focus();
+             return false;
+         }
+		  $.ajax({
+			  url:"${pageContext.request.contextPath}/qna/qnaUpdate" , //서버요청주소 현재링크기준으로
+			   type:"post" , //전송방식(get or post)
+			   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+			   data:{
+				   "qnaContent":qna_reply,
+				   "projectNo":projectNo
+				   },
+				   success:function(updateResult){
+					   alert("수정에 성공했습니다.");
+						history.go(0);
+					   } ,
+					   error:function(err){
+						   alert("에러발생");
+					   } 
+				   })//ajax끝   
+   
+	} else if($(this).attr("class") == 'update_cheer'){ // 그냥 댓글 수정
 		/* alert($(this).parent().parent().find('input[type=text]').val()); */
 		var projectNo = 1; //수정해라
 		var user_reply_point = $(this).parent().parent().find('input[type=text]');
@@ -644,7 +734,7 @@ $(document).on("click","input[value=수정]",function(){
 					   } 
 				   })//ajax끝   
    
-	}else if($(this).attr("class") == 'update_qna'){ // QnA 수정
+	} else if($(this).attr("class") == 'update_qna'){ // QnA 수정
 		/* alert("대댓글 수정"); */
 		var projectNo = 1;
 		var user_qna_value = $(this).prev().val();
@@ -666,8 +756,6 @@ $(document).on("click","input[value=수정]",function(){
     
 	}
 });
-
-    
 //지성, 병현 기능 추가
 
 $(function(){

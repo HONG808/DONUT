@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ include file="../common/header.jsp" %>
 
@@ -23,30 +24,117 @@
            <p align="center" class="mypage-title">
                <span style="font-size:30px;color:black;">Q&A</span>
            </p>
-            <div class="qna">
-                    <table>
-                        <tr>
-                            <th style="width:10%">상태</th>
-                            <th style="width:75%">문의/답변</th>
-                            <th style="width:5%">작성자</th>
-                            <th style="width:10%">작성일</th>
+    
+    <div class="qna">
+                    <table id="questionTable" style="background-color:white;">
+
+                        <tr style="background-color:#EDEDED">
+                            <th>상태</th>
+                            <th>문의/답변</th>
+                            <th>작성자</th>
+                            <th>작성일</th>
                         </tr>
+                        
+
+              <c:choose>
+                    <c:when test="${fn:length(qnaList) == 0}">
+                            <tr>
+                                <td colspan="3" align="center">
+                                    조회결과가 없습니다.
+                                </td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                           <c:forEach var="qnaList" items="${qnaList}" varStatus="status">
+                           
+                         <c:choose>
+                         <c:when test="${qnaList.qnaParentNo==0}"><!-- 부모 글이면 -->
                         <tr>
-                            <th style="width:10%;font-weight: 300;">미답변</th>
-                            <td style="width:75%"><a href="#">질문있습니다.</a></td>
-                            <td style="width:5%">jang8253</td>
-                            <th style="width:10%;font-weight: 300;">2018.12.11 09:41</th>
+                            <th>
+                                  	<c:choose>
+                         			<c:when test="${qnaList.qnaNotify==0}">미답변</c:when>
+                         			<c:when test="${qnaList.qnaNotify!=0}">답변</c:when>
+                         			</c:choose>
+                            <input type="hidden" id="qnaNo" value="${qnaList.qnaNo}">
+                            </th>
+                            <td>
+                                <div class="questionContent" >
+                                <span>${qnaList.qnaContent}</span>
+                                </div> 
+                            </td>
+                            <td> ${qnaList.id} </td>
+                            <td> ${qnaList.qnaRegdate} </td>
                         </tr>
-                        <tr>
-                            <th style="width:10%;font-weight: 300;">답변</th>
-                            <td style="width:75%"><a href="#">영수증 처리에 대해서</a></td>
-                            <td style="width:5%">kdh8909</td>
-                            <th style="width:10%;font-weight: 300;">2018.12.11 08:32</th> 
+                    
+                        <c:choose>
+                         <c:when test="${qnaList.qnaNotify==0}"><!-- 답변없는 자식글 -->
+                        <tr class="questionTr">
+                           <td colspan="4">
+                                <div class="questionReply">
+                                    <div class="questionContentDetail">
+                                    <span class="question">Q.</span>
+                                          <span>${qnaList.qnaContent} 
+                                    </div>
+                                     <div class="questionContentReply" >
+		                                <span style="color:red">등록된 답변이 없습니다.</span>
+		                        	   </div>
+                                </div>
+                            </td>
                         </tr>
+                        </c:when>
+                        </c:choose>
+                        </c:when>
+                       </c:choose>
+                                       <c:choose>
+                                     <c:when test="${qnaList.qnaParentNo!=0}"> <!-- 답변 자식글 -->
+                                    <tr class="questionTr" >
+                                       <td colspan="4">
+                                            <div class="questionReply" >
+                                                <div class="questionContentDetail">
+                                                <span>Q.</span>
+                                                       <span class="myquestion">${qnaList.qnaContent} 
+                                                </div>
+                                    <div class="questionContentReply" id="${qnaList.qnaParentNo}">
+                                    <span >${qnaList.qnaContent}</span>
+                                       <div class="writer_qna_reply">
+                                       <input type=hidden name="qnaParentNo" value="${qnaList.qnaParentNo}">
+                                        <input type=hidden name="qnaNo" value="${qnaList.qnaNo}">
+                                       </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </c:when>
+                        </c:choose>
+                     
+                             </c:forEach>
+                          </c:otherwise>
+                       </c:choose>
                     </table>
-             </div>
+                    
+                </div>
+
+
         </div>
    </div>
 </div>
 
+<script>
+
+$(".questionContent").on('click',function(){
+
+	
+    if($(this).parent().parent().next().css('display') == 'none'){
+        $(this).parent().parent().next().css('display', 'table-row');
+    	var myquestion = $(this).children().text();
+    	$(this).parent().parent().next().find('span.myquestion').text(myquestion);
+    }else if($(this).parent().parent().next().css('display') == 'table-row'){
+        $(this).parent().parent().next().css('display', 'none');
+    }
+
+
+})
+
+
+</script>
 <%@ include file="../common/footer.jsp" %>

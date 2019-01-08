@@ -41,8 +41,8 @@
 						<span style="color: red;">*</span><span>단체명</span>
 					</div>
 					<div class="signup-input">
-						<input type="text" id="company.companyName" name="company.companyName" placeholder="단체명">
-						<input type="button" class="btn_2" id="btn_companyCheck" value="검색" style="width: 70px;">
+						<input type="text" id="companycompanyName" name="companyName" readonly="readonly" placeholder="단체명">
+						<input type="button" class="btn_2" id="btn_companyNameCheck" value="검색" style="width: 70px;">
 					</div>
 				</div>
 				<div class="signup-items">
@@ -50,16 +50,21 @@
 						<span style="color: red;">*</span><span>주소</span>
 					</div>
 					<div class="signup-input">
-						<input type="text" id="company.companyAddr" name="company.companyAddr" placeholder="주소">
-						<input type="button" class="btn_2" id="btn_companyAddrCheck" value="검색" style="width: 70px;">
+						<input type="text" id="companycompanyAddr" name="companyAddr" readonly="readonly" placeholder="주소">
 					</div>
 				</div>
-				<div class="signup-items">
-						<div class="signup-label">
+				<div class="signup-items" style="height:130px;">
+						<div class="signup-label" >
 							<span>사진</span>
 						</div>
-						<div class="signup-input">
-							<input type="file" name="file" maxlength="60" size="40" />
+						<div class="signup-input" style="height:130px;">
+							<a id="download" download="thumbnail.jpg" target="_blank"> 
+							<img
+								id="thumbnail"
+								src="${pageContext.request.contextPath}/resources/images/thumbs/testImg.jpg"
+								width="100" alt="썸네일영역" style="border-radius: 100%;">
+							</a>
+							<input type="file" id="photo" name="file" maxlength="60" size="40" accept="image/*">
 						</div>
 				</div>
 				<div class="signup-items">
@@ -67,7 +72,7 @@
 						<span style="color: red;">*</span><span>담당자</span>
 					</div>
 					<div class="signup-input">
-						<input type="text" id="name" name="name" placeholder="담당자">
+						<input type="text" id="name" name="name" readonly="readonly" placeholder="담당자">
 					</div>
 				</div>
 				<div class="signup-items">
@@ -80,10 +85,10 @@
 					</div>
 				<div class="signup-items">
 					<div class="signup-label">
-						<span style="color: red;">*</span><span>전화번호</span>
+						<span style="color: red;"></span><span>전화번호</span>
 					</div>
 					<div class="signup-input">
-					<input type="text" id="company.companyCall" name="company.companyCall" size="12" placeholder="전화번호">
+					<input type="text" id="companycompanyCall" name="companyCall" size="20" readonly="readonly" placeholder="전화번호">
 					</div>
 				</div>
 
@@ -92,8 +97,8 @@
 						<span style="color: red;">*</span><span>계좌번호</span>
 					</div>
 					<div class="signup-input">
-						<input type="text" id="company.account" name="company.account" placeholder="계좌번호">
-						<select id="company.bank" name="company.bank">
+						<input type="text" id="companyaccount" name="account" placeholder="계좌번호">
+						<select id="companybank" name="bank">
 							<option value="신한은행">신한</option>
 							<option value="국민은행">국민</option>
 							<option value="우리은행">우리</option>
@@ -126,7 +131,19 @@
 	</div>
 </div>
 <script>
-	$(function(){
+	$(function() {
+		//단체명 검색버튼 클릭시 팝업창생성
+		$("#btn_companyNameCheck")
+				.on(
+						"click",
+						function() {
+							window
+									.open(
+											"${pageContext.request.contextPath}/company/companyAPIForm",
+											"MsgWindow",
+											"width=1000,height=500");
+						});
+
 		$('#btn_submitC').attr('hidden', true);
 
 		$('#btn_idCheckC').click(function() {
@@ -136,7 +153,7 @@
 				$.ajax({
 					url : "../member/idCheck",
 					type : "post",
-					data : "id=" + $('#companyid').val(),	//문제 -id중복검사안됨
+					data : "id=" + $('#companyid').val(),
 					dataType : "text",
 					success : function(result) {
 						console.log(result)
@@ -156,56 +173,94 @@
 				})
 			}
 		});
-		
+
+		var file = document.querySelector('#photo');
+
+		file.onchange = function() {
+			var fileList = file.files;
+
+			// 읽기
+			var reader = new FileReader();
+			reader.readAsDataURL(fileList[0]);
+
+			//로드 한 후
+			reader.onload = function() {
+
+				//썸네일 이미지 생성
+				var tempImage = new Image(); //drawImage 메서드에 넣기 위해 이미지 객체화
+				tempImage.src = reader.result; //data-uri를 이미지 객체에 주입
+				tempImage.onload = function() {
+					//리사이즈를 위해 캔버스 객체 생성
+					var canvas = document.createElement('canvas');
+					var canvasContext = canvas.getContext("2d");
+
+					//캔버스 크기 설정
+					canvas.width = 100; //가로 100px
+					canvas.height = 100; //세로 100px
+
+					//이미지를 캔버스에 그리기
+					canvasContext.drawImage(this, 0, 0, 100, 100);
+					//캔버스에 그린 이미지를 다시 data-uri 형태로 변환
+					var dataURI = canvas.toDataURL("image/jpeg");
+
+					//썸네일 이미지 보여주기
+					document.querySelector('#thumbnail').src = dataURI;
+
+				};
+			};
+		};
+
 		$('#btn_submitC').click(function() {
-			if($('#pwd').val()==''){
+			if ($('#pwd').val() == '') {
 				alert("비밀번호를 입력해주세요");
 				$('#pwd').focus();
 				return false;
 			}
-			
-			if($('#company.companyName').val()==''){
-				alert("단체명을 입력해주세요");
-				$('#company.companyName').focus();
+
+			if ($('#companycompanyName').val() == '') {
+				alert("단체명의 검색버튼을 눌러주세요");
+				$('#companycompanyName').focus();
 				return false;
 			}
 
-			if($('#company.companyAddr').val()==''){
-				alert("주소를 입력해주세요");
-				$('#company.companyAddr').focus();
+			if ($('#companycompanyAddr').val() == '') {
+				alert("단체명의 검색버튼을 눌러주세요");
+				$('#companycompanyAddr').focus();
 				return false;
 			}
-			
-			if($('#name').val()==''){
-				alert("담당자의 성함을 입력해주세요");
+
+			if ($('#name').val() == '') {
+				alert("단체명의 검색버튼을 눌러주세요");
 				$('#name').focus();
 				return false;
 			}
-			
-			if($('#email').val()==''){
+
+			if ($('#email').val() == '') {
 				alert("이메일을 입력해주세요");
 				$('#email').focus();
 				return false;
 			}
-			
-			if($('#company.companyCall').val()==''){	//문제 -전화번호없어도 회원가입가능
-				alert("전화번호를 입력해주세요");
-				$('#company.companyCall').focus();
+
+			if ($('#companyaccount').val() == '') {
+				alert("계좌번호를 입력해주세요");
+				$('#companyaccount').focus();
 				return false;
 			}
-			
-			if($('#company.account').val()==''){	//문제 -계좌번호없어도 회원가입가능
-				alert("계좌번호를 입력해주세요");
-				$('#company.account').focus();
-				return false;
+
+			else {
+				alert($('#companyid').val() + "님 가입을 축하드립니다!");
 			}
 		});
-		
-		
 	})
-	
 
-
+	$(function() {
+		$("#signup_company").parent().css("background-color", "#DC287C");
+		$("#signup_company").parent().parent().find("li:first-child a").css(
+				"color", "black");
+		$("#signup_company").parent().parent().find("li:first-child").css(
+				"background-color", "#F7F6F6");
+		$("#signup_company").css("color", "white");
+	});
 </script>
 
 <%@ include file="../../common/footer.jsp"%>

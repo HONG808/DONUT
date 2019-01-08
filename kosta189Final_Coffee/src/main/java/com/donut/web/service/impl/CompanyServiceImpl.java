@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.donut.web.dao.CompanyDAO;
+import com.donut.web.dto.CompanyDTO;
 import com.donut.web.dto.MemberDTO;
 import com.donut.web.dto.ProjectDTO;
 import com.donut.web.service.CompanyService;
@@ -18,7 +19,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public int companyInsert(MemberDTO memberDTO) throws Exception {
-		System.out.println("companyInsertServiceImpl¿”" + memberDTO.getId());
+		
 		return companyDAO.companyInsert(memberDTO);
 	}
 
@@ -29,21 +30,28 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public MemberDTO companySelectByid() throws Exception {
+	public MemberDTO companySelectByid(String id) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return companyDAO.companySelectByid(id);
 	}
 
 	@Override
 	public int companyUpdate(MemberDTO memberDTO) throws Exception {
 		// TODO Auto-generated method stub
-		return 0;
+		return companyDAO.companyUpdate(memberDTO);
 	}
 
 	@Override
-	public List<ProjectDTO> companyProjectSelectAll() throws Exception {
+	public List<ProjectDTO> companyProjectSelectAll(String id) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return companyDAO.companyProjectSelectAll(id);
 	}
+
+	@Override
+	public CompanyDTO selectById(String id) throws Exception {
+		return companyDAO.selectById(id);
+	}
+	
+	
 
 }

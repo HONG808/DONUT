@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import com.donut.web.dao.MemberDAO;
 import com.donut.web.dto.CheerDTO;
 import com.donut.web.dto.FavoriteDTO;
-import com.donut.web.dto.GiveDTO;
 import com.donut.web.dto.MemberDTO;
 import com.donut.web.dto.ProjectDTO;
 import com.donut.web.dto.QnADTO;
+import com.donut.web.dto.ReceiptDTO;
 import com.donut.web.service.MemberService;
 
 @Service
@@ -42,9 +42,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int memberDelete() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int memberDelete(MemberDTO memberDTO) throws Exception {
+		return memberDAO.memberDelete(memberDTO);
 	}
 
 	@Override
@@ -60,15 +59,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<CheerDTO> memberSelectByCheer() throws Exception {
-		String SessionId = "test2"; // 세션아이디 받아오는 거 해야함. 지금은 임의로 test2로 하겠음.
-		return memberDAO.memberSelectByCheer(SessionId);
+	public List<CheerDTO> memberSelectByCheer(String id) throws Exception {
+		return memberDAO.memberSelectByCheer(id);
 	}
 
 	@Override
-	public List<QnADTO> memberSelectByQnA() throws Exception {
-		String SessionId = "test2"; // 세션아이디 받아오는 거 해야함. 지금은 임의로 test2로 하겠음.
-		return memberDAO.memberSelectByQnA(SessionId);
+	public List<QnADTO> memberSelectByQnA(String id) throws Exception {
+		return memberDAO.memberSelectByQnA(id);
 	}
 
 	@Override
@@ -86,33 +83,51 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<FavoriteDTO> memberFavoriteList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<FavoriteDTO> memberFavoriteList(String id) throws Exception {
+
+		return memberDAO.memberFavoriteList(id);
 	}
 
 	@Override
-	public int memberFavoriteDelete(int favoriteNo) throws Exception {
+	public int memberFavoriteDelete(FavoriteDTO favoriteDTO) throws Exception {
 		// TODO Auto-generated method stub
-		return 0;
+		return memberDAO.memberFavoriteDelete(favoriteDTO);
 	}
 
 	@Override
-	public List<GiveDTO> memberReceiptList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ReceiptDTO> memberReceiptList(String id) throws Exception {
+		return memberDAO.memberReceiptList(id);
 	}
 
 	@Override
 	public List<ProjectDTO> memberGiveList(String id) throws Exception {
 		List<ProjectDTO> list = memberDAO.memberGiveList(id);
-		
+
 		if(list == null || list.isEmpty()) {
 			throw new Exception("멤버 기부 정보 조회 실패");
 		}
 		return list;
 	}
 
+	@Override
+	public int memberUpdateNotify(int cheerNo) {
+		return memberDAO.memberUpdateNotify(cheerNo);
+	}
+	
+	@Override
+	public int memberUpdateQnANotify(int qnaNo) {
+		return memberDAO.memberUpdateQnANotify(qnaNo);
+	}
+	
 
+	@Override
+	public int Alarm(String sessionId) {
+		return memberDAO.Alarm(sessionId);
+	}
+
+	@Override
+	public int qnaAlarm(String sessionId) {
+		return memberDAO.qnaAlarm(sessionId);
+	}
 
 }

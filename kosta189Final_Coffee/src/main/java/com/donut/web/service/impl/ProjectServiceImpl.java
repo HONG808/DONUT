@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.donut.web.dao.ProjectDAO;
 import com.donut.web.dto.FavoriteDTO;
 import com.donut.web.dto.ItemDTO;
 import com.donut.web.dto.ProjectDTO;
+import com.donut.web.dto.RewardDTO;
 import com.donut.web.service.ProjectService;
 
 @Service
@@ -19,8 +21,8 @@ public class ProjectServiceImpl implements ProjectService{
 	ProjectDAO projectDAO;
 	
 	@Override
-	public List<ProjectDTO> projectSelectAll() throws Exception {
-		List<ProjectDTO> list = projectDAO.projectSelectAll();
+	public List<ProjectDTO> projectSelectAll(String flag) throws Exception {
+		List<ProjectDTO> list = projectDAO.projectSelectAll(flag);
 		if(list == null || list.isEmpty()) {
 			throw new Exception("리스트 실패");
 		}
@@ -39,20 +41,21 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public List<ProjectDTO> projectSelectByCategory1() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ProjectDTO> projectSelectByCategory1(ProjectDTO projectDTO) throws Exception {
+		List<ProjectDTO> list = projectDAO.projectSelectByCategory1(projectDTO);
+		if(list == null || list.isEmpty()) {
+			throw new Exception("리스트 실패");
+		}
+		return list;
 	}
 
 	@Override
 	public List<ProjectDTO> projectSelectByCategory2() throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<ProjectDTO> projectSelectByCategory3() throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -74,12 +77,30 @@ public class ProjectServiceImpl implements ProjectService{
 				throw new Exception("item 물품 등록시 에러 발생");
 			}
 		}
+		
+		Iterator<RewardDTO> iter2 = projectDTO.getReward().iterator();
+		while(iter2.hasNext()) {
+			if(projectDAO.rewardListInsert(iter2.next()) == 0) {
+				throw new Exception("reward 물품 등록시 에러 발생");
+			}
+		}
+		
 		return 1;
 	}
 
 	@Override
 	public int MoneyInsert(ProjectDTO projectDTO) throws Exception {
-		return projectDAO.moneyInsert(projectDTO);
+		if(projectDAO.moneyInsert(projectDTO) == 0) {
+			throw new Exception("money insert 에러발생");
+		}
+		Iterator<RewardDTO> iter2 = projectDTO.getReward().iterator();
+		while(iter2.hasNext()) {
+			if(projectDAO.rewardListInsert(iter2.next()) == 0) {
+				throw new Exception("reward 금전 등록시 에러 발생");
+			}
+		}
+		
+		return 1;
 	}
 
 	@Override

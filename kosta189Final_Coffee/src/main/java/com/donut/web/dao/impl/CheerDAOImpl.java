@@ -76,7 +76,12 @@ public class CheerDAOImpl implements CheerDAO {
 		Map<String, Object> map =new HashMap<>();
 		map.put("id", id);
 		map.put("projectNo", projectNo);
-		return session.selectOne("CheerMapper.cheerDuplicatedById",map);
+		if( session.selectOne("CheerMapper.cheerDuplicatedById",map) !=null) {
+			System.out.println("이미 쓴게 있쌈");
+			return true;
+		}
+		System.out.println("첨쓰는거임");
+		return false;
 	}
 
 }

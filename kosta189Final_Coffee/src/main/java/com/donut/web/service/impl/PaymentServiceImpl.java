@@ -23,6 +23,8 @@ public class PaymentServiceImpl implements PaymentService
 	@Override
 	public int insertPayment(GiveDTO giveDTO)
 	{
+		paymentDAO.updateAccMoney(giveDTO.getId(), giveDTO.getGiveMoney());
+		
 		paymentDAO.insertGive(giveDTO);
 		
 		int giveNo = paymentDAO.selectLastGiveNo();

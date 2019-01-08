@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.donut.web.dto.MemberDTO;
 import com.donut.web.dto.ProjectDTO;
@@ -23,7 +22,7 @@ import com.donut.web.service.ReviewService;
 @Controller
 @RequestMapping("/review")
 public class ReviewController {
-    private String path = "C:\\edu\\finalPhoto";
+	private String path = "resources/finalPhoto/review";
     @Autowired
     private ReviewService reviewService;
     @Autowired
@@ -37,16 +36,13 @@ public class ReviewController {
         try {
 
             MemberDTO memberDTO = new MemberDTO();
-            memberDTO.setId("company3");
             reviewDTO = reviewService.reviewRead(projectNo);
-            reviewDTO.setId("company3");
             projectDTO = projectService.projectSelectByNo(projectNo);
             model.addAttribute("projectDTO", projectDTO);
             model.addAttribute("memberDTO",memberDTO);
             model.addAttribute("review", reviewDTO);
            
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -64,24 +60,24 @@ public class ReviewController {
 
     @RequestMapping(value = "/reviewInsert", method = RequestMethod.POST)
     @ResponseBody
-    public int reviewInsert(String id, int projectNo, ReviewDTO reviewDTO) {
+    public int reviewInsert(String id, int projectNo, ReviewDTO reviewDTO,HttpSession session) {
         int result = 0;
-        try {
+        MultipartFile file = reviewDTO.getFile();
+        MemberDTO memberDTO = (MemberDTO)session.getAttribute("userDTO");
+        try {	
+        	
+        	String realPath = session.getServletContext().getRealPath("/") + path;
+			if(file.getSize() > 0 ) {
+				reviewDTO.setReviewImg(file.getOriginalFilename());
+			file.transferTo(new File(realPath + "/" + file.getOriginalFilename()));
+			}
              
-         /*    MultipartFile file = reviewDTO.getFile(); 
-             if(file.getSize()>0) {
-               String fileName = file.getOriginalFilename();
-               long fileSize = file.getSize();
-               file.transferTo(new File(path+"/"+fileName));
-               reviewDTO.setReviewImg(fileName);*/
             reviewDTO.setProjectNo(projectNo);
-            reviewDTO.setId(id);
+            reviewDTO.setId(memberDTO.getId());
             result = reviewService.reviewInsert(reviewDTO);
              
-      
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -108,13 +104,22 @@ public class ReviewController {
 
     @RequestMapping(value = "/reviewUpdate", method = RequestMethod.POST)
     @ResponseBody
-    public int reviewUpdate(ReviewDTO reviewDTO, String id, int projectNo) {
-        int result = 0;
-        try {
+    public int reviewUpdate(ReviewDTO reviewDTO, HttpSession session, int projectNo) {
+    	int result = 0;
+        MultipartFile file = reviewDTO.getFile();
+        MemberDTO memberDTO = (MemberDTO)session.getAttribute("userDTO");
+        try {	
+        	
+        	String realPath = session.getServletContext().getRealPath("/") + path;
+			if(file.getSize() > 0 ) {
+				reviewDTO.setReviewImg(file.getOriginalFilename());
+			file.transferTo(new File(realPath + "/" + file.getOriginalFilename()));
+			}
+             
+            reviewDTO.setProjectNo(projectNo);
+            reviewDTO.setId(memberDTO.getId());
             result = reviewService.reviewUpdate(reviewDTO);
-            }
-
-        catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
         }
         return result;

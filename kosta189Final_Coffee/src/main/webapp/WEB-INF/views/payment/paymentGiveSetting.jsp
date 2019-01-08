@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -64,7 +64,7 @@
   </script>    
 
 
-<div class="payment-wrap">
+<div class="payment-wrap" data-aos="fade-in">
     <div class="payment-container">
         <div class="payment-title">결제</div>
         <div class="payment-1">
@@ -77,24 +77,32 @@
                 <tr>
                     <th>
                         <ul>
-                            <li style="list-style: none;"><div class="thumb"><img src="${pageContext.request.contextPath}/resources/images/thumbs/test1.jpg"></div></li>
+                            <li style="list-style: none;">
+                               <div class="thumb">
+                                  <img src="${pageContext.request.contextPath}/resources/finalPhoto/project/${projectDTO.projectImg}"
+                                  onerror="this.src='${pageContext.request.contextPath}/resources/images/thumbs/test2.jpg'">
+                                 </div>
+                            </li>
                             <li>
-                                <div class="thumb_description">원빈과 함께 떠나는 기부</div>
-                                <ul style="color:#afafaf">
-                                    <li>무릎담요 : 1개</li>
-                                    <li>초코파이 : 1개</li>
-                                </ul>
+                                <div class="thumb_description">${param.projectSubject}</div>
+                                <c:if test="${param.moneyOrItem == 2}">
+                                   <c:forEach var="giveItem" items="${giveDTO.giveItem}" varStatus="status">
+                                      <ul style="color:#afafaf">
+                                         <li>${giveItem.giveItemName} : ${giveItem.giveItemAmount}개</li>
+                              </ul>
+                           </c:forEach>
+                                </c:if>
                             </li> 
                         </ul>
                     </th>
-                    <th><span>원빈</span></th>
-                    <th>10,000원</th>
+                    <th><span>${param.companyName}</span></th>
+                    <th><fmt:formatNumber type="number" value="${giveDTO.giveMoney}"/>원</th>
                 </tr>
             </table>
         </div>
         
-        	<form method="get" action='${pageContext.request.contextPath }/payment/paymentGive'>
-       		 <div class="payment-2">
+           <form method="get" action='${pageContext.request.contextPath }/payment/paymentGive'>
+              <div class="payment-2">
             <p class="shipping-title">배송정보</p>
             <table>
                 <tr>
@@ -104,19 +112,19 @@
                 <tr>
                     <td>연락처<span>*</span></td>
                     <td><input type='text' name='call' />
-                    	<!-- 수정해야함 <span> - </span><input type="text" maxlength="4"><span> - </span><input type="text" maxlength="4">-->
+                       <!-- 수정해야함 <span> - </span><input type="text" maxlength="4"><span> - </span><input type="text" maxlength="4">-->
                      </td>
                 </tr>
                 <tr>
                     <td>주소<span>*</span></td>
                     <td>
                     <input type="text" id="postcode" name="postcode" placeholder="우편번호">
-					<input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-					<input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소" size="40">
-					<input type="text" id="jibunAddress" placeholder="지번주소" size="40">
-					<span id="guide" style="color:#999;display:none"></span>
-					<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" size="40">
-					<input type="text" id="extraAddress" name="extraAddress" placeholder="참고항목" size="40"> <p>
+               <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
+               <input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소" size="40">
+               <input type="text" id="jibunAddress" placeholder="지번주소" size="40">
+               <span id="guide" style="color:#999;display:none"></span>
+               <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" size="40">
+               <input type="text" id="extraAddress" name="extraAddress" placeholder="참고항목" size="40"> <p>
                     
                     <!-- 도훈이형꺼 
                         <input type="text" placeholder="우편번호" readonly><input type="button" value="검색"><br>
@@ -138,23 +146,23 @@
         </div>
         <!-- 히든 시작 -->
         <!-- 금액 설정한 것(GiveDTO) -->
-			<input type="hidden" name='projectNo' value = '${giveDTO.projectNo}'/>
-			<input type="hidden" name='id' value = '${giveDTO.id}'/>
-			<input type='hidden' name='giveMoney' value = '${giveDTO.giveMoney}'/>
-			
-			<!-- 물품 설정한 것 -->
-			<c:if test="${param.moneyOrItem == 2}">
-				<c:forEach var="giveItem" items="${giveDTO.giveItem}" varStatus="status">
-					<input type="hidden" name="giveItem[${status.index}].giveItemName" value = '${giveItem.giveItemName}'/><!-- setGiveItem().setGiveItemName() -->
-					<input type="hidden" name="giveItem[${status.index}].giveItemPrice" value = '${giveItem.giveItemPrice}'/>
-					<input type="hidden" name="giveItem[${status.index}].giveItemAmount" value = '${giveItem.giveItemAmount}'/> <br/><!-- getGiveItem()로 giveItem 호출 후에 setGiveItemAmount(String giveItemAmount)을 호출함 -->
-				</c:forEach>
-			</c:if>
-			
-			<!-- 프로젝트 정보 -->
-			<input type='hidden' name='projectSubject' value = '${param.projectSubject}'/>
-			<input type="hidden" name='moneyOrItem' value = '${param.moneyOrItem}'/>
-			<!-- 히든 끝-->
+         <input type="hidden" name='projectNo' value = '${giveDTO.projectNo}'/>
+         <input type="hidden" name='id' value = '${giveDTO.id}'/>
+         <input type='hidden' name='giveMoney' value = '${giveDTO.giveMoney}'/>
+         
+         <!-- 물품 설정한 것 -->
+         <c:if test="${param.moneyOrItem == 2}">
+            <c:forEach var="giveItem" items="${giveDTO.giveItem}" varStatus="status">
+               <input type="hidden" name="giveItem[${status.index}].giveItemName" value = '${giveItem.giveItemName}'/><!-- setGiveItem().setGiveItemName() -->
+               <input type="hidden" name="giveItem[${status.index}].giveItemPrice" value = '${giveItem.giveItemPrice}'/>
+               <input type="hidden" name="giveItem[${status.index}].giveItemAmount" value = '${giveItem.giveItemAmount}'/> <br/><!-- getGiveItem()로 giveItem 호출 후에 setGiveItemAmount(String giveItemAmount)을 호출함 -->
+            </c:forEach>
+         </c:if>
+         
+         <!-- 프로젝트 정보 -->
+         <input type='hidden' name='projectSubject' value = '${param.projectSubject}'/>
+         <input type="hidden" name='moneyOrItem' value = '${param.moneyOrItem}'/>
+         <!-- 히든 끝-->
         <div class="payment-3">
             <input type="submit" value="결제하기">
         </div>

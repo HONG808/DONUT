@@ -16,10 +16,10 @@
 	<script type="text/javascript">
 		/*결제를 위해 필요한 data*/
 		var giveMoney = ${giveDTO.giveMoney};
-		var name = "${name}";
+		var name = "${sessionScope.userDTO.name}";
 		var projectSubject = "${param.projectSubject}";
-		var email = "${email}";
-		var tel = "${phone}";
+		var email = "${sessionScope.userDTO.email}";
+		var tel = "${sessionScope.userDTO.phone}";
 		var postcode = "${param.postcode}";
 		var IMP = window.IMP; // 생략해도 괜찮습니다.
 		IMP.init('imp15231326'); //"가맹점 식별코드"를 사용합니다.
@@ -174,7 +174,7 @@
 									success : function(result){ //DB에 저장 성공했을 때
 										if(confirm("결제가 완료되었습니다. 기부하신 프로젝트에 응원댓글을 작성하시겠습니까?"))
 									    {
-									     	location.href="${pageContext.request.contextPath}/project/projectRead";
+									     	location.href="${pageContext.request.contextPath}/project/projectRead?projectNo="+projectNo;
 									    }
 									    else
 									    {
@@ -187,7 +187,7 @@
 								         msg += '에러내용 : ' + err.error_msg;
 								         if(confirm("결제에 실패하였습니다. 프로젝트로 다시 돌아가시겠습니까?"))
 									     {
-									      	 location.href="${pageContext.request.contextPath}/project/projectRead";
+									      	 location.href="${pageContext.request.contextPath}/project/projectRead?projectNo="+projectNo;
 									     }
 									     else
 									     {
@@ -203,7 +203,7 @@
 						         msg += '에러내용 : ' + rsp.error_msg;
 						         if(confirm("결제에 실패하였습니다. 프로젝트로 다시 돌아가시겠습니까?"))
 							     {
-							      	 location.href="${pageContext.request.contextPath}/project/projectRead";
+							      	 location.href="${pageContext.request.contextPath}/project/projectRead?projectNo="+projectNo;
 							     }
 							     else
 							     {
@@ -218,7 +218,7 @@
 				         msg += '에러내용 : ' + err.error_msg;
 				         if(confirm("결제에 실패하였습니다. 프로젝트로 다시 돌아가시겠습니까?"))
 					     {
-					      	 location.href="${pageContext.request.contextPath}/project/projectRead";
+					      	 location.href="${pageContext.request.contextPath}/project/projectRead?projectNo="+projectNo;
 					     }
 					     else
 					     {
@@ -234,7 +234,7 @@
 		         msg += '에러내용 : ' + rsp.error_msg;
 		         if(confirm("결제에 실패하였습니다. 프로젝트로 다시 돌아가시겠습니까?"))
 			     {
-			      	 location.href="${pageContext.request.contextPath}/project/projectRead";
+			      	 location.href="${pageContext.request.contextPath}/project/projectRead?projectNo="+projectNo;
 			     }
 			     else
 			     {

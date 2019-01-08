@@ -16,8 +16,20 @@
                     <li class="sidebar-1"><a href="${pageContext.request.contextPath}/member/memberMypage">회원정보수정</a></li>
                     <li class="sidebar-2"><a href="${pageContext.request.contextPath}/member/memberGive">내 후원</a></li>
                     <li class="sidebar-3"><a href="${pageContext.request.contextPath}/member/memberReceipt">영수증관리</a></li>
-                    <li class="select sidebar-4"><a href="${pageContext.request.contextPath}/member/memberQnA">Q&A</a></li>
-                    <li class="sidebar-5"><a href="${pageContext.request.contextPath}/member/memberCheer">내 응원</a></li>
+                    <li class="select sidebar-4"><a href="${pageContext.request.contextPath}/member/memberQnA">Q&A</a>
+                   				  <c:choose>
+	                              <c:when test="${qnaNewAlarm==1}">
+	                                	<i class="fa fa-bell faa-tada animated" id="alarm" style="color:#FF607F"></i>
+	                              </c:when>
+                              </c:choose> </li>
+                    <li class="sidebar-5"><a href="${pageContext.request.contextPath}/member/memberCheer">내 응원</a>
+                                        <c:choose>
+	                              <c:when test="${newAlarm==1}">
+	                                	<i class="fa fa-bell faa-tada animated" id="alarm" style="color:#FF607F"></i>
+	                              </c:when>
+                              </c:choose> </li>
+                    <li class="sidebar-6"><a href="${pageContext.request.contextPath}/member/memberFavorite">즐겨찾기</a></li>
+                    
                 </ul>
         </div>
         <div class="mypage-contents">
@@ -58,8 +70,14 @@
                             <input type="hidden" id="qnaNo" value="${qnaList.qnaNo}">
                             </th>
                             <td>
-                                <div class="questionContent" >
+                                <div class="questionContent">
+                                 <input type="hidden" id="qnaNo" value="${qnaList.qnaNo}">
                                 <span>${qnaList.qnaContent}</span>
+                                    <c:choose>
+                                   <c:when test="${qnaList.qnaNotify==1}">
+                                　          <strong>new</strong> <i class="far fa-comment faa-flash animated"></i>
+                                      </c:when>
+                                   </c:choose>
                                 </div> 
                             </td>
                             <td> ${qnaList.id} </td>
@@ -121,20 +139,59 @@
 
 <script>
 
-$(".questionContent").on('click',function(){
 
-	
+
+$(".questionContent").on('click',function(){
+	  var qnaNo = $(this).children().val();
+	 
     if($(this).parent().parent().next().css('display') == 'none'){
         $(this).parent().parent().next().css('display', 'table-row');
     	var myquestion = $(this).children().text();
     	$(this).parent().parent().next().find('span.myquestion').text(myquestion);
     }else if($(this).parent().parent().next().css('display') == 'table-row'){
         $(this).parent().parent().next().css('display', 'none');
+        $(this).find(".fa-comment").hide();
     }
 
+     $.ajax({
+		   url:"${pageContext.request.contextPath}/member/memberQnANotify" , //서버요청주소 현재링크기준으로
+		   type:"post" , //전송방식(get or post)
+		   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+		   data:{
+			   "qnaNo": qnaNo,
+			   }
+	   })//ajax끝    
+	   
 
 })
 
+
+
+
+$(".questionContent").on('click',function(){
+	   $.ajax({
+		   url:"${pageContext.request.contextPath}/member/alarmCheck" , //서버요청주소 현재링크기준으로
+		   type:"post" , //전송방식(get or post)
+		   dataType:"json", //서버가 보내주는 데이터타입(text,html,xml,json)
+		   success:function(alarmExist){
+			   if(alarmExist==2){
+				   setTimeout("history.go(0);", 3500);
+			   	}
+			   } ,
+			   error:function(err){
+				   alert("에러발생");
+			   } 
+	   })//ajax2끝   
+})
+
+
+$(window).on('beforeunload', function(){
+	  $.ajax({
+		   url:"${pageContext.request.contextPath}/member/alarmCheck" , //서버요청주소 현재링크기준으로
+		   type:"post" , //전송방식(get or post)
+		   dataType:"json" //서버가 보내주는 데이터타입(text,html,xml,json)
+	   })//ajax2끝   
+})
 
 </script>
 <%@ include file="../common/footer.jsp" %>

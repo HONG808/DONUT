@@ -12,9 +12,11 @@ public interface NoticeDAO {
 	
 	public int noticeUpdate(NoticeDTO noticeDTO) throws Exception;
 	
-	public List<NoticeDTO> noticeSelectAll() throws Exception;
+	public List<NoticeDTO> noticeSelectAll(int start, int end, String searchOption, String keyword) throws Exception;
 	
 	public NoticeDTO noticeRead(int noticeNo) throws Exception;
+	
+	public int countArticle(String searchOption, String keyword) throws Exception;
 	
 	public int noticeDelete(int noticeNo) throws Exception;
 	

@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="paymentMapper">
  	
+ 	<update id="updateAccMoney" parameterType="map">
+ 		update tb_member set accMoney = accMoney + #{giveMoney} where id = #{id} 
+ 	</update>
+ 	
  	<insert id="insertGive" parameterType="giveDTO">
  		insert into tb_give(giveNo, projectNo, id, giveMoney, giveRegdate) 
     	values (seq_give.nextval, #{projectNo}, #{id}, #{giveMoney}, sysdate)

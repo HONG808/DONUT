@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 import com.donut.web.dao.MemberDAO;
 import com.donut.web.dto.CheerDTO;
 import com.donut.web.dto.FavoriteDTO;
-import com.donut.web.dto.GiveDTO;
 import com.donut.web.dto.MemberDTO;
 import com.donut.web.dto.ProjectDTO;
 import com.donut.web.dto.QnADTO;
+import com.donut.web.dto.ReceiptDTO;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO{
@@ -36,15 +36,6 @@ public class MemberDAOImpl implements MemberDAO{
 			return false;
 		}
 	}
-	/* 지성 아이디비번 체크
-	@Override
-	public MemberDTO memberSelectByIdPwd(String id, String pwd) throws Exception {
-		Map<String,Object> map = new HashMap<>();
-		map.put("id", id);
-		map.put("pwd", pwd);
-		return session.selectOne("memberMapper.memberSelectByIdAndPwd",map);
-	}
-	*/
 
 	@Override
 	public MemberDTO memberSelectByIdPwd(String id, String pwd) throws Exception {
@@ -57,14 +48,16 @@ public class MemberDAOImpl implements MemberDAO{
 	
 	@Override
 	public void loginAPI() throws Exception {
-		// TODO Auto-generated method stub
-		
+			//사용안함
 	}
 
 	@Override
 	public int memberDelete(MemberDTO memberDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = session.update("memberMapper.memberDelete",memberDTO);
+		if(result == 0) {
+			throw new Exception("회원탈퇴에 실패했습니다");
+		}
+		return result;
 	}
 
 	@Override
@@ -100,22 +93,21 @@ public class MemberDAOImpl implements MemberDAO{
 		return session.update("memberMapper.memberUpdate",memberDTO);
 	}
 
-	@Override
-	public List<FavoriteDTO> memberFavoriteList(String id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	 @Override
+	    public List<FavoriteDTO> memberFavoriteList(String id) throws Exception {
+	        
+	        return session.selectList("memberMapper.memberFavorite",id);
+	    }
 
+	    @Override
+	    public int memberFavoriteDelete(FavoriteDTO favoriteDTO) throws Exception {
+	      
+	        return session.delete("memberMapper.deleteFavorite",favoriteDTO);
+	    }
+	    
 	@Override
-	public int memberFavoriteDelete(int favoriteNo, String id) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public List<GiveDTO> memberReceiptList(String id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ReceiptDTO> memberReceiptList(String id) throws Exception {
+		return session.selectList("memberMapper.receiptList",id);
 	}
 
 	@Override
@@ -123,5 +115,28 @@ public class MemberDAOImpl implements MemberDAO{
 		return session.selectList("memberMapper.memberGiveList",id);
 	}
 	
+	@Override
+	public int memberUpdateNotify(int cheerNo) {
+		return session.update("memberMapper.memberUpdateNotify",cheerNo);
+	}
+	
+	@Override
+	public int memberUpdateQnANotify(int qnaNo) {
+		return session.update("memberMapper.memberUpdateQnANotify",qnaNo);
+	}
 
+	@Override
+	public int Alarm(String id) {
+		int result = session.selectOne("memberMapper.cheerAlarm",id);
+		
+		return result;
+		
+	}
+
+	@Override
+	public int qnaAlarm(String id) {
+		int result = session.selectOne("memberMapper.qnaAlarm",id);
+		
+		return result;
+	}
 }

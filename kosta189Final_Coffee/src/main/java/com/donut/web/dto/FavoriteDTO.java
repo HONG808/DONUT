@@ -5,13 +5,15 @@ public class FavoriteDTO {
 	private int favoriteNo;
 	private String id;
 	private int projectNo;
+	private ProjectDTO projectDTO;
 
 	public FavoriteDTO() {}
 
-	public FavoriteDTO(int favoriteNo, String id, int projectNo) {
+	public FavoriteDTO(int favoriteNo, String id, int projectNo, ProjectDTO projectDTO) {
 		this.favoriteNo = favoriteNo;
 		this.id = id;
 		this.projectNo = projectNo;
+		this.projectDTO = projectDTO;
 	}
 
 	public int getFavoriteNo() {
@@ -38,9 +40,19 @@ public class FavoriteDTO {
 		this.projectNo = projectNo;
 	}
 
+	public ProjectDTO getProjectDTO() {
+		return projectDTO;
+	}
+
+	public void setProjectDTO(ProjectDTO projectDTO) {
+		this.projectDTO = projectDTO;
+	}
+
 	@Override
 	public String toString() {
-		return "FavoriteDTO [favoriteNo=" + favoriteNo + ", id=" + id + ", projectNo=" + projectNo + "]";
+		return "FavoriteDTO [favoriteNo=" + favoriteNo + ", id=" + id + ", projectNo=" + projectNo + ", projectDTO="
+				+ projectDTO + "]";
 	}
+	
 	
 }

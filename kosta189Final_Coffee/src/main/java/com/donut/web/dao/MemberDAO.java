@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.donut.web.dto.CheerDTO;
 import com.donut.web.dto.FavoriteDTO;
-import com.donut.web.dto.GiveDTO;
 import com.donut.web.dto.MemberDTO;
 import com.donut.web.dto.ProjectDTO;
 import com.donut.web.dto.QnADTO;
+import com.donut.web.dto.ReceiptDTO;
 
 public interface MemberDAO {
 
@@ -48,11 +48,19 @@ public interface MemberDAO {
 	public List<FavoriteDTO> memberFavoriteList(String id) throws Exception;
 
 	//기부자 마이페이지 즐겨찾기 삭제 - favoriteNo 뷰에서 가져오기 , service 세션 아이디값 보내주기
-	public int memberFavoriteDelete(int favoriteNo,String id) throws Exception;
+	public int memberFavoriteDelete(FavoriteDTO favoriteDTO) throws Exception;
 
 	//기부자 마이페이지 영수증  ,service 세션 아이디값 보내주기
-	public List<GiveDTO> memberReceiptList(String id) throws Exception;
+	public List<ReceiptDTO> memberReceiptList(String id) throws Exception;
 
 	//기부자 프로젝트 기부 현황, service 세션 아이디값 보내주기
 	public List<ProjectDTO> memberGiveList(String id) throws Exception;
+
+	public int memberUpdateNotify(int cheerNo);
+	
+	public int memberUpdateQnANotify(int qnaNo);
+
+	public int Alarm(String sessionId);
+	
+	public int qnaAlarm(String sessionId);
 }

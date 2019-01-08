@@ -11,8 +11,8 @@
             </div>
         </div>
 
+        		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/aos.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/slick.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/index.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/odometer.min.js"></script>
 

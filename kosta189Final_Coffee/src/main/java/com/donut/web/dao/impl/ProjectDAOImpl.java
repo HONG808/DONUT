@@ -12,6 +12,7 @@ import com.donut.web.dao.ProjectDAO;
 import com.donut.web.dto.FavoriteDTO;
 import com.donut.web.dto.ItemDTO;
 import com.donut.web.dto.ProjectDTO;
+import com.donut.web.dto.RewardDTO;
 
 @Repository
 public class ProjectDAOImpl implements ProjectDAO{
@@ -20,8 +21,10 @@ public class ProjectDAOImpl implements ProjectDAO{
 	SqlSession session;
 	
 	@Override
-	public List<ProjectDTO> projectSelectAll() throws Exception {
-		return session.selectList("projectMapper.projectSelectAll");
+	public List<ProjectDTO> projectSelectAll(String flag) throws Exception {
+		if(flag == null) flag = "ing";
+
+		return session.selectList("projectMapper.projectSelectAll", flag);
 	}
 
 	@Override
@@ -30,9 +33,8 @@ public class ProjectDAOImpl implements ProjectDAO{
 	}
 
 	@Override
-	public List<ProjectDTO> projectSelectByCategory1() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ProjectDTO> projectSelectByCategory1(ProjectDTO projectDTO) throws Exception {
+		return session.selectList("projectMapper.categoryList",projectDTO);
 	}
 
 	@Override
@@ -106,5 +108,13 @@ public class ProjectDAOImpl implements ProjectDAO{
 		return true;
 	}
 
+	@Override
+	public int rewardListInsert(RewardDTO rewardDTO) throws Exception {
+		int result= session.insert("projectMapper.rewardListInsert", rewardDTO);
+		
+		return result;
+	}
+	
+	
 	
 }

@@ -1,6 +1,9 @@
 package com.donut.web.controller;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,13 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.donut.web.dto.CheerDTO;
+import com.donut.web.dto.CompanyDTO;
 import com.donut.web.dto.FavoriteDTO;
+import com.donut.web.dto.MemberDTO;
 import com.donut.web.dto.ProjectDTO;
 import com.donut.web.dto.QnADTO;
 import com.donut.web.dto.ReviewDTO;
 import com.donut.web.service.CheerService;
+import com.donut.web.service.CompanyService;
 import com.donut.web.service.ProjectService;
 import com.donut.web.service.QnAService;
 import com.donut.web.service.ReviewService;
@@ -34,18 +41,23 @@ public class ProjectController {
 	private QnAService qnaService;
 	@Autowired 
 	private ReviewService reviewService;
+	@Autowired
+	private CompanyService companyService;
 	
-	
+	private String path = "resources/finalPhoto/project";
+
 	@RequestMapping("/projectList")
-	public String projectList(Model model) {
+	public String projectList(Model model,String flag) {
 		try {
-			List<ProjectDTO> list = projectService.projectSelectAll();
+			List<ProjectDTO> list = projectService.projectSelectAll(flag);
 			model.addAttribute("list",list);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "project/projectList";
 	}
+	
+	
 	
 	@RequestMapping("/projectRead")
 	public String projectRead(HttpSession session, Model model,@RequestParam("projectNo") int projectNo) {
@@ -57,15 +69,19 @@ public class ProjectController {
 		
 		try {
 			ProjectDTO projectDTO = projectService.projectSelectByNo(projectNo);
-			
 			//즐겨찾기 값 세팅
 			FavoriteDTO favoriteDTO = new FavoriteDTO();
 			favoriteDTO.setProjectNo(projectNo);
-			favoriteDTO.setId("test2");
-			//즐겨찾기 상태 체크
-			boolean flag = projectService.projectFavoriteSelectByNo(favoriteDTO);
-//			boolean updateFlag = projectService.projectDuplicatedById(projectNo,(String)session.getAttribute("id"));
-			
+			MemberDTO memberDTO = (MemberDTO)session.getAttribute("userDTO");
+			CompanyDTO companyDTO = companyService.selectById(projectDTO.getId());
+			if(memberDTO != null)
+			{
+				favoriteDTO.setId(memberDTO.getId());
+				//즐겨찾기 상태 체크
+				boolean flag = projectService.projectFavoriteSelectByNo(favoriteDTO);
+	//			boolean updateFlag = projectService.projectDuplicatedById(projectNo,(String)session.getAttribute("id"));
+				model.addAttribute("flag", flag);
+			}
 			//한나
 			int cheerprojectNo = projectDTO.getProjectNo();
 			list = cheerService.selectByAll(cheerprojectNo);
@@ -74,8 +90,8 @@ public class ProjectController {
 			
 			model.addAttribute("projectDTO",projectDTO);
 			model.addAttribute("favoriteDTO", favoriteDTO);
-			model.addAttribute("flag", flag);
 //			model.addAttribute("updateFlag", updateFlag);
+			model.addAttribute("companyDTO",companyDTO);
 			
 			//리뷰
 			ReviewDTO reviewDTO  = reviewService.reviewRead(projectNo);
@@ -93,8 +109,17 @@ public class ProjectController {
 	}
 	
 	@RequestMapping("/categoryList")
-	public String categoryList() {
-		return "project/categoryList";
+	public String categoryList(Model model, ProjectDTO projectDTO) {
+		System.out.println(projectDTO.getCategory1());
+		System.out.println(projectDTO.getCategory2());
+		System.out.println(projectDTO.getCategory3());
+		try {
+			List<ProjectDTO> list = projectService.projectSelectByCategory1(projectDTO);
+			model.addAttribute("list",list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "project/projectList";
 	}
 	
 	@RequestMapping("/categoryList2")
@@ -118,34 +143,73 @@ public class ProjectController {
 	}
 	
 	@RequestMapping("/itemInsert")
-	public String itemInsert(ProjectDTO projectDTO, String category) {
-		//category 분류
+	@ResponseBody
+	public Object itemInsert(HttpSession session,ProjectDTO projectDTO, String category) {
+		
+		System.out.println(projectDTO.getReward());
+		Map<String, Object> result = new HashMap<>();
+		result.put("status", "fail");
+		
 		String [] categorys = category.split(">");
-		projectDTO.setCategory1(categorys[0]);
-		projectDTO.setCategory2(categorys[1]);
+		projectDTO.setCategory2(categorys[0]);
+		projectDTO.setCategory3(categorys[1]);
+		MemberDTO memberDTO = (MemberDTO)session.getAttribute("userDTO");
+
+		MultipartFile file = projectDTO.getFile();
+		projectDTO.setId(memberDTO.getId());
+		
 		
 		try{
-			projectService.ItemInsert(projectDTO);
+				
+				String realPath = session.getServletContext().getRealPath("/") + path;
+				if(file.getSize() > 0 ) {
+				projectDTO.setProjectImg(file.getOriginalFilename());
+				file.transferTo(new File(realPath + "/" + file.getOriginalFilename()));
+				}
+				
+				
+		projectService.ItemInsert(projectDTO);
+				
+		result.put("status", "success");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return "redirect:projectList";
+		return result;
 	}
 	
+	
 	@RequestMapping("/moneyInsert")
-	public String moneyInsert(ProjectDTO projectDTO, String category) {
-		String [] categorys = category.split(">");
-		projectDTO.setCategory1(categorys[0]);
-		projectDTO.setCategory2(categorys[1]);
+	@ResponseBody
+	public Object moneyInsert(HttpSession session,ProjectDTO projectDTO, String category) {
 		
-		projectDTO.setId("company1");
+		Map<String, Object> result = new HashMap<>();
+		result.put("status", "fail");
+
+		String [] categorys = category.split(">");
+		projectDTO.setCategory2(categorys[0]);
+		projectDTO.setCategory3(categorys[1]);
+		
+		MemberDTO memberDTO = (MemberDTO)session.getAttribute("userDTO");
+		
+		MultipartFile file = projectDTO.getFile();
+		projectDTO.setId(memberDTO.getId());
+		
 		try { 
+			String realPath = session.getServletContext().getRealPath("/") + path;
+				if(file.getSize() > 0 ) {
+				projectDTO.setProjectImg(file.getOriginalFilename());
+				file.transferTo(new File(realPath + "/" + file.getOriginalFilename()));
+				}
+			
 		projectService.MoneyInsert(projectDTO);
+		result.put("status", "success");
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:projectList";
+		
+		return result;
 	}
 	
 	@RequestMapping("/projectUpdateForm")

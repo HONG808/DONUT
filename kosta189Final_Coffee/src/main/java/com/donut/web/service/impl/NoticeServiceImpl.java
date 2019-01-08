@@ -18,9 +18,15 @@ public class NoticeServiceImpl implements NoticeService {
 	private NoticeDAO noticeDAO;
 	
 	@Override
-	public List<NoticeDTO> noticeSelectAll() throws Exception {
-		return noticeDAO.noticeSelectAll();
+	public List<NoticeDTO> noticeSelectAll(int start, int end, String searchOption, String keyword) throws Exception {
+		return noticeDAO.noticeSelectAll(start, end, searchOption, keyword);
 	}
+	
+	// 07. 게시글 레코드 갯수
+		@Override
+		public int countArticle(String searchOption, String keyword) throws Exception {
+			return noticeDAO.countArticle(searchOption, keyword);
+		}
 	
 	@Override
 	public NoticeDTO noticeSelectByNo(int noticeNo) throws Exception {

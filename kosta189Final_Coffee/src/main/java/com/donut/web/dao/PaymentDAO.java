@@ -10,6 +10,8 @@ import com.donut.web.dto.ProjectDTO;
 
 public interface PaymentDAO
 {
+	public int updateAccMoney(String id, int giveMoney);
+	
 	public int insertGive(GiveDTO giveDTO);
 	
 	public int selectLastGiveNo();
@@ -25,5 +27,5 @@ public interface PaymentDAO
 	public List<ItemDTO> selectProjectItems(int projectNo);
 	
 	public int updateAfterItemPayment(List<ItemDTO> itemDTOList, List<GiveItemDTO> giveItemDTOList, int giveNo);
-	
+
 }

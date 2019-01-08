@@ -2,6 +2,7 @@ package com.donut.web.dao;
 
 import java.util.List;
 
+import com.donut.web.dto.CompanyDTO;
 import com.donut.web.dto.MemberDTO;
 import com.donut.web.dto.ProjectDTO;
 
@@ -20,4 +21,5 @@ public interface CompanyDAO {
 	//기부단체 마이페이지 프로젝트 현황
 	public List<ProjectDTO> companyProjectSelectAll(String id) throws Exception;
 
+	public CompanyDTO selectById(String id) throws Exception;
 }

@@ -8,6 +8,7 @@ import com.donut.web.dto.GiveDTO;
 import com.donut.web.dto.MemberDTO;
 import com.donut.web.dto.ProjectDTO;
 import com.donut.web.dto.QnADTO;
+import com.donut.web.dto.ReceiptDTO;
 
 public interface MemberService {
 
@@ -24,7 +25,7 @@ public interface MemberService {
 	public void loginAPI() throws Exception;
 
 	//회원탈퇴-update로 sql짜야함!!(세션값으로 ID,PWD받기-DAO로 전달)
-	public int memberDelete() throws Exception;
+	public int memberDelete(MemberDTO memberDTO) throws Exception;
 
 	//회원탈퇴 및 수정 전 비밀번호 확인(세션값으로 ID,PWD받기-ORACLE,)
 	//+session pwd로 회원확인,해당 id,pwd과 db의 id,pwd값이 동일할때 삭제
@@ -34,10 +35,10 @@ public interface MemberService {
 	public MemberDTO memberSelectAll() throws Exception;
 
 	//기부자 마이페이지 응원댓글 - service에서 세션 보내주기
-	public List<CheerDTO> memberSelectByCheer() throws Exception;
+	public List<CheerDTO> memberSelectByCheer(String id) throws Exception;
 
 	//기부자 마이페이지 QnA - service에서 세션 보내주기
-	public List<QnADTO> memberSelectByQnA() throws Exception;
+	public List<QnADTO> memberSelectByQnA(String id) throws Exception;
 
 	//회원정보 수정 폼 - service 세션보내주기
 	public MemberDTO memberSelectById(String id) throws Exception;
@@ -46,14 +47,22 @@ public interface MemberService {
 	public int memberUpdate(MemberDTO memberDTO) throws Exception;
 
 	//기부자 마이페이지 즐겨찾기 리스트 - service 세션보내주기
-	public List<FavoriteDTO> memberFavoriteList() throws Exception;
+	public List<FavoriteDTO> memberFavoriteList(String id) throws Exception;
 
 	//기부자 마이페이지 즐겨찾기 삭제 - favoriteNo 뷰에서 가져오기 , service 세션 아이디값 보내주기
-	public int memberFavoriteDelete(int favoriteNo) throws Exception;
+	public int memberFavoriteDelete(FavoriteDTO favoriteDTO) throws Exception;
 
 	//기부자 마이페이지 영수증 
-	public List<GiveDTO> memberReceiptList() throws Exception;
+	public List<ReceiptDTO> memberReceiptList(String id) throws Exception;
 
 	//기부자 프로젝트 기부 현황
 	public List<ProjectDTO> memberGiveList(String id) throws Exception;
+
+	public int memberUpdateNotify(int cheerNo);
+	
+	public int memberUpdateQnANotify(int qnaNo);
+
+	public int Alarm(String sessionId);
+	
+	public int qnaAlarm(String sessionId);
 }

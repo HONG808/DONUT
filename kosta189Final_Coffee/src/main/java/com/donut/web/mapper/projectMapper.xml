@@ -33,6 +33,7 @@
 			<result property="condition" column="condition" />
 		</collection>
 	</resultMap>
+	
 
 
 	<insert id="moneyInsert" parameterType="projectDTO">
@@ -55,7 +56,7 @@
 		VALUES (seq_project.nextval,
 		#{id},
 		#{projectSubject},
-		#{category1},
+		'금액',
 		#{category2},
 		#{category3},
 		#{story},
@@ -89,7 +90,7 @@
 		VALUES (seq_project.nextval,
 		#{id},
 		#{projectSubject},
-		#{category1},
+		'물품',
 		#{category2},
 		#{category3},
 		#{story},
@@ -108,12 +109,26 @@
 		(projectItemNo,projectNo,itemName,itemPrice,itemAmount,goalAmount)
 		VALUES(seq_item.nextval,seq_project.currval,#{itemName},#{itemPrice},#{itemAmount},#{goalAmount})
 	</insert>
+	<insert id="rewardListInsert" parameterType="rewardDTO">
+		INSERT INTO TB_REWARD
+		(rewardNo,projectNo,rewardItem,condition)
+		VALUES(seq_reward.nextval,seq_project.currval,#{rewardItem},#{condition})
+	</insert>
 	
 
-	<select id="projectSelectAll" resultType="projectDTO">
+	<select id="projectSelectAll" resultType="projectDTO" parameterType="string">
 		SELECT *
 		FROM tb_project
-		ORDER BY projectNo DESC
+		<choose>
+			<when test='_parameter.equals("ing")'>
+			where percent != 100 and projectEnd &gt; sysdate
+			</when>
+			<when test='_parameter.equals("end")'>
+			where (percent = 100)
+			or (projectEnd &lt; sysdate)
+			</when>
+		</choose>
+			ORDER BY projectNo DESC
 	</select>
 
 	<select id="projectSelectByNo" parameterType="int"
@@ -149,4 +164,21 @@
 		and 
 		id = #{id}
 	</select>
+	
+	<select id="categoryList" parameterType="projectDTO" resultType="projectDTO">
+	 	SELECT *
+		FROM tb_project
+	 	<trim prefix="where" prefixOverrides="and">
+		 	<if test='!category1.equals("전체")'>
+		 		category1=#{category1}
+		 	</if>
+		 	<if test='!category2.equals("전체")'>
+		 		and category2=#{category2}
+		 	</if>
+		 	<if test='!category3.equals("전체")'>
+		 		and category3=#{category3}
+		 	</if>
+	 	</trim>
+	 </select>
+	
 </mapper>

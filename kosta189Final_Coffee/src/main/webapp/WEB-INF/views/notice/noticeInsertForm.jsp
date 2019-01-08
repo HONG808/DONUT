@@ -1,53 +1,55 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<H1>noticeInsertForm</H1>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ include file="../common/header.jsp"%>
 
-<form name="noticeInsertForm" method="post" action="${pageContext.request.contextPath}/notice/noticeInsert" onSubmit='return checkValid()' enctype="multipart/form-data">
+<SCRIPT language=javascript>
+   $(function(){
+	   $("input[value=등록완료]").click(function(){
+		   $("#noticeInsertForm").attr("action", "${pageContext.request.contextPath}/notice/noticeInsert");
+		   $("#noticeInsertForm").submit();
+	   
+   })
+	   $("input[value=목록]").click(function(){
+			   $("#noticeInsertForm").attr("action", "${pageContext.request.contextPath}/notice/noticeList");
+			   $("#noticeInsertForm").submit();
+		   
+	   })
+	   
+   })
+</script>
 
-<table align="center" cellpadding="5" cellspacing="2" width="600" border="1" >
+<form name="noticeInsertForm" method="post" id="noticeInsertForm" >
 
-    <tr>
-        <td width="1220" height="20" colspan="2" bgcolor="#00cc00">
-            <p align="center"><font color="white" size="3"><b> 공지사항 등록 </b></font></p>
-        </td>
-    </tr>
-  
-    
-    <tr>
-        <td width="150" height="20">
-            <p align="right"><b><span style="font-size:9pt;">제목</span></b></p>
-        </td>
-        <td width="450" height="20" ><b><span style="font-size:9pt;">
-		<input type=text name="noticeTitle" size="50"></span></b></td>
-    </tr>
-    <tr>
-        <td width="150" height="20">
-            <p align="right"><b><span style="font-size:9pt;">내용</span></b></p>
-        </td>
-        <td width="450" height="20"><b><span style="font-size:9pt;">
-		<textarea name="noticeContent" cols="50" rows="10"></textarea></span></b></td>
-    </tr>
-    
-    
-    <tr>
-        <td width="450" height="20" colspan="2" align="center"><b><span style="font-size:9pt;"><input type=submit value=등록완료> 
-        </span></b></td>
-    </tr>
-</table>
 
-<input type="hidden" name="id" value="${id}">
+	<div class="notice-write-wrap">
+		<div class="notice-write-container">
+			<table>
+				<tr>
+					<td>
+						<div>
+							<input name="noticeTitle" type="text" maxlength="50"
+								placeholder="제목">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div>
+							<textarea name="noticeContent" placeholder="내용"></textarea>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<input type="hidden" name="id" value="${userDTO.id}">
+			<div class="notice-write-btn">
+				<input type="button" value="등록완료"> 
+				<input type="button" value="목록">
+			</div>
+		</div>
+	</div>
+
 </form>
 
-<hr>
-<div align=right><span style="font-size:9pt;">&lt;<a href="${pageContext.request.contextPath}/notice/noticeList">메인화면으로 돌아가기</a>&gt;</span></div>
-
-
-</body>
-</html>
+<%@ include file="../common/footer.jsp"%>

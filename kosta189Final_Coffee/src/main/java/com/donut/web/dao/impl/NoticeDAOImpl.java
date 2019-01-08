@@ -16,17 +16,35 @@ public class NoticeDAOImpl implements NoticeDAO {
 
 	@Autowired
 	private SqlSession session;
-	
+
 	@Override
-	public List<NoticeDTO> noticeSelectAll() throws Exception {
-		return session.selectList("noticeMapper.selectAll");
+	public List<NoticeDTO> noticeSelectAll(int start, int end, String searchOption, String keyword) throws Exception {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("searchOption", searchOption);
+		map.put("keyword",  keyword);
+		map.put("start", start);
+		map.put("end", end);
+
+		return session.selectList("noticeMapper.selectAll", map);
 	}
-	
+
+
+	// 07. 게시글 레코드 갯수
+	@Override
+	public int countArticle(String searchOption, String keyword) throws Exception {
+		// 검색옵션, 키워드 맵에 저장
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		return session.selectOne("noticeMapper.countArticle", map);
+	}
+
 	@Override
 	public NoticeDTO noticeSelectByNo(int noticeNo) throws Exception {
-		return session.selectOne("noticeMapper.selectAll",noticeNo);
+		return session.selectOne("noticeMapper.selectByNo",noticeNo);
 	}
-	
+
 	@Override
 	public int noticeInsert(NoticeDTO noticeDTO) throws Exception {
 
@@ -50,7 +68,9 @@ public class NoticeDAOImpl implements NoticeDAO {
 		return session.delete("noticeMapper.noticeDelete", noticeNo);
 	}
 
-	 /* @Override
+
+
+	/* @Override
 	   public boolean noticeDuplicatedById(int noticeNo, String id) throws Exception {
 	      Map<String,Object> map = new HashMap<>();
 	      map.put("noticeNo", noticeNo);

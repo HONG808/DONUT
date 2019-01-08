@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../../common/header.jsp" %>
 
 <div class="mypage-wrap">
@@ -20,28 +21,117 @@
            <p align="center" class="mypage-title">
                <span style="font-size:30px;color:black;">내 프로젝트</span>
            </p>
-            <div class="project-list-wrap">
-            <div class="project-list">
-                <div class="project-list-items">
-                    <div class="project-img"><img src="${pageContext.request.contextPath}/resources/images/thumbs/test1.jpg"></div>
-                    <div class="project-name"><span>원빈 도와주세요!</span></div>
-                    <div class="progress-wrap"><progress id="progressbar" value="35" max="100"></progress></div>
-                    <div class="progress-value-wrap"><span class="progress-value">35%</span></div>
-                    <div class="project-collection"><span>1,300,000원</span></div>
-                </div>
+             <table id="listTable"   align="center" border="0" cellpadding="5" cellspacing="2" width="100%" bordercolordark="white" bordercolorlight="black">
+
+	<tr>
+	<td bgcolor="pink">
+            <p align="center">
+            <font color="white"><b><span style="font-size:9pt;">프로젝트 번호</span></b></font></p>
+        </td>
+        <td bgcolor="pink">
+            <p align="center">
+            <font color="white"><b><span style="font-size:9pt;">주제</span></b></font></p>
+        </td>
+        
+        <td bgcolor="pink">
+            <p align="center"><font color="white"><b><span style="font-size:9pt;">달성률</span></b></font></p>
+        </td>
+        <td bgcolor="pink">
+            <p align="center"><font color="white"><b><span style="font-size:9pt;">목표</span></b></font></p>
+        </td>
+        <td bgcolor="pink">
+            <p align="center"><font color="white"><b><span style="font-size:9pt;">프로젝트 만료일</span></b></font></p>
+        </td>
+         <td bgcolor="pink">
+            <p align="center"><font color="white"><b><span style="font-size:9pt;"> 진행사항</span></b></font></p>
+        </td>
+    </tr>
+    <c:choose>
+    <c:when test="${empty requestScope.myProject}">
+	<tr>
+        <td colspan="5">
+            <p align="center"><b><span style="font-size:9pt;">list가 존재하지 않습니다.</span></b></p>
+        </td>
+    </tr>
+    </c:when>
+    <c:otherwise>
+	<c:forEach items="${requestScope.myProject}" var="myProject">
+		    <tr style="background:white;" onmouseover="this.style.background='#eaeaea'" onmouseout="this.style.background='white'">
+		         <td bgcolor="">
+		            <p align="center"><span style="font-size:9pt;">
+		             ${myProject.projectNo}
+		            </span></p>
+		        </td>
+		         
+		       
+		      
+		        
+		        <td bgcolor="">
+					<p align="center"><span style="font-size:9pt;">
+					<a href="${pageContext.request.contextPath}/project/projectRead?projectNo=${myProject.projectNo}">
+					 ${myProject.projectSubject}
+					</a>
+					</span></p>
+		        </td>
+		      
+		       
+		        <td bgcolor="">
+		            <p align="center"><span style="font-size:9pt;">
+		             ${myProject.percent}%
+		            </span></p>
+		        </td>
+		         
+		         <td bgcolor="">
+		            <p align="center"><span style="font-size:9pt;">
+		              ${myProject.goal}
+		              </span></p>
+		        </td>
+		        <td bgcolor="">
+		        	 <c:set var="projectEnd" value="${myProject.projectEnd}"/>
+		            <p align="center"><span style="font-size:9pt;">
+		        			${fn:substring(projectEnd,0,10)}
+		            
+		              </span></p>
+		        </td>
+		        
+		        <c:set var="now" value="<%=new java.util.Date()%>" />
+				<c:set var="sysDay"><fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /></c:set>
+				<fmt:parseDate value="${myProject.projectEnd}" var="ParseDate" pattern="yyyy-MM-dd"/> 
+				<c:set var="projectDate"><fmt:formatDate value="${ParseDate}" pattern="yyyy-MM-dd" /></c:set> 
+		        
+		        <c:choose>
+		        <c:when test="${myProject.percent == 100 ||  projectDate < sysDay}">
+		      <td bgcolor=""> 
+		            <p align="center"><span style="font-size:9pt;">
+		                        모금 종료		           	 
+		            </span></p>
+		        </td>
+		            
+		        
+		      
+		        </c:when>
+		        <c:otherwise>
+		         <td bgcolor=""> 
+		            <p align="center"><span style="font-size:9pt;">
+		            <a href="${pageContext.request.contextPath}/project/projectRead?projectNo=${myProject.projectNo}">
+		           	 모금 진행중</a>
+		            </span></p>
+		          </td>
+		        
+		        </c:otherwise>
+		         </c:choose>
+		        
+		    </tr>
+    </c:forEach>
+	</c:otherwise>
+    </c:choose>
+</table>
                 
-                <div class="project-list-items">
-                    <div class="project-img"><img src="${pageContext.request.contextPath}/resources/images/thumbs/test2.jpg"></div>
-                    <div class="project-name"><span>이해인 함께해요♡</span></div>
-                    <div class="progress-wrap"><progress id="progressbar" value="35" max="100"></progress></div>
-                    <div class="progress-value-wrap"><span class="progress-value">35%</span></div>
-                    <div class="project-collection"><span>1,300,000원</span></div>
-                </div>
-            </div>       
-        </div>
-        </div>
-   </div>
+
 </div>
+</div>
+</div>
+
 <script>
 
 

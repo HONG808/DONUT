@@ -288,7 +288,7 @@ CREATE TABLE tb_project (
 	category1 VARCHAR2(30), /* 카테고리 */
 	category2 VARCHAR2(30), /* 카테고리2 */
 	category3 VARCHAR2(30), /* 카테고리3 */
-	story VARCHAR2(2000), /* 스토리 */
+	story CLOB, /* 스토리 */
 	projectImg VARCHAR(255), /* 이미지 */
 	projectEnd DATE, /* 프로젝트 마감일 */
 	projectRegdate DATE, /* 등록일 */
@@ -378,7 +378,7 @@ ALTER TABLE tb_reward
 CREATE TABLE tb_review (
 	projectNo NUMBER(5) NOT NULL, /* 프로젝트 번호 */
 	id VARCHAR2(20), /* 아이디 */
-	reviewContent VARCHAR2(2000), /* 글 내용 */
+	reviewContent CLOB, /* 글 내용 */
 	reviewImg VARCHAR(255), /* 영수증사진 */
 	reviewRegdate DATE /* 등록일자 */
 );
@@ -738,6 +738,10 @@ ALTER TABLE tb_giveItem
 		REFERENCES tb_give (
 			giveNo
 		);
+
+-- 기업명 길이 변경
+alter table tb_company modify companyName varchar2(100);
+
 ---------------------------------------------시퀀스 생성
 
 DROP SEQUENCE seq_project;

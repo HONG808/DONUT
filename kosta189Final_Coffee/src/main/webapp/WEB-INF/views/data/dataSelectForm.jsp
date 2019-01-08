@@ -7,37 +7,79 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/style.css"/>
     <style>
         .item-search-wrap{
             width:400px;
-            height:400px;
+            height:100%;
             margin: auto;
         }
         .item-search-wrap hr{
-            border: 2px solid lightgray;
+            border: 1px solid #DC287C;
+			background-color:#DC287C;
         }
+        
+        .item-search-text{
+        	width:300px;
+        	margin:auto;
+        }
+        
         .item-search-subject {
             margin-top:30px; 
             height:50px;
             width:100%;
         }
+        
         .item-search-list{
             margin-top:30px; 
-            border:1px solid black;
-            height: 200px;
+            height: 100%;
         }
+        
         .item-search-searchBox{
+        	text-align:center;
             padding-top:20px;
             width:100%;
             height: 100px;
-            background-color : lightblue;
+            background-color : #DC287C;
         }
         
-        .item-List-Cofirm{
-        	width:100%;
-        	height:100%;
+        .item-search-searchBox span{
+        	color:white;
         }
         
+        .btn-box{
+        	padding-top:30px;
+			width:150px;
+			margin:auto;
+        }
+        
+	/* 	.item-List-Confirm {
+			width:300px;
+        	margin:auto;
+        }
+        .item-List-Confirm input{
+        	margin-left:20px;
+        	margin-bottom: 5px;
+        } */
+        
+        .item-List-Wrap {
+			width: 300px;
+        	margin:auto;
+        }
+        
+        .item-List-Wrap input{
+        	margin-left:20px;
+        	margin-bottom: 5px;
+        }
+        
+        .item-List-ConfirmDiv {
+        	width: 300px;
+        	margin:auto;
+        }
+         .item-List-ConfirmDiv input{
+        	margin-left:20px;
+        	margin-bottom: 5px;
+        } 
         
     </style>
     <!-- script -->
@@ -48,7 +90,7 @@
    
 <div class="item-search-wrap">
     <div class="item-search-subject">
-         <span>물품검색</span>
+         <p class="notice-title"><span style="font-size:30px;">물품검색</span></p>
          <hr>
     </div>
     <div class="item-search-main">
@@ -66,14 +108,15 @@
             <input type="button" value="검색">
         </div>
         <div class="item-search-list">
-				<table>리스트출력</table>            
+				<table class="notice-table">
+				</table>            
         </div>
-        <div class="item-List-Cofirm" id="itemListCofirm">
-        	
+        <div class="item-List-Confirm" id="itemListCofirm">
         </div>
+        <div class="btn-box">
         <input type="button" class="btn_2" id="itemConfirm" value="확정" style="width:50px;">
         <input type="button" class="btn_2" id="itemCancel" value="취소" style="width:50px;">
-        
+        </div>
     </div>
 </div>
 
@@ -94,6 +137,7 @@ $(function(){
             type : "get", 
             success : function(result){
             	var str = "";
+            	str += '<tr style="background-color: #DC287C"><td>물품번호</td><td style="text-align: center">풀뭄명</td><td>카테고리</td><td>가격</td><td>선택</td></tr>'
             	$.each(result, function(index,data){
             		str += "<tr>";
             		str += "<td class='dataItemNo'>"+data.dataItemNo+"</td><td class='dataItemName'>"+data.dataItemName+"</td><td class='dataItemCategory'>"+data.dataItemCategory+"</td><td class='dataItemPrice'>"+data.dataItemPrice+"</td><td><input type='button' value='선택'/></td>";
@@ -116,29 +160,44 @@ $(function(){
 	var indexNo = 0;
 	
 	$(document).on("click","input[value=선택]",function(){
+		if($("#itemListCofirm > div").length == 0){
+			 var str='';
+			str += "<div class='item-List-Wrap'><input type='text'  size='10' value='물품명' readonly='readonly'>";
+			str += "<input type='text'  size='10' value='수량' readonly='readonly'>";
+			str += "<input type='text'  size='10' value='개당가격' readonly='readonly'></div>";
+			$("#itemListCofirm").append(str);
+		}
+
 		var str = "";
-		str += "<div><input type='text' name='item["+indexNo+"].itemName' value='"+$(this).parent().parent().children(".dataItemName").html()+"'>";
-		str += "<input type='text' name='item["+indexNo+"].itemCategory' value='"+$(this).parent().parent().children(".dataItemCategory").html()+"'>";
-		str += "<input type='text' name='item["+indexNo+"].itemgoalAmount' value='1'>";
-		str += "<input type='text' name='item["+indexNo+"].itemPrice' value='"+$(this).parent().parent().children(".dataItemPrice").html()+"'></div>";
+		str += "<div class='item-List-ConfirmDiv'><input type='text'  size='10' id='itemName"+indexNo+"' value='"+$(this).parent().parent().children(".dataItemName").html()+"'>";
+		str += "<input type='text' size='10' name='goalAmount' id='goalAmount"+indexNo+"' value='1'>";
+		str += "<input type='text' size='10' id='itemPrice"+indexNo+"' value='"+$(this).parent().parent().children(".dataItemPrice").html()+"'></div>";
 	//	$(opener.document).find("#itemList").append(str);
 		$("#itemListCofirm").append(str);
-		console.log(indexNo);
 		indexNo++;
 	});
 	
+	$(document).on("keyup","input[name=goalAmount]",function(){
+        $(this).attr('value',$(this).val());
+    });
 	
 	//물품 수량 입력 후 목표금액 설정
 	$(document).on("click","#itemConfirm", function(){
-		var length = $("#itemListCofirm > div").length;
+		var length = $("#itemListCofirm > div").length-1;
 		var price = 0;
 		for(var i =0; i<length; i++){
-			price += $("[name='item["+i+"].itemPrice'").val() * $("[name='item["+i+"].itemgoalAmount'").val();
+			price += $("#itemPrice"+i+"").val() * $("#goalAmount"+i+"").val()
 		}
-		$(opener.document).find("#goal").val(price);
-		$(opener.document).find("#itemList").html($("#itemListCofirm").html()); 
+		var list= $("#itemListCofirm").html();
+		
+		$(opener.document).find("#itemGoal").val(price);
+		$(opener.document).find("#itemList").html(list);
+		self.close();
 	});    
-
+	
+	$(document).on("click", "#itemCancel", function(){
+		$("#itemListCofirm").html('');
+	});
 
 </script>
     

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ include file="../common/header.jsp" %>
 
-<div class="mypage-wrap">
+<div class="mypage-wrap" data-aos="fade-in">
    <div class="mypage-container">
         <div class="mypage-sidebar">
                 <div class="mypage-sidebar-title">
@@ -17,6 +17,8 @@
                     <li class="sidebar-3"><a href="${pageContext.request.contextPath}/member/memberReceipt">영수증관리</a></li>
                     <li class="sidebar-4"><a href="${pageContext.request.contextPath}/member/memberQnA">Q&A</a></li>
                     <li class="sidebar-5"><a href="${pageContext.request.contextPath}/member/memberCheer">내 응원</a></li>
+                    <li class="sidebar-6"><a href="${pageContext.request.contextPath}/member/memberFavorite">즐겨찾기</a></li>
+                    
                 </ul>
         </div>
         <div class="mypage-contents">

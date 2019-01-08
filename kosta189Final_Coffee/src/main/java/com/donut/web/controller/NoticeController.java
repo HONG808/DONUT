@@ -1,6 +1,8 @@
 package com.donut.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,9 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.donut.web.dto.BoardPager;
 import com.donut.web.dto.NoticeDTO;
 import com.donut.web.service.NoticeService;
+import com.sun.corba.se.impl.protocol.BootstrapServerRequestDispatcher;
 
 @Controller
 @RequestMapping("notice")
@@ -21,10 +26,28 @@ public class NoticeController {
 	private NoticeService noticeService;
 	
 	@RequestMapping("noticeList")
-	public String noticeList(Model model) throws Exception {
+	public String noticeList(Model model, 
+			@RequestParam(defaultValue="title") String searchOption,
+			@RequestParam(defaultValue="") String keyword,
+			@RequestParam(defaultValue="1") int curPage
+			) throws Exception {
 		try {
-			List<NoticeDTO> noticeList = noticeService.noticeSelectAll();
-			model.addAttribute("list",noticeList);
+			//레코드의 갯수 계산
+			int count = noticeService.countArticle(searchOption, keyword);
+			
+			//페이지 나누기 관련 처리
+			BoardPager boardPager = new BoardPager(count, curPage);
+			int start = boardPager.getPageBegin();
+			int end = boardPager.getPageEnd();
+		
+			List<NoticeDTO> noticeList = noticeService.noticeSelectAll(start, end, searchOption, keyword);
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("list", noticeList);
+			map.put("count", count);
+			map.put("boardPager", boardPager);
+			
+			model.addAttribute("map", map);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,57 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html>
-<head>
-<!-- meta -->
-<meta charset="UTF-8">
-<meta http-equiv="Content-Script-Type" content="text/javascript">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=1100">
-<title>Donut</title>
-
-
-<!-- script -->
-<script
-	src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-<!-- favicon -->
-<link rel="shortcut icon"
-	href="${pageContext.request.contextPath}/resources/images/favicon.ico"
-	type="image/x-icon">
-<link rel="icon"
-	href="${pageContext.request.contextPath}/resources/images/favicon.ico"
-	type="image/x-icon">
-<!-- css -->
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/style.css" />
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/animate.css" />
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/odometer-theme-default.css" />
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/progress.css" />
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/SpoqaHanSans-kr.css" />
-<!-- fontawesome -->
-<link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
-<!-- font -->
-<script src="${pageContext.request.contextPath}/resources/bower_components/jquery/dist/jquery.js"></script>
-    <script src='${pageContext.request.contextPath}/resources/bower_components/markdown-it/dist/markdown-it.js'></script>
-	<script src="${pageContext.request.contextPath}/resources/bower_components/to-mark/dist/to-mark.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/bower_components/tui-code-snippet/dist/tui-code-snippet.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/bower_components/codemirror/lib/codemirror.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/bower_components/highlightjs/highlight.pack.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/bower_components/squire-rte/build/squire-raw.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/bower_components/tui-editor/dist/tui-editor-Editor.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/bower_components/tui-editor/dist/tui-editor-Viewer.js"></script>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bower_components/codemirror/lib/codemirror.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bower_components/highlightjs/styles/github.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bower_components/tui-editor/dist/tui-editor.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bower_components/tui-editor/dist/tui-editor-contents.css">
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ include file="../common/header.jsp" %>
+<script src="${pageContext.request.contextPath}/resources/bower_components/tui-editor/dist/tui-editor-Viewer.js"></script>
 <SCRIPT language=javascript>
    $(function(){
 	   $("input[value=수정하기]").click(function(){
@@ -89,7 +41,7 @@
 
 
 
-	<div class="project-review-wrap">
+	<div class="project-review-wrap" data-aos="fade-in">
 		<div class="project-review-container">
 			<div class="review-title">
 			${review.id}
@@ -120,23 +72,27 @@
             <div class="code-html">
 
     			<div id="review-content"></div>
+    			<textarea id="hide-content" style="display:none;">${review.reviewContent}</textarea>
     		</div>
     		<script class="code-js">
-      		var content = ['${requestScope.review.reviewContent}'].join('\n');
-      				$('#review-content').tuiEditor({
-        				height: '300px',
-        				initialValue: content
-      				});
+    		var editor = new tui.Editor({
+				el: document.querySelector('#review-content'),
+				height: '300px',
+				viewer : true
+				/* initialValue: content  */
+				});
+				 editor.setValue( $("#hide-content").val()); 
+    		
     		</script>
 			<div class="review-receipt-title">
 				<span>영수증</span>
 			</div>
 			<div class="review-receipt-contents">
-				<%-- <img
-					src="${pageContext.request.contextPath}/resources/images/thumbs/test4.jpg"> --%>
+				<img
+					src="${pageContext.request.contextPath}/resources/finalPhoto/review/${requestScope.review.reviewImg}" onerror='this.src="${pageContext.request.contextPath}/resources/images/thumbs/test4.jpg"'> 
 			</div>
 			
-			  <c:if test="${review.id==memberDTO.id}">
+			  <c:if test="${review.id==sessionScope.userDTO.id}">
 				<form name="requestForm" method="post" id="requestForm">
 		     <input type=hidden name="projectNo" value="${requestScope.review.projectNo}"> 
 		     <input type=hidden name="id" value="${requestScope.review.id}"> 
@@ -147,16 +103,4 @@
 		</div>
 		</div>
 	
-	
-
-	<script type="text/javascript"
-		src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/js/index.js"></script>
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/js/odometer.min.js"></script>
-	
-</body>
-</html>
+		<%@ include file="../common/footer.jsp" %>

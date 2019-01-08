@@ -55,10 +55,10 @@
 		where cheerNo = #{_parameter}
 	</update> 
 
-	<select id="cheerDuplicatedById" parameterType="map">
+	<select id="cheerDuplicatedById" parameterType="map" resultMap="userMap">
 	   select *
 	   from tb_cheer
-	   where id=#{id} and projectNo=${projectNo}
+	   where id=#{id} and projectNo=#{projectNo}
 	</select>
 </mapper>
 

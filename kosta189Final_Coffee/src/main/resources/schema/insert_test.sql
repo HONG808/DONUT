@@ -18,6 +18,34 @@ QnA테이블 댓글 :
 
 
 * 시퀀스로 이루어진 NO(번호) 전부 인설트시 들어간 데이터의 번호에 따라 설정 해주어야함
+---------------------------------------------------연습장
+
+select id,accMoney,RANK() OVER(ORDER BY accMoney DESC) AS RK 
+from tb_member
+where (accMoney is not null) and statusFlag=1 
+
+
+select * from tb_member
+where id='c1'
+
+select * from tb_company
+where id='c1'
+
+----------------------------------------------------관리자
+
+insert into tb_member(id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag, dropFlag) values ('admin1', '1234',
+null,null,null,null,null,null,0,1);
+
+insert into tb_member(id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag, dropFlag) values ('admin2', '1234',
+null,null,null,null,null,null,0,1);
+
+
+insert into tb_member(id, pwd, name, phone, email, picture, accMoney, regDate, statusFlag, dropFlag) values ('admin3', '1234',
+null,null,null,null,null,null,0,1);
+
+delete from tb_member
+where dropFlag is null
+
 
 ----------------------------------------------------기부자 회원 가입
 
@@ -203,7 +231,7 @@ insert into tb_giveItem(giveItemNo, giveNo, giveItemName, giveItemPrice, giveIte
 
 
 ------------------------------------------------------------------------------결제정보 (수정예정)
-set define off
+--set define off
 insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate, receiptURL)
     values (1, '카드', 270000, sysdate, '박성호', '경기도 성남시 분당구', '01099848993','memo', sysdate, 'https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp');
 insert into tb_payment(giveNo, payMethod, payMoney, permissionDate, receiver, addr, call, memo, payDate, receiptURL)
@@ -328,19 +356,21 @@ insert into tb_favorite(favoriteNo, id, projectNo)
 --------------------------------공지사항
 
 insert into tb_notice (noticeNo, id, noticeTitle, noticeContent, noticeRegdate) 
-    values(seq_notice.nextval, 'company1', 'test2', 'test2', sysdate);
+    values(seq_notice.nextval, 'admin1', 'test2', 'test2', sysdate);
 insert into tb_notice (noticeNo, id, noticeTitle, noticeContent, noticeRegdate) 
-    values(seq_notice.nextval, 'company2', 'test3', 'test3', sysdate);
+    values(seq_notice.nextval, 'admin2', 'test3', 'test3', sysdate);
 insert into tb_notice (noticeNo, id, noticeTitle, noticeContent, noticeRegdate) 
-    values(seq_notice.nextval, 'company3', 'test4', 'test4', sysdate);
-insert into tb_notice (noticeNo, id, noticeTitle, noticeContent, noticeRegdate) 
-    values(seq_notice.nextval, 'company4', 'test5', 'test5', sysdate);
+    values(seq_notice.nextval, 'admin3', 'test4', 'test4', sysdate);
+--insert into tb_notice (noticeNo, id, noticeTitle, noticeContent, noticeRegdate) 
+--    values(seq_notice.nextval, 'admin4', 'test5', 'test5', sysdate);
 
-insert into tb_notice (noticeNo, id, noticeTitle, noticeContent, noticeRegdate) 
-    values(seq_notice.nextval, 'company5', 'test1', 'test1', sysdate);
+--insert into tb_notice (noticeNo, id, noticeTitle, noticeContent, noticeRegdate) 
+--    values(seq_notice.nextval, 'admin5', 'test1', 'test1', sysdate);
 
 
-
+delete from tb_notice 
+where id='company5'
+    
 ---------------------------------------------테이블 조회
 select * from tb_member;
 select * from tb_company;

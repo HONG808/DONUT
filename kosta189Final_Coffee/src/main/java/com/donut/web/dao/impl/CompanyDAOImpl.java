@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.donut.web.dao.CompanyDAO;
+import com.donut.web.dto.CompanyDTO;
 import com.donut.web.dto.MemberDTO;
 import com.donut.web.dto.ProjectDTO;
 
@@ -30,19 +31,32 @@ public class CompanyDAOImpl implements CompanyDAO {
 	@Override
 	public MemberDTO companySelectByid(String id) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return session.selectOne("memberMapper.selectCompanybyId", id);
 	}
 
 	@Override
 	public int companyUpdate(MemberDTO memberDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		int memberUpdateResult = session.update("memberMapper.memberUpdate", memberDTO);
+		int companyUpdateResult = session.update("companyMapper.companyUpdate", memberDTO);
+		
+		if(memberUpdateResult==1 && companyUpdateResult==1) {
+			return result = 1;
+		}
+		return result;
 	}
 
 	@Override
 	public List<ProjectDTO> companyProjectSelectAll(String id) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return session.selectList("companyMapper.selectMyProject", id);
 	}
+
+	@Override
+	public CompanyDTO selectById(String id) throws Exception {
+		return session.selectOne("companyMapper.selectById", id);
+	}
+	
+	
 
 }

@@ -1,15 +1,19 @@
 package com.donut.web.controller;
 
 import java.io.File;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.donut.web.dto.CompanyDTO;
 import com.donut.web.dto.MemberDTO;
+import com.donut.web.dto.ProjectDTO;
 import com.donut.web.service.CompanyService;
 import com.donut.web.service.MemberService;
 
@@ -23,49 +27,33 @@ public class CompanyController {
 	@Autowired
 	private MemberService memberService;
 	
-	private String path = "C:\\Edu\\finalPhoto\\member"; // 저장소
+	private String path = "resources/finalPhoto/member";	
 	
 	//단체회원가입
 		@RequestMapping("/companyInsert")
-		public String companyInsert(HttpSession session, MemberDTO memberDTO) throws Exception {
-			System.out.println("companyInsert 실행");
-			System.out.println("memberDTO.getId()"+memberDTO.getId());
-			System.out.println("companyDTO.getId()"+memberDTO.getCompany().getId());
-			System.out.println("단체명"+memberDTO.getCompany().getCompanyName());
-			System.out.println("전화번호"+memberDTO.getCompany().getCompanyCall());
-			System.out.println("주소"+memberDTO.getCompany().getCompanyAddr());
-			System.out.println("계좌"+memberDTO.getCompany().getAccount());
-			System.out.println("은행"+memberDTO.getCompany().getBank());
-			System.out.println("이메일"+memberDTO.getEmail());
-			
-			System.out.println("회원상태플래그"+memberDTO.getStatusFlag());
+		public String companyInsert(HttpSession session, MemberDTO memberDTO,CompanyDTO companyDTO) throws Exception {
 			
 
 			//memberDTO.setId(memberDTO.getCompany().getId());
 			memberDTO.setStatusFlag(2);	//기부단체 상태플래그
 
-			System.out.println("memberDTO.getId()"+memberDTO.getId());
-			System.out.println("companyDTO.getId()"+memberDTO.getCompany().getId());
+			MultipartFile file = memberDTO.getFile();
 
-			System.out.println("회원상태플래그"+memberDTO.getStatusFlag());
-			
 			if (memberService.memberDuplicatedById(memberDTO.getId())) {
-
 				//파일첨부
-				MultipartFile file = memberDTO.getFile();
-				
+				String realPath = session.getServletContext().getRealPath("/") + path;
 				if (file.getSize() > 0) {
-					String fileName = file.getOriginalFilename();
+				String fileName = file.getOriginalFilename();
 
-					memberDTO.setPicture(fileName);
-					file.transferTo(new File(path + "/" + fileName));
-				}
+				memberDTO.setPicture(fileName);
+				file.transferTo(new File(realPath + "/" + fileName));
+			}
 
+				
 				memberService.MemberInsert(memberDTO);//왜 여기서 status플래그가 1로 되는거지
-				System.out.println("회원상태플래그확인!!!"+memberDTO.getStatusFlag());//여기도2인데...왜ㅠㅠㅠ
+				memberDTO.setCompany(companyDTO);
 				companyService.companyInsert(memberDTO);
 
-				System.out.println("기부단체 "+memberDTO.getId() + "님 가입을 축하드립니다.");
 
 			} else {
 				System.out.println("회원가입에 실패하였습니다.");
@@ -74,38 +62,92 @@ public class CompanyController {
 			
 			return "redirect:/member/login";
 		}
+		
+		//회원가입폼
+		@RequestMapping("/companyInsertForm")
+		public String companyInsertForm(HttpSession session) {
+			
+			return "member/company/companyInsertForm";
+		}
 	
 	//회원가입폼
-	@RequestMapping("/companyInsertForm")
-	public String companyInsertForm(HttpSession session) {
+		@RequestMapping("/companyMypage")
+		public String companyMypage(HttpSession session, Model model) {
+			
+
+		try {
+			MemberDTO memberDTO = (MemberDTO)session.getAttribute("userDTO");
+		    memberDTO = companyService.companySelectByid(memberDTO.getId());
+		   
+		    model.addAttribute("member", memberDTO);
+		 
+	    } catch (Exception e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	    }
+			  
+			return "member/company/companyMypage";
+		}
 		
-		return "member/company/companyInsertForm";
-	}
-	
-	///////////////////////////////////////////////////////
-	
-	@RequestMapping("/companyMypage")
-	public String companyMypage() {
-		System.out.println("companyMypage 실행");
-		return "member/company/companyMypage";
-	}
-	
-	@RequestMapping("/companyUpdateForm")
-	public String companyUpdateForm() {
-		System.out.println("companyUpdateForm 실행");
-		return "member/company/companyUpdateForm";
-	}
-	
-	@RequestMapping("/companyUpdate")
-	public String companyUpdate() {
-		System.out.println("companyUpdate 실행");
-		return "member/company/companyUpdate";
-	}
-	
+		@RequestMapping("/companyUpdateForm")
+		public String companyUpdateForm() {
+			System.out.println("companyUpdateForm 실행");
+			return "member/company/companyUpdateForm";
+		}
+		
+		@RequestMapping("/companyUpdate")
+		public String companyUpdate(HttpSession session,MemberDTO memberDTO, CompanyDTO company) {
+		
+			memberDTO.setCompany(company);
+			MultipartFile file = memberDTO.getFile();
+			
+			try {
+				String realPath = session.getServletContext().getRealPath("/") + path;
+				if (file.getSize() > 0) {
+					String fileName = file.getOriginalFilename();
+
+					memberDTO.setPicture(fileName);
+					file.transferTo(new File(realPath + "/" + fileName));
+				}
+				companyService.companyUpdate(memberDTO);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return "redirect:/company/companyMypage";
+		}
+		
+
 	@RequestMapping("/companyProject")
-	public String companyProject() {
-		System.out.println("companyProject 실행");
-		return "member/company/companyProject";
+		public String companyProject(HttpSession session, Model model) {
+			System.out.println("companyProject 실행");
+			
+			try {
+				 MemberDTO memberDTO = (MemberDTO)session.getAttribute("userDTO");
+			    List<ProjectDTO> list =companyService.companyProjectSelectAll(memberDTO.getId());
+	            model.addAttribute("myProject",list);
+	            
+	        } catch (Exception e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+			return "member/company/companyProject";
+		}
+
+	@RequestMapping("/companyDelete")
+	public String memberDelete(MemberDTO memberDTO,HttpSession session) {
+		try {
+			memberService.memberDelete(memberDTO);
+			session.invalidate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/";
+	}
+	
+	@RequestMapping("/companyAPIForm")
+	public String ApiForm() {
+		return "member/company/companyAPIForm";
 	}
 	
 }

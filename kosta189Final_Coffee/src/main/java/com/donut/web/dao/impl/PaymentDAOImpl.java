@@ -22,6 +22,17 @@ public class PaymentDAOImpl implements PaymentDAO
 	private SqlSession session;
 
 	@Override
+	public int updateAccMoney(String id, int giveMoney)
+	{
+		System.out.println("0");
+		Map<String, Object> map = new HashMap<>();
+		map.put("id", id);
+		map.put("giveMoney", giveMoney);
+		
+		return session.update("paymentMapper.updateAccMoney", map);
+	}
+	
+	@Override
 	public int insertGive(GiveDTO giveDTO)
 	{
 		System.out.println("1");
@@ -119,5 +130,5 @@ public class PaymentDAOImpl implements PaymentDAO
 		
 		return 0;
 	}
-	
+
 }

@@ -8,13 +8,13 @@ import com.donut.web.dto.ProjectDTO;
 public interface ProjectService {
 	
 	//프로젝트 전체보기
-	public List<ProjectDTO> projectSelectAll() throws Exception;
+	public List<ProjectDTO> projectSelectAll(String flag) throws Exception;
 	
 	//프로젝트 상세보기 ,업데이트 정보 가져오기
 	public ProjectDTO projectSelectByNo(int projectNo) throws Exception;
 	
 	//프로젝트 카테고리로 보기
-	public List<ProjectDTO> projectSelectByCategory1() throws Exception;
+	public List<ProjectDTO> projectSelectByCategory1(ProjectDTO projectDTO) throws Exception;
 	
 	//프로젝트 카테고리2로 보기
 	public List<ProjectDTO> projectSelectByCategory2() throws Exception;
